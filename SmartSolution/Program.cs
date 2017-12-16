@@ -17,7 +17,7 @@ namespace Test
             var host = new WebHostBuilder()
                  .UseKestrel()
                  .UseContentRoot(Directory.GetCurrentDirectory())
-                 .UseUrls("http://*:8000")
+                 .UseUrls("http://*:8080")
                  .UseIISIntegration()
                  .ConfigureAppConfiguration((context, configBuilder) => {
                      configBuilder
