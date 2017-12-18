@@ -42,8 +42,6 @@ namespace WebPortal.Controllers
         public ActionResult Edit(string id) {
 
             Sensor sensor = mongoCollection.Find(sens => sens.Id == id).SingleOrDefault();
-
-
             return View(sensor);
         }
 
