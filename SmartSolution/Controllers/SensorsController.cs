@@ -38,11 +38,20 @@ namespace WebPortal.Controllers
             return View();
         }
 
+        [HttpGet]
+        public ActionResult Edit(string id) {
+
+            Sensor sensor = mongoCollection.Find(sens => sens.Id == id).SingleOrDefault();
+
+
+            return View(sensor);
+        }
+
         [HttpPost]
         public IActionResult Edit(Sensor sensor)
         {
-            this.mongoCollection.InsertOne(sensor);
-            return View();
+            this.mongoCollection.FindOneAndReplace((sens=>sens.Id == sensor.Id),sensor);
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
