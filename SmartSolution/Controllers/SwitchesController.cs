@@ -28,9 +28,10 @@ namespace WebPortal.Controllers
         }
 
         // GET: Switches/Details/5
-        public IActionResult Details(int id)
+        public IActionResult Details(string id)
         {
-            return View();
+            Switch switchObj = mongoCollection.Find(sw => sw.Id == id).SingleOrDefault();
+            return View(switchObj);
         }
 
         // GET: Switches/Create
@@ -56,21 +57,21 @@ namespace WebPortal.Controllers
         }
 
         // GET: Switches/Edit/5
-        public IActionResult Edit(int id)
+        public IActionResult Edit(string id)
         {
-            return View();
+            Switch switchObj = mongoCollection.Find(sw => sw.Id == id).SingleOrDefault();
+            return View(switchObj);
         }
 
         // POST: Switches/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, IFormCollection collection)
+        public IActionResult Edit(Switch switchObj)
         {
             try
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
+                mongoCollection.FindOneAndReplace(sw => sw.Id == switchObj.Id, switchObj);
+                return RedirectToAction("Index");
             }
             catch
             {
@@ -79,21 +80,21 @@ namespace WebPortal.Controllers
         }
 
         // GET: Switches/Delete/5
-        public IActionResult Delete(int id)
+        public IActionResult Delete(string id)
         {
-            return View();
+            Switch switchObj = mongoCollection.Find(sw => sw.Id == id).SingleOrDefault();
+            return View(switchObj);
         }
 
         // POST: Switches/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(int id, IFormCollection collection)
+        public IActionResult DeleteSwitch(string id)
         {
             try
             {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
+                mongoCollection.FindOneAndDelete(sw => sw.Id == id);
+                return RedirectToAction("Index");
             }
             catch
             {

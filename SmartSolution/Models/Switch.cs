@@ -16,5 +16,12 @@ namespace WebPortal.Models
         public string Name { get; set; }
 
         public bool State { get; set; }
+
+        public Switch()
+        {
+            this.Id = Guid.NewGuid().ToString();
+            this.Name = "";
+            this.State = false;
+        }
     }
 }
