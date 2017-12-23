@@ -42,13 +42,12 @@ namespace WebPortal.Controllers
         // POST: Switches/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(IFormCollection collection)
+        public IActionResult Create(Switch switchObject)
         {
             try
             {
-                // TODO: Add insert logic here
-
-                return RedirectToAction(nameof(Index));
+                this.mongoCollection.InsertOne(switchObject);
+                return RedirectToAction("Index");
             }
             catch
             {
