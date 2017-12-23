@@ -1,0 +1,58 @@
+﻿@model IEnumerable<WebPortal.Models.Switch>
+
+@{
+    ViewBag.Title = "Switches";
+    int i = 1;
+}
+
+<h2>Switches</h2>
+<div class="panel">
+    @Html.ActionLink("Create", "Create", "Switches", null, new { @class = "btn btn-primary" })
+</div>
+
+<table class="table table-responsible table-hover table-bordered">
+    <thead>
+        <tr>
+            <th>
+                #
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.State)
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @i.ToString()
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.State)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+            i++;
+        }
+    </tbody>
+</table>
