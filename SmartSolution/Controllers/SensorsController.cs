@@ -35,7 +35,7 @@ namespace WebPortal.Controllers
         public IActionResult Create(Sensor sensor)
         {
             this.mongoCollection.InsertOne(sensor);
-            return View();
+            return RedirectToAction("Index","Sensors");
         }
 
         [HttpGet]
