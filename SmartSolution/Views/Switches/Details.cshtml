@@ -31,7 +31,7 @@
     </dl>
 </div>
 <div>
-    @Html.ActionLink("Edit", "Edit","Switches", new { Model.Id }, new { @class="btn btn-primary"}) |
+    @Html.ActionLink("Edit", "Edit","Switches", new { Model.Id }, new { @class="btn btn-info"}) |
     @Html.ActionLink("Delete","Delete", "Switches", new { Model.Id }, new { @class = "btn btn-danger" }) |
-    <a asp-action="Index">Back to List</a>
+    @Html.ActionLink("Back", "Index", "Switches", null, new { @class = "btn btn-primary" })
 </div>

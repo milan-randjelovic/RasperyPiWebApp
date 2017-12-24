@@ -35,4 +35,9 @@
       @Html.AntiForgeryToken()
       <input type="submit" value="Delete" class="btn btn-danger" />
   }
+    <br />
+    <br />
+    <p>
+        @Html.ActionLink("Back", "Index", "Switches", null, new { @class = "btn btn-primary" })
+    </p>
 </div>

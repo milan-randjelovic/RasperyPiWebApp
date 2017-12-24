@@ -58,6 +58,6 @@
     {
         @Html.AntiForgeryToken()
         <input type="submit" value="Delete" class="btn btn-danger" /> 
-        @Html.ActionLink("Back", "Index", "Sensors")
+        @Html.ActionLink("Back", "Index", "Sensors",null,new { @class="btn btn-primary"})
     }
 </div>
