@@ -1,12 +1,11 @@
 ﻿@model WebPortal.Models.Sensor
 
 @{
-    ViewData["Title"] = "DeleteView";
+    ViewData["Title"] = "Details";
 }
 
-<h2>DeleteView</h2>
+<h2>Details</h2>
 
-<h3>Are you sure you want to delete this?</h3>
 <div>
     <h4>Sensor</h4>
     <hr />
@@ -54,12 +53,11 @@
             @Html.DisplayFor(model => model.IsActive)
         </dd>
     </dl>
-    @using (Html.BeginForm("DeleteSensor", "Sensors", new { id = Model.Id }, FormMethod.Post))
-    {
-        @Html.AntiForgeryToken()
-        <input type="submit" value="Delete" class="btn btn-danger" /> 
-        <br />
-        <br />
-        @Html.ActionLink("Back", "Index", "Sensors",null,new { @class="btn btn-primary"})
-    }
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", "Sensors", new { Model.Id},new { @class="btn btn-warning"}) |
+    @Html.ActionLink("Delete", "Delete", "Sensors", new { Model.Id }, new { @class = "btn btn-danger" }) 
+    <br />
+    <br />
+    @Html.ActionLink("Back", "Index", "Sensors", null, new { @class = "btn btn-primary" })
 </div>

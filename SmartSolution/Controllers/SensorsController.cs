@@ -65,5 +65,12 @@ namespace WebPortal.Controllers
             this.mongoCollection.DeleteOne(s => s.Id == id);
             return RedirectToAction("Index");
         }
+
+        [HttpGet]
+        public ActionResult Details(string id) {
+            Sensor sensor = mongoCollection.Find(sens => sens.Id == id).SingleOrDefault();
+            return View(sensor);
+        }
+
     }
 }
