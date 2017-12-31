@@ -1,36 +1,65 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 using WebPortal.Models;
+using WebPortal.Models.Switches;
+using WebPortal.Services;
 
 namespace WebPortal.Controllers
 {
     public class SwitchesController : Controller
     {
-        IMongoCollection<Switch> mongoCollection;
+        private IMongoCollection<Switch> mongoCollection;
+        private static SwitchesService SwitchesService;
 
         public SwitchesController()
         {
             MongoClient client = new MongoClient("mongodb://SmartSolution:SmartSolution2017@35.160.134.78:19735/SmartSolution");
             IMongoDatabase dbContext = client.GetDatabase("SmartSolution");
             this.mongoCollection = dbContext.GetCollection<Switch>("Switches");
+
+            if (SwitchesService == null)
+            {
+                SwitchesService = new SwitchesService();
+            }
         }
 
         // GET: Switches
         public IActionResult Index()
         {
-            List<Switch> switches = this.mongoCollection.Find(s => s.Id != "").ToList();
+            IEnumerable<ISwitch> switches;
+
+            try
+            {
+                switches = this.mongoCollection.Find(s => s.Id != "").ToList();
+                SwitchesService.Switches = switches;
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = ex.Message;
+                return Redirect("Error");
+            }
+
             return View(switches);
         }
 
         // GET: Switches/Details/5
         public IActionResult Details(string id)
         {
-            Switch switchObj = mongoCollection.Find(sw => sw.Id == id).SingleOrDefault();
+            ISwitch switchObj;
+
+            try
+            {
+                switchObj = mongoCollection.Find(sw => sw.Id == id).SingleOrDefault();
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = ex.Message;
+                return Redirect("Error");
+            }
+
             return View(switchObj);
         }
 
@@ -48,18 +77,30 @@ namespace WebPortal.Controllers
             try
             {
                 this.mongoCollection.InsertOne(switchObject);
-                return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                TempData["Error"] = ex.Message;
+                return Redirect("Error");
             }
+
+            return RedirectToAction("Index");
         }
 
         // GET: Switches/Edit/5
         public IActionResult Edit(string id)
         {
-            Switch switchObj = mongoCollection.Find(sw => sw.Id == id).SingleOrDefault();
+            ISwitch switchObj;
+            try
+            {
+                switchObj = mongoCollection.Find(sw => sw.Id == id).SingleOrDefault();
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = ex.Message;
+                return Redirect("Error");
+            }
+
             return View(switchObj);
         }
 
@@ -71,18 +112,31 @@ namespace WebPortal.Controllers
             try
             {
                 mongoCollection.FindOneAndReplace(sw => sw.Id == switchObj.Id, switchObj);
-                return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                TempData["Error"] = ex.Message;
+                return Redirect("Error");
             }
+
+            return RedirectToAction("Index");
         }
 
         // GET: Switches/Delete/5
         public IActionResult Delete(string id)
         {
-            Switch switchObj = mongoCollection.Find(sw => sw.Id == id).SingleOrDefault();
+            ISwitch switchObj;
+
+            try
+            {
+                switchObj = mongoCollection.Find(sw => sw.Id == id).SingleOrDefault();
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = ex.Message;
+                return Redirect("Error");
+            }
+
             return View(switchObj);
         }
 
@@ -94,12 +148,15 @@ namespace WebPortal.Controllers
             try
             {
                 mongoCollection.FindOneAndDelete(sw => sw.Id == id);
-                return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                TempData["Error"] = ex.Message;
+                return Redirect("Error");
             }
+
+            return RedirectToAction("Index");
+
         }
     }
 }

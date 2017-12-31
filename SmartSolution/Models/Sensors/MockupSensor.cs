@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Timers;
 
-namespace WebPortal.Models
+namespace WebPortal.Models.Sensors
 {
     public class MockupSensor : Sensor
     {

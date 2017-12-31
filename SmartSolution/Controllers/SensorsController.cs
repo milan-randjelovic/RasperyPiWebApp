@@ -3,6 +3,7 @@ using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Linq;
 using WebPortal.Models;
+using WebPortal.Models.Sensors;
 
 namespace WebPortal.Controllers
 {

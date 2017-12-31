@@ -1,12 +1,13 @@
-﻿@model WebPortal.Models.Switch
+﻿@using WebPortal.Models.Switches
+@model ISwitch
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewBag.Title = "Delete";
 }
 
-<h2>Delete</h2>
-
+<h2>@ViewBag.Title</h2>
 <h3>Are you sure you want to delete this?</h3>
+
 <div>
     <h4>Switch</h4>
     <hr />
@@ -24,17 +25,30 @@
             @Html.DisplayFor(model => model.Name)
         </dd>
         <dt>
+            @Html.DisplayNameFor(model => model.SwitchType)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SwitchType)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RaspberryPinNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RaspberryPinNumber)
+        </dd>
+        <dt>
             @Html.DisplayNameFor(model => model.State)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.State)
         </dd>
     </dl>
-    
-  @using (Html.BeginForm("DeleteSwitch", "Switches", new { Model.Id })) {
-      @Html.AntiForgeryToken()
-      <input type="submit" value="Delete" class="btn btn-danger" />
-  }
+
+    @using (Html.BeginForm("DeleteSwitch", "Switches", new { Model.Id }))
+    {
+        @Html.AntiForgeryToken()
+        <input type="submit" value="Delete" class="btn btn-danger" />
+    }
     <br />
     <p>
         @Html.ActionLink("Back", "Index", "Switches", null, new { @class = "btn btn-primary" })

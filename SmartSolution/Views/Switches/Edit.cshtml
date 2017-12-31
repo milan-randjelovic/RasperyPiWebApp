@@ -1,12 +1,18 @@
-﻿@model WebPortal.Models.Switch
+﻿@using WebPortal.Models.Switches
+@using PiOfThings.GpioCore
+@using PiOfThings.GpioUtils
+@model ISwitch
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewBag.Title = "Switch";
+    var raspberryPins = Enum.GetNames(typeof(GpioId));
+    SelectList raspberryPinsList = new SelectList(raspberryPins);
+    var switchTypes = Enum.GetNames(typeof(SwitchType));
+    SelectList switchTypesList = new SelectList(switchTypes);
 }
 
 <h2>Edit</h2>
-
-<h4>Switch</h4>
+<h4>@ViewBag.Title</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -18,11 +24,25 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <input asp-for="State" /> @Html.DisplayNameFor(model => model.State)
-                    </label>
+                <label asp-for="SwitchType" class="control-label"></label>
+                <div>
+                    @Html.DropDownList("SwitchType", switchTypesList, "Select Switch Type")
                 </div>
+                <input asp-for="SwitchType" hidden="hidden" />
+                <span asp-validation-for="SwitchType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RaspberryPinNumber" class="control-label"></label>
+                <div>
+                    @Html.DropDownList("RaspberryPinNumber", raspberryPinsList, "Select Pin")
+                </div>
+                <input asp-for="RaspberryPinNumber" hidden="hidden" />
+                <span asp-validation-for="RaspberryPinNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="State" class="control-label"></label>
+                <input asp-for="State" type="checkbox" class="checkbox" />
+                <span asp-validation-for="State" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-success" />
@@ -31,7 +51,7 @@
     </div>
 </div>
 <div>
-   @Html.ActionLink("Back", "Index", "Switches", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Back", "Index", "Switches", null, new { @class = "btn btn-primary" })
 </div>
 
 @section Scripts {

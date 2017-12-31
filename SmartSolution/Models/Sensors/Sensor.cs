@@ -1,17 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace WebPortal.Models
+namespace WebPortal.Models.Sensors
 {
-    public class Sensor
+    public class Sensor : Device
     {
-        [DataType(DataType.Text)]
-        public string Id { get; set; }
-
-        [DataType(DataType.Text)]
-        [Required(AllowEmptyStrings =false)]
-        public string Name { get; set; }
-
         [DataType(DataType.Text)]
         [Required(AllowEmptyStrings = false)]
         public string Vendor { get; set; }
@@ -28,7 +21,7 @@ namespace WebPortal.Models
 
         public bool IsActive { get; set; }
 
-        public Sensor()
+        public Sensor():base()
         {
             this.Id = Guid.NewGuid().ToString();
             this.Name = "";
