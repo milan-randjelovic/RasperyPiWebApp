@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using WebPortal.Models;
@@ -18,12 +19,40 @@ namespace WebPortal.Controllers
             this.mongoCollection = dbContext.GetCollection<Sensor>("Sensors");
         }
 
-        // GET: Sensors
         [HttpGet]
         public IActionResult Index()
         {
-            List<Sensor> sensors = this.mongoCollection.Find(s => s.Id != "").ToList();
+            IEnumerable<ISensor> sensors;
+
+            try
+            {
+                sensors = this.mongoCollection.Find(s => s.Id != "").ToList();
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = ex.Message;
+                return Redirect("Error");
+            }
+
             return View(sensors);
+        }
+
+        [HttpGet]
+        public IActionResult Details(string id)
+        {
+            ISensor sensor;
+
+            try
+            {
+                sensor = mongoCollection.Find(sens => sens.Id == id).SingleOrDefault();
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = ex.Message;
+                return Redirect("Error");
+            }
+
+            return View(sensor);
         }
 
         [HttpGet]
@@ -33,45 +62,90 @@ namespace WebPortal.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Create(Sensor sensor)
         {
-            this.mongoCollection.InsertOne(sensor);
+            try
+            {
+                this.mongoCollection.InsertOne(sensor);
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = ex.Message;
+                return Redirect("Error");
+            }
+
             return RedirectToAction("Index","Sensors");
         }
 
         [HttpGet]
-        public ActionResult Edit(string id) {
+        public IActionResult Edit(string id)
+        {
+            ISensor sensor;
 
-            Sensor sensor = mongoCollection.Find(sens => sens.Id == id).SingleOrDefault();
+            try
+            {
+                sensor = mongoCollection.Find(sens => sens.Id == id).SingleOrDefault();
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = ex.Message;
+                return Redirect("Error");
+            }
+
             return View(sensor);
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Edit(Sensor sensor)
         {
-            this.mongoCollection.FindOneAndReplace((sens=>sens.Id == sensor.Id),sensor);
+            try
+            {
+                this.mongoCollection.FindOneAndReplace((sens => sens.Id == sensor.Id), sensor);
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = ex.Message;
+                return Redirect("Error");
+            }
+
             return RedirectToAction("Index");
         }
 
         [HttpGet]
         public IActionResult Delete(string id)
         {
-            Sensor result = this.mongoCollection.Find(s => s.Id == id).SingleOrDefault();
-            return View(result);
+            ISensor sensor;
+
+            try
+            {
+                sensor = this.mongoCollection.Find(s => s.Id == id).SingleOrDefault();
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = ex.Message;
+                return Redirect("Error");
+            }
+
+            return View(sensor);
         }
 
         [HttpPost]
         public IActionResult DeleteSensor(string id)
         {
-            this.mongoCollection.DeleteOne(s => s.Id == id);
+            try
+            {
+                this.mongoCollection.DeleteOne(s => s.Id == id);
+
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = ex.Message;
+                return Redirect("Error");
+            }
+
             return RedirectToAction("Index");
         }
-
-        [HttpGet]
-        public ActionResult Details(string id) {
-            Sensor sensor = mongoCollection.Find(sens => sens.Id == id).SingleOrDefault();
-            return View(sensor);
-        }
-
     }
 }

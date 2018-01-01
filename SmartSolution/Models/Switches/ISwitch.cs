@@ -9,6 +9,7 @@ namespace WebPortal.Models.Switches
         SwitchType SwitchType { get; set; }
         bool State { get; }
         GpioId RaspberryPinNumber { get; set; }
+        bool IsActive { get; set; }
         void TurnON();
         void TurnOFF();
     }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
-using WebPortal.Models;
 using WebPortal.Models.Switches;
 using WebPortal.Services;
 
@@ -26,7 +25,6 @@ namespace WebPortal.Controllers
             }
         }
 
-        // GET: Switches
         public IActionResult Index()
         {
             IEnumerable<ISwitch> switches;
@@ -45,7 +43,6 @@ namespace WebPortal.Controllers
             return View(switches);
         }
 
-        // GET: Switches/Details/5
         public IActionResult Details(string id)
         {
             ISwitch switchObj;
@@ -63,13 +60,11 @@ namespace WebPortal.Controllers
             return View(switchObj);
         }
 
-        // GET: Switches/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Switches/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(Switch switchObject)
@@ -87,7 +82,6 @@ namespace WebPortal.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: Switches/Edit/5
         public IActionResult Edit(string id)
         {
             ISwitch switchObj;
@@ -104,7 +98,6 @@ namespace WebPortal.Controllers
             return View(switchObj);
         }
 
-        // POST: Switches/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Switch switchObj)
@@ -122,7 +115,6 @@ namespace WebPortal.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: Switches/Delete/5
         public IActionResult Delete(string id)
         {
             ISwitch switchObj;
@@ -140,7 +132,6 @@ namespace WebPortal.Controllers
             return View(switchObj);
         }
 
-        // POST: Switches/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteSwitch(string id)

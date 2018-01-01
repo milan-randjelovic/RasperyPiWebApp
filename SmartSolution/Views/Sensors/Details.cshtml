@@ -1,10 +1,11 @@
-﻿@model WebPortal.Models.Sensor
+﻿@using WebPortal.Models.Sensors
+@model ISensor
 
 @{
-    ViewData["Title"] = "Details";
+    ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h2>@ViewBag.Title</h2>
 
 <div>
     <h4>Sensor</h4>
@@ -41,22 +42,22 @@
             @Html.DisplayFor(model => model.Value)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Timestamp)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Timestamp)
-        </dd>
-        <dt>
             @Html.DisplayNameFor(model => model.IsActive)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.IsActive)
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Timestamp)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Timestamp)
+        </dd>
     </dl>
 </div>
 <div>
-    @Html.ActionLink("Edit", "Edit", "Sensors", new { Model.Id},new { @class="btn btn-warning"}) |
-    @Html.ActionLink("Delete", "Delete", "Sensors", new { Model.Id }, new { @class = "btn btn-danger" }) 
+    @Html.ActionLink("Edit", "Edit", "Sensors", new { Model.Id }, new { @class = "btn btn-warning" }) |
+    @Html.ActionLink("Delete", "Delete", "Sensors", new { Model.Id }, new { @class = "btn btn-danger" })
     <br />
     <br />
     @Html.ActionLink("Back", "Index", "Sensors", null, new { @class = "btn btn-primary" })

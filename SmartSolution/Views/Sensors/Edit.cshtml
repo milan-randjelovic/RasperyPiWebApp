@@ -1,18 +1,18 @@
-﻿@model WebPortal.Models.Sensor
+﻿@using WebPortal.Models.Sensors
+@model ISensor
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewBag.Title = "Edit";
 }
 
-<h2>Edit</h2>
+<h2>@ViewBag.Title</h2>
 
 <h4>Sensor</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" asp-antiforgery="true">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-           
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
@@ -28,7 +28,7 @@
                 <input asp-for="Model" class="form-control" />
                 <span asp-validation-for="Model" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" hidden="hidden">
                 <label asp-for="Value" class="control-label"></label>
                 <input asp-for="Value" class="form-control" />
                 <span asp-validation-for="Value" class="text-danger"></span>
@@ -48,7 +48,7 @@
 </div>
 
 <div>
-   @Html.ActionLink("Back","Index","Sensors",null,new { @class="btn btn-primary" })
+    @Html.ActionLink("Back", "Index", "Sensors", null, new { @class = "btn btn-primary" })
 </div>
 
 @section Scripts {
