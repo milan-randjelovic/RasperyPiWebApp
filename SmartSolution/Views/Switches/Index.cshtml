@@ -13,22 +13,23 @@
         {
             if (modelItem.State == true)
             {
-
                 <div class="col-sm-4">
-                    <a href="Switches/Details/@modelItem.Id" class="tile green">
+                    <a href="#" class="tile green">
                         <h3 class="title">@modelItem.Name</h3>
                         <h5 class="title">@modelItem.SwitchType</h5>
                         <p>@modelItem.Id</p>
+                        <button id="@modelItem.Id" onclick="TurnOFFSwitch(this)" class="btn btn-default">OFF</button>
                     </a>
                 </div>
             }
             else
             {
                 <div class="col-sm-4">
-                    <a href="Switches/Details/@modelItem.Id" class="tile orange">
+                    <a href="#" class="tile orange">
                         <h3 class="title">@modelItem.Name</h3>
                         <h5 class="title">@modelItem.SwitchType</h5>
                         <p>@modelItem.Id</p>
+                        <button id="@modelItem.Id" onclick="TurnONSwitch(this)" class="btn btn-default">ON</button>
                     </a>
                 </div>
             }

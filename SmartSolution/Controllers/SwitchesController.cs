@@ -203,5 +203,47 @@ namespace WebPortal.Controllers
             return RedirectToAction("Index");
 
         }
+
+        /// <summary>
+        /// turn on switch
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult TurnON(string id)
+        {
+            try
+            {
+                SwitchesService.TurnON(id);
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = ex.Message;
+                return Redirect("Error");
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        /// <summary>
+        /// Turn off switch
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult TurnOFF(string id)
+        {
+            try
+            {
+                SwitchesService.TurnOFF(id);
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = ex.Message;
+                return Redirect("Error");
+            }
+
+            return RedirectToAction("Index");
+        }
     }
 }

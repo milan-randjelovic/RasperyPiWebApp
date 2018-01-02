@@ -22,13 +22,31 @@ namespace WebPortal.Services
             this.dbContext = client.GetDatabase("SmartSolution");
             this.mongoCollection = dbContext.GetCollection<Switch>("Switches");
             this.Switches = new List<Switch>();
-            this.RefreshConfiguration();
+            this.LoadConfiguration();
+        }
+
+        /// <summary>
+        /// Save configuration
+        /// </summary>
+        public void SaveConfiguration()
+        {
+            try
+            {
+                foreach (Switch sw in Switches)
+                {
+                    this.mongoCollection.FindOneAndReplace(s => s.Id == sw.Id, sw);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>
         /// Load switches configuration from databse
         /// </summary>
-        public void RefreshConfiguration()
+        public void LoadConfiguration()
         {
             try
             {
@@ -74,7 +92,23 @@ namespace WebPortal.Services
 
             try
             {
-                switchObj = this.mongoCollection.Find(sw => sw.Id == id).SingleOrDefault();
+                Switch s = this.mongoCollection.Find(sw => sw.Id == id).SingleOrDefault();
+                if (s.SwitchType == SwitchType.Mockup)
+                {
+                    MockupSwitch mockupSwitch = new MockupSwitch();
+                    mockupSwitch.DeviceType = s.DeviceType;
+                    mockupSwitch.Id = s.Id;
+                    mockupSwitch.IsActive = s.IsActive;
+                    mockupSwitch.Name = s.Name;
+                    mockupSwitch.RaspberryPinNumber = s.RaspberryPinNumber;
+                    mockupSwitch.State = s.State;
+                    mockupSwitch.SwitchType = s.SwitchType;
+                    switchObj=mockupSwitch;
+                }
+                else
+                {
+                    switchObj = s;
+                }
             }
             catch (Exception ex)
             {
@@ -93,7 +127,8 @@ namespace WebPortal.Services
             try
             {
                 this.mongoCollection.InsertOne(switchObject);
-                this.RefreshConfiguration();
+                this.SaveConfiguration();
+                this.LoadConfiguration();
             }
             catch (Exception ex)
             {
@@ -110,7 +145,8 @@ namespace WebPortal.Services
             try
             {
                 this.mongoCollection.FindOneAndReplace(sw => sw.Id == switchObject.Id, switchObject);
-                this.RefreshConfiguration();
+                this.SaveConfiguration();
+                this.LoadConfiguration();
             }
             catch (Exception ex)
             {
@@ -127,7 +163,8 @@ namespace WebPortal.Services
             try
             {
                 this.mongoCollection.FindOneAndDelete(sw => sw.Id == id);
-                this.RefreshConfiguration();
+                this.SaveConfiguration();
+                this.LoadConfiguration();
             }
             catch (Exception ex)
             {
@@ -139,8 +176,8 @@ namespace WebPortal.Services
         {
             try
             {
-                ISwitch switchObj = this.Find(id);
-                switchObj.TurnON();
+                this.Switches.Where(s=>s.Id== id).FirstOrDefault().TurnON();
+                this.SaveConfiguration();
             }
             catch (Exception ex)
             {
@@ -152,8 +189,8 @@ namespace WebPortal.Services
         { 
             try
             {
-                ISwitch switchObj = this.Find(id);
-                switchObj.TurnOFF();
+                this.Switches.Where(s => s.Id == id).FirstOrDefault().TurnOFF();
+                this.SaveConfiguration();
             }
             catch (Exception ex)
             {
