@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Driver;
 using WebPortal.Models.Switches;
 using WebPortal.Services;
 
@@ -10,29 +8,30 @@ namespace WebPortal.Controllers
 {
     public class SwitchesController : Controller
     {
-        private IMongoCollection<Switch> mongoCollection;
-        private static SwitchesService SwitchesService;
+        protected static SwitchesService SwitchesService { get; private set; }
 
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public SwitchesController()
         {
-            MongoClient client = new MongoClient("mongodb://SmartSolution:SmartSolution2017@35.160.134.78:19735/SmartSolution");
-            IMongoDatabase dbContext = client.GetDatabase("SmartSolution");
-            this.mongoCollection = dbContext.GetCollection<Switch>("Switches");
-
             if (SwitchesService == null)
             {
                 SwitchesService = new SwitchesService();
             }
         }
 
+        /// <summary>
+        /// Index page
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Index()
         {
             IEnumerable<ISwitch> switches;
 
             try
             {
-                switches = this.mongoCollection.Find(s => s.Id != "").ToList();
-                SwitchesService.Switches = switches;
+                switches = SwitchesService.Switches;
             }
             catch (Exception ex)
             {
@@ -43,13 +42,39 @@ namespace WebPortal.Controllers
             return View(switches);
         }
 
+        /// <summary>
+        /// Index page
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Configuration()
+        {
+            IEnumerable<ISwitch> switches;
+
+            try
+            {
+                switches = SwitchesService.Switches;
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = ex.Message;
+                return Redirect("Error");
+            }
+
+            return View(switches);
+        }
+
+        /// <summary>
+        /// Details page
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public IActionResult Details(string id)
         {
             ISwitch switchObj;
 
             try
             {
-                switchObj = mongoCollection.Find(sw => sw.Id == id).SingleOrDefault();
+                switchObj = SwitchesService.Find(id);
             }
             catch (Exception ex)
             {
@@ -60,18 +85,27 @@ namespace WebPortal.Controllers
             return View(switchObj);
         }
 
+        /// <summary>
+        /// Create new page
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Create()
         {
             return View();
         }
 
+        /// <summary>
+        /// Create switch 
+        /// </summary>
+        /// <param name="switchObject"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(Switch switchObject)
         {
             try
             {
-                this.mongoCollection.InsertOne(switchObject);
+                SwitchesService.CreateNew(switchObject);
             }
             catch (Exception ex)
             {
@@ -82,12 +116,17 @@ namespace WebPortal.Controllers
             return RedirectToAction("Index");
         }
 
+        /// <summary>
+        /// Edit page
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public IActionResult Edit(string id)
         {
             ISwitch switchObj;
             try
             {
-                switchObj = mongoCollection.Find(sw => sw.Id == id).SingleOrDefault();
+                switchObj = SwitchesService.Find(id);
             }
             catch (Exception ex)
             {
@@ -98,13 +137,18 @@ namespace WebPortal.Controllers
             return View(switchObj);
         }
 
+        /// <summary>
+        /// Edit switch
+        /// </summary>
+        /// <param name="switchObj"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Switch switchObj)
         {
             try
             {
-                mongoCollection.FindOneAndReplace(sw => sw.Id == switchObj.Id, switchObj);
+                SwitchesService.Update(switchObj);
             }
             catch (Exception ex)
             {
@@ -115,13 +159,18 @@ namespace WebPortal.Controllers
             return RedirectToAction("Index");
         }
 
+        /// <summary>
+        /// Delete page
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public IActionResult Delete(string id)
         {
             ISwitch switchObj;
 
             try
             {
-                switchObj = mongoCollection.Find(sw => sw.Id == id).SingleOrDefault();
+                switchObj = SwitchesService.Find(id);
             }
             catch (Exception ex)
             {
@@ -132,13 +181,18 @@ namespace WebPortal.Controllers
             return View(switchObj);
         }
 
+        /// <summary>
+        /// Delete switch
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteSwitch(string id)
         {
             try
             {
-                mongoCollection.FindOneAndDelete(sw => sw.Id == id);
+                SwitchesService.Delete(id);
             }
             catch (Exception ex)
             {

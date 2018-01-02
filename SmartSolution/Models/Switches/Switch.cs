@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using PiOfThings.GpioCore;
 using PiOfThings.GpioUtils;
 
 namespace WebPortal.Models.Switches
@@ -23,12 +25,32 @@ namespace WebPortal.Models.Switches
 
         public virtual void TurnON()
         {
-            this.State = true;
+            try
+            {
+                GpioManager raspberry = new GpioManager();
+                raspberry.SelectPin(this.RaspberryPinNumber);
+                raspberry.WriteToPin(GpioPinState.High);
+                this.State = true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public virtual void TurnOFF()
         {
-            this.State = false;
+            try
+            {
+                GpioManager raspberry = new GpioManager();
+                raspberry.SelectPin(this.RaspberryPinNumber);
+                raspberry.WriteToPin(GpioPinState.High);
+                this.State = false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 

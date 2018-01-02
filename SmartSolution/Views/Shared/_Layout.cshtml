@@ -8,6 +8,7 @@
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/css/Metro.css" />
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -31,8 +32,20 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li>@Html.ActionLink("Sensors", "Index", "Sensors")</li>
-                    <li>@Html.ActionLink("Switches", "Index", "Switches")</li>
+                    <li>
+                        @Html.ActionLink("Sensors", "Index", "Sensors")
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Switches <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                                @Html.ActionLink("Dashboard", "Index", "Switches", null, htmlAttributes: new { @class = "dropdown-item" })
+                            </li>
+                            <li>
+                                @Html.ActionLink("Configuration", "Configuration", "Switches", null, htmlAttributes: new { @class = "dropdown-item" })
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>
