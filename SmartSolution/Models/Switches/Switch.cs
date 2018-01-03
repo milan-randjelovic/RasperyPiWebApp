@@ -1,7 +1,5 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
-using System.Threading;
 using PiOfThings.GpioCore;
 using PiOfThings.GpioUtils;
 
@@ -34,10 +32,11 @@ namespace WebPortal.Models.Switches
                 raspberry.SelectPin(this.RaspberryPinNumber);
                 raspberry.WriteToPin(GpioPinState.High);
                 this.State = raspberry.ReadFromPin(this.RaspberryPinNumber) == GpioPinState.High ? true : false;
-                raspberry.ReleaseAll();
+                Console.WriteLine(raspberry.ReadFromPin(this.RaspberryPinNumber));
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 throw ex;
             }
         }
@@ -50,11 +49,12 @@ namespace WebPortal.Models.Switches
                 raspberry.ReleaseAll();
                 raspberry.SelectPin(this.RaspberryPinNumber);
                 raspberry.WriteToPin(GpioPinState.Low);
-                this.State = raspberry.ReadFromPin(this.RaspberryPinNumber) == GpioPinState.High ? true : false;
-                raspberry.ReleaseAll();
+                this.State = raspberry.ReadFromPin(this.RaspberryPinNumber) == GpioPinState.Low ? true : false;
+                Console.WriteLine(raspberry.ReadFromPin(this.RaspberryPinNumber));
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 throw ex;
             }
         }
