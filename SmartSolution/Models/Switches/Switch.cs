@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using PiOfThings.GpioCore;
 using PiOfThings.GpioUtils;
 
@@ -27,12 +28,12 @@ namespace WebPortal.Models.Switches
         {
             try
             {
-                GpioManager raspberry = new GpioManager();
-                raspberry.ReleaseAll();
-                raspberry.SelectPin(this.RaspberryPinNumber);
-                raspberry.WriteToPin(GpioPinState.High);
-                this.State = raspberry.ReadFromPin(this.RaspberryPinNumber) == GpioPinState.High ? true : false;
-                Console.WriteLine(raspberry.ReadFromPin(this.RaspberryPinNumber));
+                "sudo - i".Bash();
+                "echo \"17\" > /sys/class/gpio/export".Bash();
+                "echo \"out\" > /sys/class/gpio/gpio17/direction".Bash();
+                "echo \"1\" > /sys/class/gpio/gpio17/value".Bash();
+
+                this.State = true;
             }
             catch (Exception ex)
             {
@@ -45,18 +46,24 @@ namespace WebPortal.Models.Switches
         {
             try
             {
-                GpioManager raspberry = new GpioManager();
-                raspberry.ReleaseAll();
-                raspberry.SelectPin(this.RaspberryPinNumber);
-                raspberry.WriteToPin(GpioPinState.Low);
-                this.State = raspberry.ReadFromPin(this.RaspberryPinNumber) == GpioPinState.Low ? true : false;
-                Console.WriteLine(raspberry.ReadFromPin(this.RaspberryPinNumber));
+                "sudo - i".Bash();
+                "echo \"17\" > /sys/class/gpio/export".Bash();
+                "echo \"out\" > /sys/class/gpio/gpio17/direction".Bash();
+                "echo \"0\" > /sys/class/gpio/gpio17/value".Bash();
+
+                this.State = false;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 throw ex;
             }
+        }
+
+        public virtual void Block()
+        {
+            this.State = false;
+            this.IsActive = false;
         }
     }
 

@@ -5,74 +5,34 @@
     ViewBag.Title = "Sensors";
     int i = 1;
 }
+<h2>@ViewBag.Title</h2>
 
-<h2> @ViewBag.Title</h2>
-
-<div class="panel">
-    @Html.ActionLink("Create", "Create", "Sensors", null, new { @class = "btn btn-success" })
-</div>
-
-<table class="table table-responsible table-hover table-bordered">
-    <thead>
-        <tr>
-            <th>
-                #
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Vendor)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Model)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Value)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsActive)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Timestamp)
-            </th>
-            <th>
-                Actions
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
+<div class="container">
+    <div class="row">
+        @foreach (var modelItem in Model)
         {
-            <tr>
-                <td>
-                    @i.ToString()
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Vendor)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Model)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Value)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IsActive)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Timestamp)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", "Sensors", new { @item.Id }, new { @class = "btn btn-warning" })|
-                    @Html.ActionLink("Details", "Details", "Sensors", new { @item.Id }, new { @class = "btn btn-info" })|
-                    @Html.ActionLink("Delete", "Delete", "Sensors", new { @item.Id }, new { @class = "btn btn-danger" })
-                </td>
-            </tr>
-            i++;
+            if (modelItem.IsActive == true)
+            {
+                <div class="col-sm-4">
+                    <a href="#" class="tile green">
+                        <h3 class="title">@modelItem.Name</h3>
+                        <h3 class="title">@modelItem.Value</h3>
+                        <h5 class="title">@modelItem.SensorType</h5>
+                        <p>@modelItem.Id</p>
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div class="col-sm-4">
+                    <a href="#" class="tile orange">
+                        <h3 class="title">@modelItem.Name</h3>
+                        <h3 class="title">@modelItem.Value</h3>
+                        <h5 class="title">@modelItem.SensorType</h5>
+                        <p>@modelItem.Id</p>
+                    </a>
+                </div>
+            }
         }
-    </tbody>
-</table>
+    </div>
+</div>

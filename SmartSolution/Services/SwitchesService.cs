@@ -1,10 +1,7 @@
 ﻿using MongoDB.Driver;
-using PiOfThings.GpioCore;
-using PiOfThings.GpioUtils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using WebPortal.Models.Switches;
 
 namespace WebPortal.Services

@@ -4,18 +4,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using WebPortal.Models.Sensors;
+using WebPortal.Services;
 
 namespace WebPortal.Controllers
 {
     public class SensorsController : Controller
     {
-        IMongoCollection<Sensor> mongoCollection;
+        protected static SensorsService SensorsService { get; private set; }
 
         public SensorsController()
         {
-            MongoClient client = new MongoClient("mongodb://SmartSolution:SmartSolution2017@35.160.134.78:19735/SmartSolution");
-            IMongoDatabase dbContext = client.GetDatabase("SmartSolution");
-            this.mongoCollection = dbContext.GetCollection<Sensor>("Sensors");
+            if (SensorsService == null)
+            {
+                SensorsService = new SensorsService();
+            }
         }
 
         [HttpGet]
@@ -25,7 +27,25 @@ namespace WebPortal.Controllers
 
             try
             {
-                sensors = this.mongoCollection.Find(s => s.Id != "").ToList();
+                sensors = SensorsService.Sensors;
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = ex.Message;
+                return Redirect("Error");
+            }
+
+            return View(sensors);
+        }
+
+        [HttpGet]
+        public IActionResult Configuration()
+        {
+            IEnumerable<ISensor> sensors;
+
+            try
+            {
+                sensors = SensorsService.Sensors;
             }
             catch (Exception ex)
             {
@@ -43,7 +63,7 @@ namespace WebPortal.Controllers
 
             try
             {
-                sensor = mongoCollection.Find(sens => sens.Id == id).SingleOrDefault();
+                sensor = SensorsService.Find(id);
             }
             catch (Exception ex)
             {
@@ -66,7 +86,7 @@ namespace WebPortal.Controllers
         {
             try
             {
-                this.mongoCollection.InsertOne(sensor);
+                SensorsService.CreateNew(sensor);
             }
             catch (Exception ex)
             {
@@ -74,7 +94,7 @@ namespace WebPortal.Controllers
                 return Redirect("Error");
             }
 
-            return RedirectToAction("Index","Sensors");
+            return RedirectToAction("Index", "Sensors");
         }
 
         [HttpGet]
@@ -84,7 +104,7 @@ namespace WebPortal.Controllers
 
             try
             {
-                sensor = mongoCollection.Find(sens => sens.Id == id).SingleOrDefault();
+                sensor = SensorsService.Find(id);
             }
             catch (Exception ex)
             {
@@ -101,7 +121,7 @@ namespace WebPortal.Controllers
         {
             try
             {
-                this.mongoCollection.FindOneAndReplace((sens => sens.Id == sensor.Id), sensor);
+                SensorsService.Update(sensor);
             }
             catch (Exception ex)
             {
@@ -119,7 +139,7 @@ namespace WebPortal.Controllers
 
             try
             {
-                sensor = this.mongoCollection.Find(s => s.Id == id).SingleOrDefault();
+                sensor = SensorsService.Find(id);
             }
             catch (Exception ex)
             {
@@ -135,8 +155,7 @@ namespace WebPortal.Controllers
         {
             try
             {
-                this.mongoCollection.DeleteOne(s => s.Id == id);
-
+                SensorsService.Delete(id);
             }
             catch (Exception ex)
             {

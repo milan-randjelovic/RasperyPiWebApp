@@ -12,5 +12,6 @@ namespace WebPortal.Models.Switches
         bool IsActive { get; set; }
         void TurnON();
         void TurnOFF();
+        void Block();
     }
 }

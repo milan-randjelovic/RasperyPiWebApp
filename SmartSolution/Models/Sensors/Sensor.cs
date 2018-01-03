@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using WebPortal.Services;
 
 namespace WebPortal.Models.Sensors
 {
@@ -12,6 +13,8 @@ namespace WebPortal.Models.Sensors
         [DataType(DataType.Text)]
         [Required(AllowEmptyStrings = false)]
         public string Model { get; set; }
+
+        public SensorType SensorType { get; set; }
 
         [DataType(DataType.Text)]
         public string Value { get; set; }

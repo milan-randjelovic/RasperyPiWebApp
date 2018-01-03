@@ -1,0 +1,183 @@
+﻿using MongoDB.Driver;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using WebPortal.Models.Sensors;
+
+namespace WebPortal.Services
+{
+    public class SensorsService
+    {
+        private IMongoCollection<Sensor> mongoCollection;
+        private MongoClient client;
+        private IMongoDatabase dbContext;
+        public IEnumerable<ISensor> Sensors { get; protected set; }
+
+        public SensorsService()
+        {
+            this.client= new MongoClient("mongodb://SmartSolution:SmartSolution2017@35.160.134.78:19735/SmartSolution");
+            this.dbContext= client.GetDatabase("SmartSolution");
+            this.mongoCollection = dbContext.GetCollection<Sensor>("Sensors");
+            this.LoadConfiguration();
+        }
+
+        /// <summary>
+        /// Save configuration
+        /// </summary>
+        public void SaveConfiguration()
+        {
+            try
+            {
+                foreach (Sensor sensor in Sensors)
+                {
+                    this.mongoCollection.FindOneAndReplace(s => s.Id == sensor.Id, sensor);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// Load sensors configuration from databse
+        /// </summary>
+        public void LoadConfiguration()
+        {
+            try
+            {
+                List<Sensor> sensors = this.mongoCollection.Find(s => s.Id != "").ToList();
+                List<Sensor> result = new List<Sensor>();
+
+                foreach (Sensor s in sensors)
+                {
+                    if (s.SensorType == SensorType.Mockup)
+                    {
+                        MockupSensor mockupSensor = new MockupSensor();
+                        mockupSensor.DeviceType = s.DeviceType;
+                        mockupSensor.Id = s.Id;
+                        mockupSensor.IsActive = s.IsActive;
+                        mockupSensor.Model = s.Model;
+                        mockupSensor.Name = s.Name;
+                        mockupSensor.SensorType = s.SensorType;
+                        mockupSensor.Timestamp = s.Timestamp;
+                        mockupSensor.Value = s.Value;
+                        mockupSensor.Vendor = s.Vendor;
+                        result.Add(mockupSensor);
+                    }
+                    else
+                    {
+                        result.Add(s);
+                    }
+                }
+
+                this.Sensors = result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// Gets sensor by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ISensor Find(string id)
+        {
+            ISensor sensor;
+
+            try
+            {
+                Sensor s = this.mongoCollection.Find(sw => sw.Id == id).SingleOrDefault();
+                if (s.SensorType == SensorType.Mockup)
+                {
+
+                    MockupSensor mockupSensor = new MockupSensor();
+                    mockupSensor.DeviceType = s.DeviceType;
+                    mockupSensor.Id = s.Id;
+                    mockupSensor.IsActive = s.IsActive;
+                    mockupSensor.Model = s.Model;
+                    mockupSensor.Name = s.Name;
+                    mockupSensor.SensorType = s.SensorType;
+                    mockupSensor.Timestamp = s.Timestamp;
+                    mockupSensor.Value = s.Value;
+                    mockupSensor.Vendor = s.Vendor;
+                    sensor = mockupSensor;
+                }
+                else
+                {
+                    sensor = s;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return sensor;
+        }
+
+        /// <summary>
+        /// Create new sensor
+        /// </summary>
+        /// <param name="switchObject"></param>
+        public void CreateNew(Sensor sensor)
+        {
+            try
+            {
+                this.mongoCollection.InsertOne(sensor);
+                this.SaveConfiguration();
+                this.LoadConfiguration();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// Update sensor 
+        /// </summary>
+        /// <param name="switchObject"></param>
+        public void Update(Sensor sensor)
+        {
+            try
+            {
+                this.mongoCollection.FindOneAndReplace(s => s.Id == sensor.Id, sensor);
+                this.SaveConfiguration();
+                this.LoadConfiguration();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// Delete sensor
+        /// </summary>
+        /// <param name="id"></param>
+        public void Delete(string id)
+        {
+            try
+            {
+                this.mongoCollection.FindOneAndDelete(sw => sw.Id == id);
+                this.SaveConfiguration();
+                this.LoadConfiguration();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+    }
+
+    public enum SensorType
+    {
+        Regular,
+        Mockup
+    }
+}
