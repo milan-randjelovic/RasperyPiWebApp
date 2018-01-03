@@ -32,7 +32,7 @@ namespace WebPortal.Controllers
             catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
-                return Redirect("Error");
+                return RedirectToAction("Error", "Home", null);
             }
 
             return View(sensors);
@@ -50,7 +50,7 @@ namespace WebPortal.Controllers
             catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
-                return Redirect("Error");
+                return RedirectToAction("Error", "Home", null);
             }
 
             return View(sensors);
@@ -68,7 +68,7 @@ namespace WebPortal.Controllers
             catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
-                return Redirect("Error");
+                return RedirectToAction("Error", "Home", null);
             }
 
             return View(sensor);
@@ -91,7 +91,7 @@ namespace WebPortal.Controllers
             catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
-                return Redirect("Error");
+                return RedirectToAction("Error", "Home", null);
             }
 
             return RedirectToAction("Index", "Sensors");
@@ -109,7 +109,7 @@ namespace WebPortal.Controllers
             catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
-                return Redirect("Error");
+                return RedirectToAction("Error", "Home", null);
             }
 
             return View(sensor);
@@ -126,7 +126,7 @@ namespace WebPortal.Controllers
             catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
-                return Redirect("Error");
+                return RedirectToAction("Error", "Home", null);
             }
 
             return RedirectToAction("Index");
@@ -144,7 +144,7 @@ namespace WebPortal.Controllers
             catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
-                return Redirect("Error");
+                return RedirectToAction("Error", "Home", null);
             }
 
             return View(sensor);
@@ -160,7 +160,7 @@ namespace WebPortal.Controllers
             catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
-                return Redirect("Error");
+                return RedirectToAction("Error", "Home", null);
             }
 
             return RedirectToAction("Index");

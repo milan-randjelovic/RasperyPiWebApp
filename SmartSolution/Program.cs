@@ -8,8 +8,6 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using PiOfThings.GpioCore;
-using PiOfThings.GpioUtils;
 
 namespace WebPortal
 {

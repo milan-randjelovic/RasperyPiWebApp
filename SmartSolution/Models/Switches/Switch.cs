@@ -1,8 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
-using PiOfThings.GpioCore;
-using PiOfThings.GpioUtils;
+using RaspberryLib;
 
 namespace WebPortal.Models.Switches
 {
@@ -10,7 +8,7 @@ namespace WebPortal.Models.Switches
     {
         [DataType(DataType.Text)]
         [Required(AllowEmptyStrings = false)]
-        public GpioId RaspberryPinNumber { get; set; }
+        public PinCode RaspberryPinNumber { get; set; }
 
         [Required(AllowEmptyStrings = false)]
         public SwitchType SwitchType { get; set; }
@@ -19,7 +17,7 @@ namespace WebPortal.Models.Switches
 
         public Switch() : base()
         {
-            this.RaspberryPinNumber = GpioId.GPIOUnknown;
+            this.RaspberryPinNumber = PinCode.NONE;
             this.SwitchType = SwitchType.Regular;
             this.State = false;
         }
@@ -28,11 +26,8 @@ namespace WebPortal.Models.Switches
         {
             try
             {
-                "sudo - i".Bash();
-                "echo \"17\" > /sys/class/gpio/export".Bash();
-                "echo \"out\" > /sys/class/gpio/gpio17/direction".Bash();
-                "echo \"1\" > /sys/class/gpio/gpio17/value".Bash();
-
+                Raspberry r = new Raspberry();
+                r.WriteToPin(PinCode.PIN11_GPIO17, PinDirectiion.OUT, PinValue.HIGH);
                 this.State = true;
             }
             catch (Exception ex)
@@ -46,11 +41,8 @@ namespace WebPortal.Models.Switches
         {
             try
             {
-                "sudo - i".Bash();
-                "echo \"17\" > /sys/class/gpio/export".Bash();
-                "echo \"out\" > /sys/class/gpio/gpio17/direction".Bash();
-                "echo \"0\" > /sys/class/gpio/gpio17/value".Bash();
-
+                Raspberry r = new Raspberry();
+                r.WriteToPin(PinCode.PIN11_GPIO17, PinDirectiion.OUT, PinValue.LOW);
                 this.State = false;
             }
             catch (Exception ex)
@@ -58,12 +50,6 @@ namespace WebPortal.Models.Switches
                 Console.WriteLine(ex.Message);
                 throw ex;
             }
-        }
-
-        public virtual void Block()
-        {
-            this.State = false;
-            this.IsActive = false;
         }
     }
 

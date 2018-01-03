@@ -1,4 +1,4 @@
-﻿using PiOfThings.GpioUtils;
+﻿using RaspberryLib;
 
 namespace WebPortal.Models.Switches
 {
@@ -8,10 +8,9 @@ namespace WebPortal.Models.Switches
         string Name { get; set; }
         SwitchType SwitchType { get; set; }
         bool State { get; set; }
-        GpioId RaspberryPinNumber { get; set; }
+        PinCode RaspberryPinNumber { get; set; }
         bool IsActive { get; set; }
         void TurnON();
         void TurnOFF();
-        void Block();
     }
 }
