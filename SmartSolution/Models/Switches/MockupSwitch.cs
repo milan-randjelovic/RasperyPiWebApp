@@ -16,9 +16,9 @@ namespace WebPortal.Models.Switches
             this.timer.Start();
         }
 
-        public override void TurnOFF()
+        private void TimerRefresh(object sender, ElapsedEventArgs e)
         {
-            this.State = false;
+            this.State = !this.State;
         }
 
         public override void TurnON()
@@ -26,9 +26,9 @@ namespace WebPortal.Models.Switches
             this.State = true;
         }
 
-        private void TimerRefresh(object sender, ElapsedEventArgs e)
+        public override void TurnOFF()
         {
-            this.State = !this.State;
+            this.State = false;
         }
     }
 }

@@ -7,7 +7,7 @@ namespace WebPortal.Models.Switches
         string Id { get; set; }
         string Name { get; set; }
         SwitchType SwitchType { get; set; }
-        bool State { get; }
+        bool State { get; set; }
         GpioId RaspberryPinNumber { get; set; }
         bool IsActive { get; set; }
         void TurnON();

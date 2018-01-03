@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
+using System.Threading;
 using PiOfThings.GpioCore;
 using PiOfThings.GpioUtils;
 
@@ -28,9 +30,11 @@ namespace WebPortal.Models.Switches
             try
             {
                 GpioManager raspberry = new GpioManager();
+                raspberry.ReleaseAll();
                 raspberry.SelectPin(this.RaspberryPinNumber);
                 raspberry.WriteToPin(GpioPinState.High);
-                this.State = true;
+                this.State = raspberry.ReadFromPin(this.RaspberryPinNumber) == GpioPinState.High ? true : false;
+                raspberry.ReleaseAll();
             }
             catch (Exception ex)
             {
@@ -43,9 +47,11 @@ namespace WebPortal.Models.Switches
             try
             {
                 GpioManager raspberry = new GpioManager();
+                raspberry.ReleaseAll();
                 raspberry.SelectPin(this.RaspberryPinNumber);
-                raspberry.WriteToPin(GpioPinState.High);
-                this.State = false;
+                raspberry.WriteToPin(GpioPinState.Low);
+                this.State = raspberry.ReadFromPin(this.RaspberryPinNumber) == GpioPinState.High ? true : false;
+                raspberry.ReleaseAll();
             }
             catch (Exception ex)
             {

@@ -103,7 +103,7 @@ namespace WebPortal.Services
                     mockupSwitch.RaspberryPinNumber = s.RaspberryPinNumber;
                     mockupSwitch.State = s.State;
                     mockupSwitch.SwitchType = s.SwitchType;
-                    switchObj=mockupSwitch;
+                    switchObj = mockupSwitch;
                 }
                 else
                 {
@@ -176,7 +176,8 @@ namespace WebPortal.Services
         {
             try
             {
-                this.Switches.Where(s=>s.Id== id).FirstOrDefault().TurnON();
+                ISwitch sw = this.Switches.Where(s => s.Id == id).FirstOrDefault();
+                sw.TurnON();
                 this.SaveConfiguration();
             }
             catch (Exception ex)
@@ -186,10 +187,11 @@ namespace WebPortal.Services
         }
 
         public void TurnOFF(string id)
-        { 
+        {
             try
             {
-                this.Switches.Where(s => s.Id == id).FirstOrDefault().TurnOFF();
+                ISwitch sw = this.Switches.Where(s => s.Id == id).FirstOrDefault();
+                sw.TurnOFF();
                 this.SaveConfiguration();
             }
             catch (Exception ex)
