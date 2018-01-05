@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using RaspberryLib;
+using System;
 using WebPortal.Services;
 
 namespace WebPortal.Models.Sensors
@@ -10,11 +8,9 @@ namespace WebPortal.Models.Sensors
     {
         string Id { get; set; }
         string Name { get; set; }
-        string Vendor { get; set; }
-        string Model { get; set; }
         SensorType SensorType { get; set; }
         string Value { get; set; }
+        Pin RaspberryPin { get; set; }
         DateTime Timestamp { get; set; }
-        bool IsActive { get; set; }
     }
 }

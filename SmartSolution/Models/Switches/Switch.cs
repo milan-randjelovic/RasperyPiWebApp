@@ -1,6 +1,6 @@
-﻿using System;
+﻿using RaspberryLib;
+using System;
 using System.ComponentModel.DataAnnotations;
-using RaspberryLib;
 
 namespace WebPortal.Models.Switches
 {
@@ -8,7 +8,7 @@ namespace WebPortal.Models.Switches
     {
         [DataType(DataType.Text)]
         [Required(AllowEmptyStrings = false)]
-        public PinCode RaspberryPinNumber { get; set; }
+        public Pin RaspberryPin { get; set; }
 
         [Required(AllowEmptyStrings = false)]
         public SwitchType SwitchType { get; set; }
@@ -17,7 +17,7 @@ namespace WebPortal.Models.Switches
 
         public Switch() : base()
         {
-            this.RaspberryPinNumber = PinCode.NONE;
+            this.RaspberryPin = Pin.PIN1_3V3;
             this.SwitchType = SwitchType.Regular;
             this.State = false;
         }
@@ -26,8 +26,7 @@ namespace WebPortal.Models.Switches
         {
             try
             {
-                Raspberry r = new Raspberry();
-                r.WriteToPin(PinCode.PIN11_GPIO17, PinDirectiion.OUT, PinValue.HIGH);
+                Raspberry.WriteToPin(this.RaspberryPin, PinValue.High);
                 this.State = true;
             }
             catch (Exception ex)
@@ -41,8 +40,7 @@ namespace WebPortal.Models.Switches
         {
             try
             {
-                Raspberry r = new Raspberry();
-                r.WriteToPin(PinCode.PIN11_GPIO17, PinDirectiion.OUT, PinValue.LOW);
+                Raspberry.WriteToPin(this.RaspberryPin, PinValue.Low);
                 this.State = false;
             }
             catch (Exception ex)

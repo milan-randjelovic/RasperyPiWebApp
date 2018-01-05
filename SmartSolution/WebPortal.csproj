@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RaspberryLib\RaspberryLib.csproj" />
+    <ProjectReference Include="..\RaspberyLib\RaspberryLib.csproj" />
   </ItemGroup>
 
 </Project>

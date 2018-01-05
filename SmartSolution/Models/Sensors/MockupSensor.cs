@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Timers;
+using WebPortal.Services;
 
 namespace WebPortal.Models.Sensors
 {
@@ -9,6 +10,7 @@ namespace WebPortal.Models.Sensors
 
         public MockupSensor() : base()
         {
+            this.SensorType = SensorType.Mockup;
             this.timer = new Timer();
             this.timer.Interval = 1000;
             this.timer.Elapsed += TimerRefresh;

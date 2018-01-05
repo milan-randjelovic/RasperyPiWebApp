@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using WebPortal.Models.Switches;
+using RaspberryLib;
 
 namespace WebPortal.Services
 {
@@ -15,11 +16,23 @@ namespace WebPortal.Services
 
         public SwitchesService()
         {
+            if (Environment.OSVersion.Platform == PlatformID.Unix)
+            {
+                Raspberry.Initialize();
+            }
             this.client = new MongoClient("mongodb://SmartSolution:SmartSolution2017@35.160.134.78:19735/SmartSolution");
             this.dbContext = client.GetDatabase("SmartSolution");
             this.mongoCollection = dbContext.GetCollection<Switch>("Switches");
             this.Switches = new List<Switch>();
             this.LoadConfiguration();
+        }
+
+        ~SwitchesService()
+        {
+            if (Environment.OSVersion.Platform == PlatformID.Unix)
+            {
+                Raspberry.Dispose();
+            }
         }
 
         /// <summary>
@@ -57,9 +70,8 @@ namespace WebPortal.Services
                         MockupSwitch mockupSwitch = new MockupSwitch();
                         mockupSwitch.DeviceType = s.DeviceType;
                         mockupSwitch.Id = s.Id;
-                        mockupSwitch.IsActive = s.IsActive;
                         mockupSwitch.Name = s.Name;
-                        mockupSwitch.RaspberryPinNumber = s.RaspberryPinNumber;
+                        mockupSwitch.RaspberryPin = s.RaspberryPin;
                         mockupSwitch.State = s.State;
                         mockupSwitch.SwitchType = s.SwitchType;
                         result.Add(mockupSwitch);
@@ -95,9 +107,8 @@ namespace WebPortal.Services
                     MockupSwitch mockupSwitch = new MockupSwitch();
                     mockupSwitch.DeviceType = s.DeviceType;
                     mockupSwitch.Id = s.Id;
-                    mockupSwitch.IsActive = s.IsActive;
                     mockupSwitch.Name = s.Name;
-                    mockupSwitch.RaspberryPinNumber = s.RaspberryPinNumber;
+                    mockupSwitch.RaspberryPin = s.RaspberryPin;
                     mockupSwitch.State = s.State;
                     mockupSwitch.SwitchType = s.SwitchType;
                     switchObj = mockupSwitch;
@@ -141,7 +152,11 @@ namespace WebPortal.Services
         {
             try
             {
-                this.mongoCollection.FindOneAndReplace(sw => sw.Id == switchObject.Id, switchObject);
+                ISwitch s = this.Switches.Where(sw => sw.Id == switchObject.Id).SingleOrDefault();
+                s.Name = switchObject.Name;
+                s.RaspberryPin = switchObject.RaspberryPin;
+                s.State = switchObject.State;
+                s.SwitchType = switchObject.SwitchType;
                 this.SaveConfiguration();
                 this.LoadConfiguration();
             }

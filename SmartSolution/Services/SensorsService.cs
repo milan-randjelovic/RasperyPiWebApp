@@ -57,13 +57,10 @@ namespace WebPortal.Services
                         MockupSensor mockupSensor = new MockupSensor();
                         mockupSensor.DeviceType = s.DeviceType;
                         mockupSensor.Id = s.Id;
-                        mockupSensor.IsActive = s.IsActive;
-                        mockupSensor.Model = s.Model;
                         mockupSensor.Name = s.Name;
                         mockupSensor.SensorType = s.SensorType;
                         mockupSensor.Timestamp = s.Timestamp;
                         mockupSensor.Value = s.Value;
-                        mockupSensor.Vendor = s.Vendor;
                         result.Add(mockupSensor);
                     }
                     else
@@ -98,13 +95,10 @@ namespace WebPortal.Services
                     MockupSensor mockupSensor = new MockupSensor();
                     mockupSensor.DeviceType = s.DeviceType;
                     mockupSensor.Id = s.Id;
-                    mockupSensor.IsActive = s.IsActive;
-                    mockupSensor.Model = s.Model;
                     mockupSensor.Name = s.Name;
                     mockupSensor.SensorType = s.SensorType;
                     mockupSensor.Timestamp = s.Timestamp;
                     mockupSensor.Value = s.Value;
-                    mockupSensor.Vendor = s.Vendor;
                     sensor = mockupSensor;
                 }
                 else
@@ -146,7 +140,12 @@ namespace WebPortal.Services
         {
             try
             {
-                this.mongoCollection.FindOneAndReplace(s => s.Id == sensor.Id, sensor);
+                ISensor se = this.Sensors.Where(s => s.Id == sensor.Id).SingleOrDefault();
+                se.Name = sensor.Name;
+                se.RaspberryPin = sensor.RaspberryPin;
+                se.SensorType = sensor.SensorType;
+                se.Timestamp = sensor.Timestamp;
+                se.Value = sensor.Value;
                 this.SaveConfiguration();
                 this.LoadConfiguration();
             }
@@ -173,11 +172,5 @@ namespace WebPortal.Services
                 throw ex;
             }
         }
-    }
-
-    public enum SensorType
-    {
-        Regular,
-        Mockup
     }
 }

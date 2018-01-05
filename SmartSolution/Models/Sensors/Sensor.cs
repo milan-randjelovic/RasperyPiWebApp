@@ -1,6 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using WebPortal.Services;
+using RaspberryLib;
 
 namespace WebPortal.Models.Sensors
 {
@@ -8,11 +8,7 @@ namespace WebPortal.Models.Sensors
     {
         [DataType(DataType.Text)]
         [Required(AllowEmptyStrings = false)]
-        public string Vendor { get; set; }
-
-        [DataType(DataType.Text)]
-        [Required(AllowEmptyStrings = false)]
-        public string Model { get; set; }
+        public Pin RaspberryPin { get; set; }
 
         public SensorType SensorType { get; set; }
 
@@ -24,12 +20,16 @@ namespace WebPortal.Models.Sensors
 
         public Sensor() : base()
         {
-            this.Id = Guid.NewGuid().ToString();
-            this.Name = "";
+            this.RaspberryPin = Pin.PIN1_3V3;
+            this.SensorType = SensorType.Regular;
             this.Value = "";
             this.Timestamp = DateTime.Now;
-            this.Vendor = "";
-            this.Model = "";
         }
+    }
+
+    public enum SensorType
+    {
+        Regular,
+        Mockup
     }
 }

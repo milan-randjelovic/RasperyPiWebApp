@@ -11,7 +11,7 @@
     <div class="row">
         @foreach (var modelItem in Model)
         {
-            if (modelItem.IsActive == true)
+            if (modelItem.Value != "")
             {
                 <div class="col-sm-4">
                     <a href="#" class="tile green">

@@ -1,8 +1,13 @@
 ﻿@using WebPortal.Models.Sensors
+@using RaspberryLib;
 @model ISensor
 
 @{
     ViewBag.Title = "Edit";
+    var raspberryPins = Enum.GetNames(typeof(Pin));
+    SelectList raspberryPinsList = new SelectList(raspberryPins);
+    var sensorTypes = Enum.GetNames(typeof(SensorType));
+    SelectList sensorTypesList = new SelectList(sensorTypes);
 }
 
 <h2>@ViewBag.Title</h2>
@@ -19,26 +24,17 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Vendor" class="control-label"></label>
-                <input asp-for="Vendor" class="form-control" />
-                <span asp-validation-for="Vendor" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Model" class="control-label"></label>
-                <input asp-for="Model" class="form-control" />
-                <span asp-validation-for="Model" class="text-danger"></span>
+                <label asp-for="SensorType" class="control-label"></label>
+                <div>
+                    @Html.DropDownList("SensorType", sensorTypesList, "Select Sensor Type")
+                </div>
+                <input asp-for="SensorType" hidden="hidden" />
+                <span asp-validation-for="SensorType" class="text-danger"></span>
             </div>
             <div class="form-group" hidden="hidden">
                 <label asp-for="Value" class="control-label"></label>
                 <input asp-for="Value" class="form-control" />
                 <span asp-validation-for="Value" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <input asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
-                    </label>
-                </div>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-success" />
