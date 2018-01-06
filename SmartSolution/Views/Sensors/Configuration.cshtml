@@ -22,6 +22,12 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.SensorType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RaspberryPin)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Value)
             </th>
             <th>
@@ -35,25 +41,31 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @i.ToString()
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Value)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Timestamp)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", "Sensors", new { @item.Id }, new { @class = "btn btn-warning" })|
-                    @Html.ActionLink("Details", "Details", "Sensors", new { @item.Id }, new { @class = "btn btn-info" })|
-                    @Html.ActionLink("Delete", "Delete", "Sensors", new { @item.Id }, new { @class = "btn btn-danger" })
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @i.ToString()
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SensorType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RaspberryPin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Value)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Timestamp)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", "Sensors", new { @item.Id }, new { @class = "btn btn-warning" })|
+                @Html.ActionLink("Details", "Details", "Sensors", new { @item.Id }, new { @class = "btn btn-info" })|
+                @Html.ActionLink("Delete", "Delete", "Sensors", new { @item.Id }, new { @class = "btn btn-danger" })
+            </td>
+        </tr>
             i++;
         }
     </tbody>

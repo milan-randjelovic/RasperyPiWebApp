@@ -20,8 +20,8 @@ namespace WebPortal.Services
             {
                 Raspberry.Initialize();
             }
-            this.client = new MongoClient("mongodb://SmartSolution:SmartSolution2017@35.160.134.78:19735/SmartSolution");
-            this.dbContext = client.GetDatabase("SmartSolution");
+            this.client = new MongoClient(Configuration.DatabaseConnection);
+            this.dbContext = client.GetDatabase(Configuration.DatabaseName);
             this.mongoCollection = dbContext.GetCollection<Switch>("Switches");
             this.Switches = new List<Switch>();
             this.LoadConfiguration();

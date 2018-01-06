@@ -18,12 +18,6 @@ namespace RaspberryLib
             Unexport(Pin.PIN11_GPIO_17);
         }
 
-        public static void WriteToPin(Pin pin, PinValue pinValue)
-        {
-            SetDirection(pin, PinDirection.Out);
-            SetValue(pin, pinValue);
-        }
-
         private static void Export(Pin pin)
         {
             try
@@ -37,7 +31,7 @@ namespace RaspberryLib
             }
         }
 
-        private static void SetDirection(Pin pin, PinDirection pinDirection)
+        public static void SetPinDirection(Pin pin, PinDirection pinDirection)
         {
             try
             {
@@ -60,7 +54,7 @@ namespace RaspberryLib
             }
         }
 
-        private static void SetValue(Pin pin, PinValue pinValue)
+        public static void SetPinValue(Pin pin, PinValue pinValue)
         {
             try
             {
@@ -81,6 +75,29 @@ namespace RaspberryLib
             {
                 throw ex;
             }
+        }
+
+        public static PinValue GetPinValue(Pin pin)
+        {
+            PinValue result = PinValue.Low;
+            try
+            {
+                string pinAddress = pin.ToString().Split('_').Last().Replace("0", "");
+                double value = double.Parse(("cat /sys/class/gpio/gpio" + pinAddress + "/value").Bash());
+                if (value > 0)
+                {
+                    result = PinValue.High;
+                }
+                else
+                {
+                    result = PinValue.Low;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
         }
 
         private static void Unexport(Pin pin)

@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using RaspberryLib;
 
 namespace RaspberyTest
@@ -9,14 +10,33 @@ namespace RaspberyTest
         {
             Raspberry.Initialize();
 
-            Raspberry.WriteToPin(Pin.PIN11_GPIO_17, PinValue.High);
+            PinValue pinValue = PinValue.Low;
+
+            Raspberry.SetPinDirection(Pin.PIN11_GPIO_17, PinDirection.Out);
+            pinValue = Raspberry.GetPinValue(Pin.PIN11_GPIO_17);
+            Console.WriteLine(Pin.PIN11_GPIO_17.ToString() + ":" + pinValue.ToString());
             Thread.Sleep(1000);
-            Raspberry.WriteToPin(Pin.PIN11_GPIO_17, PinValue.Low);
+
+            Raspberry.SetPinValue(Pin.PIN11_GPIO_17, PinValue.High);
+            pinValue = Raspberry.GetPinValue(Pin.PIN11_GPIO_17);
+            Console.WriteLine(Pin.PIN11_GPIO_17.ToString() + ":" + pinValue.ToString());
             Thread.Sleep(1000);
-            Raspberry.WriteToPin(Pin.PIN11_GPIO_17, PinValue.High);
+
+            Raspberry.SetPinValue(Pin.PIN11_GPIO_17, PinValue.Low);
+            pinValue = Raspberry.GetPinValue(Pin.PIN11_GPIO_17);
+            Console.WriteLine(Pin.PIN11_GPIO_17.ToString() + ":" + pinValue.ToString());
             Thread.Sleep(1000);
-            Raspberry.WriteToPin(Pin.PIN11_GPIO_17, PinValue.Low);
+
+            Raspberry.SetPinValue(Pin.PIN11_GPIO_17, PinValue.High);
+            pinValue = Raspberry.GetPinValue(Pin.PIN11_GPIO_17);
+            Console.WriteLine(Pin.PIN11_GPIO_17.ToString() + ":" + pinValue.ToString());
             Thread.Sleep(1000);
+
+            Raspberry.SetPinValue(Pin.PIN11_GPIO_17, PinValue.Low);
+            pinValue = Raspberry.GetPinValue(Pin.PIN11_GPIO_17);
+            Console.WriteLine(Pin.PIN11_GPIO_17.ToString() + ":" + pinValue.ToString());
+            Thread.Sleep(1000);
+
             Raspberry.Dispose();
         }
     }

@@ -26,8 +26,10 @@ namespace WebPortal.Models.Switches
         {
             try
             {
-                Raspberry.WriteToPin(this.RaspberryPin, PinValue.High);
-                this.State = true;
+                Raspberry.SetPinDirection(this.RaspberryPin, PinDirection.Out);
+                Raspberry.SetPinValue(this.RaspberryPin, PinValue.High);
+                PinValue pinValue = Raspberry.GetPinValue(this.RaspberryPin);
+                this.State = (int)pinValue > 0;
             }
             catch (Exception ex)
             {
@@ -40,8 +42,10 @@ namespace WebPortal.Models.Switches
         {
             try
             {
-                Raspberry.WriteToPin(this.RaspberryPin, PinValue.Low);
-                this.State = false;
+                Raspberry.SetPinDirection(this.RaspberryPin, PinDirection.Out);
+                Raspberry.SetPinValue(this.RaspberryPin, PinValue.Low);
+                PinValue pinValue = Raspberry.GetPinValue(this.RaspberryPin);
+                this.State = (int)pinValue > 0;
             }
             catch (Exception ex)
             {

@@ -31,11 +31,19 @@
                 <input asp-for="SensorType" hidden="hidden" />
                 <span asp-validation-for="SensorType" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="RaspberryPin" class="control-label"></label>
+                <div>
+                    @Html.DropDownList("RaspberryPin", raspberryPinsList, "Select Pin")
+                </div>
+                <input asp-for="RaspberryPin" hidden="hidden" />
+                <span asp-validation-for="RaspberryPin" class="text-danger"></span>
+            </div>
             <div class="form-group" hidden="hidden">
                 <label asp-for="Value" class="control-label"></label>
                 <input asp-for="Value" class="form-control" />
                 <span asp-validation-for="Value" class="text-danger"></span>
-            </div>     
+            </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-success" />
             </div>

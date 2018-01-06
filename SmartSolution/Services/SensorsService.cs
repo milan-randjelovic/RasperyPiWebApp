@@ -1,4 +1,5 @@
 ﻿using MongoDB.Driver;
+using RaspberryLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +17,22 @@ namespace WebPortal.Services
 
         public SensorsService()
         {
-            this.client= new MongoClient("mongodb://SmartSolution:SmartSolution2017@35.160.134.78:19735/SmartSolution");
-            this.dbContext= client.GetDatabase("SmartSolution");
+            if (Environment.OSVersion.Platform == PlatformID.Unix)
+            {
+                Raspberry.Initialize();
+            }
+            this.client= new MongoClient(Configuration.DatabaseConnection);
+            this.dbContext= client.GetDatabase(Configuration.DatabaseName);
             this.mongoCollection = dbContext.GetCollection<Sensor>("Sensors");
             this.LoadConfiguration();
+        }
+
+        ~SensorsService()
+        {
+            if (Environment.OSVersion.Platform == PlatformID.Unix)
+            {
+                Raspberry.Dispose();
+            }
         }
 
         /// <summary>
