@@ -8,7 +8,7 @@ namespace WebPortal.Models.Sensors
     {
         [DataType(DataType.Text)]
         [Required(AllowEmptyStrings = false)]
-        public Pin RaspberryPin { get; set; }
+        public PinCode RaspberryPin { get; set; }
 
         public SensorType SensorType { get; set; }
 
@@ -20,7 +20,7 @@ namespace WebPortal.Models.Sensors
 
         public Sensor() : base()
         {
-            this.RaspberryPin = Pin.PIN1_3V3;
+            this.RaspberryPin = PinCode.PIN1_3V3;
             this.SensorType = SensorType.Regular;
             this.Value = "";
             this.Timestamp = DateTime.Now;

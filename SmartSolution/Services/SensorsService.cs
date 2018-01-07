@@ -3,7 +3,6 @@ using RaspberryLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using WebPortal.Models.Sensors;
 
 namespace WebPortal.Services
@@ -17,10 +16,7 @@ namespace WebPortal.Services
 
         public SensorsService()
         {
-            if (Environment.OSVersion.Platform == PlatformID.Unix)
-            {
-                Raspberry.Initialize();
-            }
+            Raspberry.Initialize();
             this.client= new MongoClient(Configuration.DatabaseConnection);
             this.dbContext= client.GetDatabase(Configuration.DatabaseName);
             this.mongoCollection = dbContext.GetCollection<Sensor>("Sensors");
@@ -29,10 +25,7 @@ namespace WebPortal.Services
 
         ~SensorsService()
         {
-            if (Environment.OSVersion.Platform == PlatformID.Unix)
-            {
-                Raspberry.Dispose();
-            }
+            Raspberry.Dispose();
         }
 
         /// <summary>

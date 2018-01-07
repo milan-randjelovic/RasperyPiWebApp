@@ -13,11 +13,11 @@ namespace WebPortal
             {
                 if (Environment.OSVersion.Platform == PlatformID.Unix)
                 {
-                    return "mongodb://SmartSolution:SmartSolution2017@localhost:19735/SmartSolution";
+                    //return "mongodb://SmartSolution:SmartSolution2017@localhost:19735/SmartSolution";
+                    return "mongodb://SmartSolution:SmartSolution2017@35.160.134.78:19735/SmartSolution";
                 }
                 else
                 {
-                    //return "mongodb://SmartSolution:SmartSolution2017@localhost:19735/SmartSolution";
                     return "mongodb://SmartSolution:SmartSolution2017@35.160.134.78:19735/SmartSolution";
                 }
             }

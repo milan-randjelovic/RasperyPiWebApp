@@ -12,7 +12,7 @@
         Low = 0
     }
 
-    public enum Pin
+    public enum PinCode
     {
         PIN1_3V3 = 1,
         PIN2_5V = 2,
@@ -54,5 +54,12 @@
         PIN38_GPIO_20 = 38,
         PIN39_GND = 39,
         PIN40_GPIO_21 = 40,
+    }
+
+    public enum PinType
+    {
+        GPIO,
+        GND,
+        POWER
     }
 }

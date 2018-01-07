@@ -4,7 +4,7 @@
 
 @{
     ViewBag.Title = "Edit";
-    var raspberryPins = Enum.GetNames(typeof(Pin));
+    var raspberryPins = Enum.GetNames(typeof(PinCode));
     SelectList raspberryPinsList = new SelectList(raspberryPins);
     var sensorTypes = Enum.GetNames(typeof(SensorType));
     SelectList sensorTypesList = new SelectList(sensorTypes);

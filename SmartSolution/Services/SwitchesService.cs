@@ -16,10 +16,7 @@ namespace WebPortal.Services
 
         public SwitchesService()
         {
-            if (Environment.OSVersion.Platform == PlatformID.Unix)
-            {
-                Raspberry.Initialize();
-            }
+            Raspberry.Initialize();
             this.client = new MongoClient(Configuration.DatabaseConnection);
             this.dbContext = client.GetDatabase(Configuration.DatabaseName);
             this.mongoCollection = dbContext.GetCollection<Switch>("Switches");
@@ -29,10 +26,7 @@ namespace WebPortal.Services
 
         ~SwitchesService()
         {
-            if (Environment.OSVersion.Platform == PlatformID.Unix)
-            {
-                Raspberry.Dispose();
-            }
+            Raspberry.Dispose();
         }
 
         /// <summary>

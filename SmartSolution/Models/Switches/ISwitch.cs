@@ -8,7 +8,7 @@ namespace WebPortal.Models.Switches
         string Name { get; set; }
         SwitchType SwitchType { get; set; }
         bool State { get; set; }
-        Pin RaspberryPin { get; set; }
+        PinCode RaspberryPin { get; set; }
         void TurnON();
         void TurnOFF();
     }

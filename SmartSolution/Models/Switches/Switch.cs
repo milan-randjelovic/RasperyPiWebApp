@@ -8,7 +8,7 @@ namespace WebPortal.Models.Switches
     {
         [DataType(DataType.Text)]
         [Required(AllowEmptyStrings = false)]
-        public Pin RaspberryPin { get; set; }
+        public PinCode RaspberryPin { get; set; }
 
         [Required(AllowEmptyStrings = false)]
         public SwitchType SwitchType { get; set; }
@@ -17,7 +17,7 @@ namespace WebPortal.Models.Switches
 
         public Switch() : base()
         {
-            this.RaspberryPin = Pin.PIN1_3V3;
+            this.RaspberryPin = PinCode.PIN1_3V3;
             this.SwitchType = SwitchType.Regular;
             this.State = false;
         }

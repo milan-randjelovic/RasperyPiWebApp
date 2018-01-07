@@ -10,7 +10,7 @@ namespace WebPortal.Models.Sensors
         string Name { get; set; }
         SensorType SensorType { get; set; }
         string Value { get; set; }
-        Pin RaspberryPin { get; set; }
+        PinCode RaspberryPin { get; set; }
         DateTime Timestamp { get; set; }
     }
 }
