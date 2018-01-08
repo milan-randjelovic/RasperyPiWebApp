@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using WebPortal.Models.Switches;
 using WebPortal.Services;
@@ -205,7 +206,7 @@ namespace WebPortal.Controllers
         }
 
         /// <summary>
-        /// turn on switch
+        /// Turn on switch
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -244,6 +245,44 @@ namespace WebPortal.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        /// <summary>
+        /// Turn on shwitch async
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult TurnONAsync(string id)
+        {
+            try
+            {
+                SwitchesService.TurnON(id);
+                return Ok(id);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.OK, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Turn off shwitch async
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult TurnoFFAsync(string id)
+        {
+            try
+            {
+                SwitchesService.TurnOFF(id);
+                return Ok(id);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.ServiceUnavailable, ex.Message);
+            }
         }
     }
 }
