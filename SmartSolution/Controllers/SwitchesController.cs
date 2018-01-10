@@ -262,7 +262,7 @@ namespace WebPortal.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode((int)HttpStatusCode.OK, ex.Message);
+                return StatusCode((int)HttpStatusCode.ServiceUnavailable, ex.Message);
             }
         }
 
