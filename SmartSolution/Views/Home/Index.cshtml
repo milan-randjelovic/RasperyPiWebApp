@@ -1,6 +1,38 @@
-﻿@{
+﻿@using RaspberryLib
+@{
     ViewData["Title"] = "Smart solution";
 }
+@{
+    ViewBag.Title = "Raspberry";
+    var raspberryPins = Enum.GetValues(typeof(PinCode));
+    int i = 1;
+}
+<h2>@ViewBag.Title</h2>
 
 @*TO DO:Make raspbery layout*@
+<div class="flex-container">
+    @{
+        i = 1;
+        @foreach (RaspberryLib.PinCode pin in raspberryPins)
+        {
+            if (i <= 20)
+            {
+                <div>
+                    <label>@EnumeratorHelpers.GetGPIOName(pin)</label>
+                    <div class="pin">@i</div>
+                </div>
+            }
+            else
+            {
+                <div>
+
+                    <div class="pin">@i</div>
+                    <label>@EnumeratorHelpers.GetGPIOName(pin)</label>
+                </div>
+            }
+            i++;
+        }
+    }
+</div>
+
 

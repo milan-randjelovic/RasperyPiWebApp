@@ -1,5 +1,20 @@
 ﻿namespace RaspberryLib
 {
+    public class EnumeratorHelpers
+    {
+        public static string GetGPIOName(PinCode pinCode)
+        {
+            string result = "";
+            string[] parts = pinCode.ToString().Split('_');
+            parts[0] = "";
+            for (int i = 0; i < parts.Length; i++)
+            {
+                result += parts[i];
+            }
+            return result;
+        }
+    }
+
     public enum PinDirection
     {
         In = 1,

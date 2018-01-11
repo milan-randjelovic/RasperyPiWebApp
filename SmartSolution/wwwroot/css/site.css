@@ -33,3 +33,39 @@
         display: none;
     }
 }
+
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: lightseagreen;
+    width: 100%;
+    max-height: 1000px;
+    margin: auto;
+    padding: 2%;
+}
+
+    .flex-container > div {
+        background-color: transparent;
+        width: 48px;
+        height: 48px;
+        text-align: center;
+        color: whitesmoke;
+        margin-bottom: 35px;
+        margin-right: 5px;
+    }
+
+.pin {
+    background-color: deepskyblue;
+    margin: auto;
+    text-align: center;
+    line-height: 50px;
+    color: white;
+    border-radius: 30%;
+    border-style: dashed;
+    border-width: thin;
+}
+
+.flex-container > div > label {
+    line-height: 10px;
+    font-size: 10px;
+}
