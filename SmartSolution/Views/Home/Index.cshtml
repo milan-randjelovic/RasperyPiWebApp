@@ -19,15 +19,31 @@
             {
                 <div>
                     <label>@EnumeratorHelpers.GetGPIOName(pin)</label>
-                    <div class="pin">@i</div>
+                    <div 
+                         id="@pin.ToString()" 
+                         class="pin"
+                         data-toggle="popover" 
+                         data-placement="bottom"
+                         title="@EnumeratorHelpers.GetGPIOName(pin)" 
+                         data-trigger="hover"  
+                         data-content="Some content inside the popover"  
+                         >@i
+                    </div>
                 </div>
             }
             else
             {
                 <div>
 
-                    <div class="pin">@i</div>
-                    <label>@EnumeratorHelpers.GetGPIOName(pin)</label>
+                    <div id="@pin.ToString()"
+                         class="pin"
+                         data-toggle="popover"
+                         data-placement="bottom"
+                         title="@EnumeratorHelpers.GetGPIOName(pin)"
+                         data-trigger="hover"
+                         data-content="Some content inside the popover">
+                        @i
+                    </div>                    <label>@EnumeratorHelpers.GetGPIOName(pin)</label>
                 </div>
             }
             i++;

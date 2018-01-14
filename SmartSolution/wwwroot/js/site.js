@@ -1,6 +1,8 @@
-﻿function TurnONSwitch(switchButton) {
+﻿$(document).ready(function () {
+    $('[data-toggle="popover"]').popover();
+});
 
-    //window.location = "/Switches/TurnON/" + switchObj.id;
+function TurnONSwitch(switchButton) {
 
     $.ajax({
         url: "/Switches/TurnONAsync/",
@@ -13,18 +15,16 @@
             var button = switchObject.children("#" + data);
             button.html("OFF");
             button.attr("onclick", "TurnOFFSwitch(this)");
-            console.log("ON")
+            console.log("ON");
         },
         error: function (status) {
-            console.log("Error")
+            console.log("Error");
         }
     }
     );
 }
 
 function TurnOFFSwitch(switchButton) {
-
-    //window.location = "/Switches/TurnOFF/" + switchObj.id;
 
     $.ajax({
         url: "/Switches/TurnOFFAsync/",
@@ -37,11 +37,12 @@ function TurnOFFSwitch(switchButton) {
             var button = switchObject.children("#" + data);
             button.html("ON");
             button.attr("onclick", "TurnONSwitch(this)");
-            console.log("OFF")
+            console.log("OFF");
         },
         error: function (status) {
-            console.log("Error")
+            console.log("Error");
         }
     }
     );
 }
+

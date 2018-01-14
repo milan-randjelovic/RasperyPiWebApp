@@ -65,7 +65,25 @@
     border-width: thin;
 }
 
+.pin:hover {
+    background-color: darkcyan;
+    margin: auto;
+    text-align: center;
+    line-height: 50px;
+    color: white;
+    border-radius: 30%;
+    border-style: dashed;
+    border-width: thin;
+}
+
 .flex-container > div > label {
     line-height: 10px;
     font-size: 10px;
+}
+
+.popup {
+    display: none;
+    width: 300px;
+    height: 200px;
+    background-color: violet;
 }
