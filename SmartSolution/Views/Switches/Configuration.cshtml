@@ -28,8 +28,12 @@
                 @Html.DisplayNameFor(model => model.RaspberryPin)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.InverseLogic)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.State)
             </th>
+
             <th>
                 Actions
             </th>
@@ -52,8 +56,12 @@
                 @Html.DisplayFor(modelItem => item.RaspberryPin)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.InverseLogic)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.State)
             </td>
+
             <td>
                 @Html.ActionLink("Edit", "Edit", new { item.Id }, new { @class = "btn btn-warning" }) |
                 @Html.ActionLink("Details", "Details", new { item.Id }, new { @class = "btn btn-info" }) |
