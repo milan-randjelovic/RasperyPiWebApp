@@ -42,7 +42,7 @@
     max-height: 1000px;
     margin: auto;
     padding: 2%;
-    border-radius:10px;
+    border-radius: 10px;
 }
 
     .flex-container > div {
@@ -66,16 +66,61 @@
     border-width: thin;
 }
 
-.pin:hover {
-    background-color: darkcyan;
-    margin: auto;
-    text-align: center;
-    line-height: 50px;
-    color: white;
-    border-radius: 30%;
-    border-style: dashed;
-    border-width: thin;
+.GPIO {
+    background-color: lightgreen;
 }
+
+    .GPIO:hover {
+        background-color: green;
+    }
+
+.I2C {
+    background-color: deepskyblue;
+}
+
+    .I2C:hover {
+        background-color: blue;
+    }
+
+.UART {
+    background-color: mediumpurple;
+}
+
+    .UART:hover {
+        background-color: purple;
+    }
+
+.SPI {
+    background-color: pink;
+}
+
+    .SPI:hover {
+        background-color: deeppink;
+    }
+
+.V5 {
+    background-color: lightcoral;
+}
+
+    .V5:hover {
+        background-color: red;
+    }
+
+.V3 {
+    background-color: sandybrown;
+}
+
+    .V3:hover {
+        background-color: saddlebrown;
+    }
+
+.GND {
+    background-color: darkgray;
+}
+
+    .GND:hover {
+        background-color: black;
+    }
 
 .flex-container > div > label {
     line-height: 10px;

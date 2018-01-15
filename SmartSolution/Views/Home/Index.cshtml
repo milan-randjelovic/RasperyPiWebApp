@@ -14,40 +14,35 @@
 <div class="flex-container">
     @{
         i = 1;
-        @foreach (RaspberryLib.PinCode pin in raspberryPins)
+        @for (i = 2; i <= 40; i = i + 2)
         {
-            if (i <= 20)
-            {
-                <div>
-                    <label>@EnumeratorHelpers.GetGPIOName(pin)</label>
-                    <div 
-                         id="@pin.ToString()" 
-                         class="pin"
-                         data-toggle="popover" 
-                         data-placement="bottom"
-                         title="@EnumeratorHelpers.GetGPIOName(pin)" 
-                         data-trigger="hover"  
-                         data-content="Some content inside the popover"  
-                         >@i
-                    </div>
+            <div>
+                <label>@EnumeratorHelpers.GetGPIOName((PinCode)i)</label>
+                <div id="@((PinCode)i).ToString()"
+                     class="pin @EnumeratorHelpers.GetGPIOGroup((PinCode)i)"
+                     data-toggle="popover"
+                     data-placement="bottom"
+                     title="@EnumeratorHelpers.GetGPIOName((PinCode)i)"
+                     data-trigger="hover"
+                     data-content="Some content inside the popover">
+                    @i
                 </div>
-            }
-            else
-            {
-                <div>
-
-                    <div id="@pin.ToString()"
-                         class="pin"
-                         data-toggle="popover"
-                         data-placement="bottom"
-                         title="@EnumeratorHelpers.GetGPIOName(pin)"
-                         data-trigger="hover"
-                         data-content="Some content inside the popover">
-                        @i
-                    </div>                    <label>@EnumeratorHelpers.GetGPIOName(pin)</label>
-                </div>
-            }
-            i++;
+            </div>
+        }
+        @for (i = 1; i <= 40; i = i + 2)
+        {
+            <div>
+                <div id="@((PinCode)i).ToString()"
+                     class="pin @EnumeratorHelpers.GetGPIOGroup((PinCode)i)"
+                     data-toggle="popover"
+                     data-placement="bottom"
+                     title="@EnumeratorHelpers.GetGPIOName((PinCode)i)"
+                     data-trigger="hover"
+                     data-content="Some content inside the popover">
+                    @i
+                </div>         
+                <label>@EnumeratorHelpers.GetGPIOName((PinCode)i)</label>
+            </div>
         }
     }
 </div>

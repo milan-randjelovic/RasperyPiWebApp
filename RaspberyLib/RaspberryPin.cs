@@ -11,11 +11,12 @@ namespace RaspberryLib
         public PinValue PinValue { get; set; }
         public bool Initialized { get; set; }
         public PinType PinType { get; }
-
+        public PinGroup PinGroup { get; set; }
         public Pin(PinCode pinCode)
         {
             this.PinCode = pinCode;
-            
+            this.PinGroup = EnumeratorHelpers.GetGPIOGroup(pinCode);
+
             if (pinCode.ToString().Contains("GPIO"))
             {
                 this.PinType = PinType.GPIO;
@@ -30,13 +31,19 @@ namespace RaspberryLib
                 this.PinValue = PinValue.Low;
             }
             else
-            if (pinCode.ToString().Contains("3V") || pinCode.ToString().Contains("5V"))
+            if (pinCode.ToString().Contains("3V"))
+            {
+                this.PinType = PinType.POWER;
+                this.PinDirection = PinDirection.Out;
+                this.PinValue = PinValue.High;
+            }
+            else
+            if (pinCode.ToString().Contains("5V"))
             {
                 this.PinType = PinType.POWER;
                 this.PinDirection = PinDirection.Out;
                 this.PinValue = PinValue.High;
             }
         }
-
     }
 }
