@@ -1,5 +1,13 @@
 ﻿$(document).ready(function () {
     $('[data-toggle="popover"]').popover();
+    $('[data-toggle="popover"]').on('shown.bs.popover', function (object) {
+        var popover = object.currentTarget.nextSibling;
+        var cssClass = object.currentTarget.classList[1];
+        $(popover).addClass(cssClass);
+        for (i = 0; i < popover.childNodes.length; i++) {
+            $(popover.childNodes[i]).addClass(cssClass);
+        }
+    })
 });
 
 function TurnONSwitch(switchButton) {
@@ -45,4 +53,3 @@ function TurnOFFSwitch(switchButton) {
     }
     );
 }
-

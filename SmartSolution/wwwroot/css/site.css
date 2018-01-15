@@ -55,6 +55,21 @@
         margin-right: 5px;
     }
 
+        .flex-container > div > label {
+            line-height: 10px;
+            font-size: 10px;
+        }
+
+/*Pins popup*/
+.popup {
+    display: none;
+    width: 300px;
+    height: 200px;
+    background-color: red;
+    color: red;
+}
+
+/*Pins*/
 .pin {
     background-color: deepskyblue;
     margin: auto;
@@ -121,15 +136,3 @@
     .GND:hover {
         background-color: black;
     }
-
-.flex-container > div > label {
-    line-height: 10px;
-    font-size: 10px;
-}
-
-.popup {
-    display: none;
-    width: 300px;
-    height: 200px;
-    background-color: violet;
-}
