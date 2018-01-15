@@ -37,11 +37,18 @@
             @Html.DisplayFor(model => model.RaspberryPin)
         </dd>
         <dt>
+            @Html.DisplayNameFor(model => model.InverseLogic)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.InverseLogic)
+        </dd>
+        <dt>
             @Html.DisplayNameFor(model => model.State)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.State)
         </dd>
+
     </dl>
 
     @using (Html.BeginForm("DeleteSwitch", "Switches", new { Model.Id }))

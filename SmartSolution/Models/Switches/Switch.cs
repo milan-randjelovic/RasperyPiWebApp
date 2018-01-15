@@ -15,11 +15,14 @@ namespace WebPortal.Models.Switches
 
         public bool State { get; set; }
 
+        public bool InverseLogic { get; set; }
+
         public Switch() : base()
         {
             this.RaspberryPin = PinCode.PIN1_3V3;
             this.SwitchType = SwitchType.Regular;
             this.State = false;
+            this.InverseLogic = false;
         }
 
         public virtual void TurnON()
