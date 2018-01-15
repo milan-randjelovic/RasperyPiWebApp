@@ -68,6 +68,7 @@ namespace WebPortal.Services
                         mockupSwitch.RaspberryPin = s.RaspberryPin;
                         mockupSwitch.State = s.State;
                         mockupSwitch.SwitchType = s.SwitchType;
+                        mockupSwitch.InverseLogic = s.InverseLogic;
                         result.Add(mockupSwitch);
                     }
                     else
