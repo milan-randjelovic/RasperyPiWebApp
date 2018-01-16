@@ -3,6 +3,7 @@ using RaspberryLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Timers;
 using WebPortal.Models.Sensors;
 
 namespace WebPortal.Services
@@ -10,9 +11,12 @@ namespace WebPortal.Services
     public class SensorsService
     {
         private IMongoCollection<Sensor> mongoCollection;
+        private IMongoCollection<SensorLog> logCollection;
         private MongoClient client;
         private IMongoDatabase dbContext;
         public IEnumerable<ISensor> Sensors { get; protected set; }
+        private Timer timer;
+        double timerInterval = 2000;
 
         public SensorsService()
         {
@@ -20,7 +24,27 @@ namespace WebPortal.Services
             this.client= new MongoClient(Configuration.DatabaseConnection);
             this.dbContext= client.GetDatabase(Configuration.DatabaseName);
             this.mongoCollection = dbContext.GetCollection<Sensor>("Sensors");
+            this.logCollection = dbContext.GetCollection<SensorLog>("SensorsLog");
             this.LoadConfiguration();
+            if (this.timer == null) {
+                this.timer = new Timer(timerInterval);
+                this.timer.Start();
+                this.timer.Elapsed += LogSensorData;
+            }
+        }
+
+        private void LogSensorData(object sender, ElapsedEventArgs e)
+        {
+            try
+            {
+                foreach (Sensor sens in Sensors) {
+                    SensorLog sensorLog = new SensorLog(sens);
+                    this.logCollection.InsertOne(sensorLog);
+                }
+            }
+            catch (Exception ex) {
+                throw ex;
+            }
         }
 
         ~SensorsService()
