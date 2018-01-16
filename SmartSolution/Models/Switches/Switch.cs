@@ -29,10 +29,22 @@ namespace WebPortal.Models.Switches
         {
             try
             {
-                Raspberry.SetPinDirection(this.RaspberryPin, PinDirection.Out);
-                Raspberry.SetPinValue(this.RaspberryPin, PinValue.High);
-                PinValue pinValue = Raspberry.GetPinValue(this.RaspberryPin);
-                this.State = (int)pinValue > 0;
+                if (this.InverseLogic == false)
+                {
+                    Raspberry.SetPinDirection(this.RaspberryPin, PinDirection.Out);
+                    Raspberry.SetPinValue(this.RaspberryPin, PinValue.High);
+                    PinValue pinValue = Raspberry.GetPinValue(this.RaspberryPin);
+                    this.State = (int)pinValue > 0;
+                }
+                else
+                {
+                    Raspberry.SetPinDirection(this.RaspberryPin, PinDirection.Out);
+                    Raspberry.SetPinValue(this.RaspberryPin, PinValue.Low);
+                    PinValue pinValue = Raspberry.GetPinValue(this.RaspberryPin);
+                    this.State = (int)pinValue > 0;
+                    this.State = !State;
+                }
+
             }
             catch (Exception ex)
             {
@@ -45,10 +57,21 @@ namespace WebPortal.Models.Switches
         {
             try
             {
-                Raspberry.SetPinDirection(this.RaspberryPin, PinDirection.Out);
-                Raspberry.SetPinValue(this.RaspberryPin, PinValue.Low);
-                PinValue pinValue = Raspberry.GetPinValue(this.RaspberryPin);
-                this.State = (int)pinValue > 0;
+                if (this.InverseLogic == false)
+                {
+                    Raspberry.SetPinDirection(this.RaspberryPin, PinDirection.Out);
+                    Raspberry.SetPinValue(this.RaspberryPin, PinValue.Low);
+                    PinValue pinValue = Raspberry.GetPinValue(this.RaspberryPin);
+                    this.State = (int)pinValue > 0;
+                }
+                else
+                {
+                    Raspberry.SetPinDirection(this.RaspberryPin, PinDirection.Out);
+                    Raspberry.SetPinValue(this.RaspberryPin, PinValue.High);
+                    PinValue pinValue = Raspberry.GetPinValue(this.RaspberryPin);
+                    this.State = (int)pinValue > 0;
+                    this.State = !State;
+                }
             }
             catch (Exception ex)
             {

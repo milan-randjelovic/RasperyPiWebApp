@@ -150,6 +150,7 @@ namespace WebPortal.Services
                 ISwitch s = this.Switches.Where(sw => sw.Id == switchObject.Id).SingleOrDefault();
                 s.Name = switchObject.Name;
                 s.RaspberryPin = switchObject.RaspberryPin;
+                s.InverseLogic = switchObject.InverseLogic;
                 s.State = switchObject.State;
                 s.SwitchType = switchObject.SwitchType;
                 this.SaveConfiguration();
