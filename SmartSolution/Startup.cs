@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WebPortal.Services;
 
 namespace WebPortal
 {
@@ -22,6 +23,8 @@ namespace WebPortal
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddSingleton(new SwitchesService());
+            services.AddSingleton(new SensorsService());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

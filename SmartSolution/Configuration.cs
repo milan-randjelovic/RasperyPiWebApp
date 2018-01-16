@@ -22,7 +22,6 @@ namespace WebPortal
                 }
             }
         }
-
         public static string DatabaseName
         {
             get
@@ -37,7 +36,34 @@ namespace WebPortal
                 }
             }
         }
-
+        public static string SensorsCollection
+        {
+            get
+            {
+                return "Sensors";
+            }
+        }
+        public static string SensorsLogCollection
+        {
+            get
+            {
+                return "SensorsLog";
+            }
+        }
+        public static string SwitchesCollection
+        {
+            get
+            {
+                return "Switches";
+            }
+        }
+        public static string SwitchesLogCollection
+        {
+            get
+            {
+                return "SwitchesLog";
+            }
+        }
         public static int LogInterval
         {
             get

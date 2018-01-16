@@ -12,8 +12,10 @@ namespace WebPortal.Controllers
     {
         protected static SensorsService SensorsService { get; private set; }
 
-        public SensorsController()
+        public SensorsController(SensorsService sensorsService)
         {
+            SensorsService = sensorsService;
+
             if (SensorsService == null)
             {
                 SensorsService = new SensorsService();

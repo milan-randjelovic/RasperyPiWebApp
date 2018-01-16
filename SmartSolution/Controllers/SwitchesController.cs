@@ -14,8 +14,10 @@ namespace WebPortal.Controllers
         /// <summary>
         /// Default constructor
         /// </summary>
-        public SwitchesController()
+        public SwitchesController(SwitchesService switchesService)
         {
+            SwitchesService = switchesService;
+
             if (SwitchesService == null)
             {
                 SwitchesService = new SwitchesService();
@@ -241,7 +243,7 @@ namespace WebPortal.Controllers
             catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
-                return RedirectToAction("Error","Home",null);
+                return RedirectToAction("Error", "Home", null);
             }
 
             return RedirectToAction("Index");
