@@ -34,6 +34,11 @@
     }
 }
 
+/*Popover arrow background fix*/
+.popover > .arrow {
+    background-color: transparent;
+}
+
 .flex-container {
     display: flex;
     flex-wrap: wrap;

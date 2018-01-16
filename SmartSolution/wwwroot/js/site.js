@@ -1,5 +1,6 @@
 ﻿$(document).ready(function () {
     $('[data-toggle="popover"]').popover();
+    //paint popover
     $('[data-toggle="popover"]').on('shown.bs.popover', function (object) {
         var popover = object.currentTarget.nextSibling;
         var cssClass = object.currentTarget.classList[1];
