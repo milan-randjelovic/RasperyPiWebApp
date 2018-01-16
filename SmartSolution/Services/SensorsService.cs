@@ -30,11 +30,11 @@ namespace WebPortal.Services
             {
                 this.timer = new Timer(Configuration.LogInterval);
                 this.timer.Start();
-                this.timer.Elapsed += LogSensorData;
+                this.timer.Elapsed += LogSensorsData;
             }
         }
 
-        private void LogSensorData(object sender, ElapsedEventArgs e)
+        private void LogSensorsData(object sender, ElapsedEventArgs e)
         {
             try
             {

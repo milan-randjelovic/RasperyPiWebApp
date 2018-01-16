@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using WebPortal.Models.Switches;
 using RaspberryLib;
+using System.Timers;
 
 namespace WebPortal.Services
 {
@@ -12,7 +13,10 @@ namespace WebPortal.Services
         private MongoClient client;
         private IMongoDatabase dbContext;
         private IMongoCollection<Switch> mongoCollection;
+        private IMongoCollection<SwitchLog> logCollection;
         public IEnumerable<ISwitch> Switches { get; protected set; }
+        private Timer timer;
+        public double timerInterval = 2000;
 
         public SwitchesService()
         {
@@ -20,8 +24,28 @@ namespace WebPortal.Services
             this.client = new MongoClient(Configuration.DatabaseConnection);
             this.dbContext = client.GetDatabase(Configuration.DatabaseName);
             this.mongoCollection = dbContext.GetCollection<Switch>("Switches");
-            this.Switches = new List<Switch>();
+            this.logCollection = dbContext.GetCollection<SwitchLog>("SwitchesLog");
+            this.Switches = new List<Switch>();          
             this.LoadConfiguration();
+            if (this.timer == null) {
+                this.timer = new Timer(timerInterval);
+                this.timer.Start();
+                this.timer.Elapsed += LoggSwitchesData;
+            }
+        }
+
+        private void LoggSwitchesData(object sender, ElapsedEventArgs e)
+        {
+            try
+            {
+                foreach (Switch sw in Switches) {
+                    SwitchLog switchLog = new SwitchLog(sw);
+                    this.logCollection.InsertOne(switchLog);
+                }
+            }
+            catch (Exception ex) {
+                throw ex;
+            }
         }
 
         ~SwitchesService()
