@@ -16,7 +16,6 @@ namespace WebPortal.Services
         private IMongoCollection<SwitchLog> logCollection;
         public IEnumerable<ISwitch> Switches { get; protected set; }
         private Timer timer;
-        public double timerInterval = 2000;
 
         public SwitchesService()
         {
@@ -25,10 +24,11 @@ namespace WebPortal.Services
             this.dbContext = client.GetDatabase(Configuration.DatabaseName);
             this.mongoCollection = dbContext.GetCollection<Switch>("Switches");
             this.logCollection = dbContext.GetCollection<SwitchLog>("SwitchesLog");
-            this.Switches = new List<Switch>();          
+            this.Switches = new List<Switch>();
             this.LoadConfiguration();
-            if (this.timer == null) {
-                this.timer = new Timer(timerInterval);
+            if (this.timer == null)
+            {
+                this.timer = new Timer(Configuration.LogInterval);
                 this.timer.Start();
                 this.timer.Elapsed += LoggSwitchesData;
             }
@@ -38,12 +38,14 @@ namespace WebPortal.Services
         {
             try
             {
-                foreach (Switch sw in Switches) {
+                foreach (Switch sw in Switches)
+                {
                     SwitchLog switchLog = new SwitchLog(sw);
                     this.logCollection.InsertOne(switchLog);
                 }
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 throw ex;
             }
         }
