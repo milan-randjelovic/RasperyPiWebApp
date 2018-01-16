@@ -37,5 +37,13 @@ namespace WebPortal
                 }
             }
         }
+
+        public static int LogInterval
+        {
+            get
+            {
+                return 1000;
+            }
+        }
     }
 }

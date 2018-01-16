@@ -14,20 +14,21 @@ namespace WebPortal.Services
         private IMongoCollection<SensorLog> logCollection;
         private MongoClient client;
         private IMongoDatabase dbContext;
-        public IEnumerable<ISensor> Sensors { get; protected set; }
         private Timer timer;
-        double timerInterval = 2000;
+
+        public IEnumerable<ISensor> Sensors { get; protected set; }
 
         public SensorsService()
         {
             Raspberry.Initialize();
-            this.client= new MongoClient(Configuration.DatabaseConnection);
-            this.dbContext= client.GetDatabase(Configuration.DatabaseName);
+            this.client = new MongoClient(Configuration.DatabaseConnection);
+            this.dbContext = client.GetDatabase(Configuration.DatabaseName);
             this.mongoCollection = dbContext.GetCollection<Sensor>("Sensors");
             this.logCollection = dbContext.GetCollection<SensorLog>("SensorsLog");
             this.LoadConfiguration();
-            if (this.timer == null) {
-                this.timer = new Timer(timerInterval);
+            if (this.timer == null)
+            {
+                this.timer = new Timer(Configuration.LogInterval);
                 this.timer.Start();
                 this.timer.Elapsed += LogSensorData;
             }
@@ -37,12 +38,14 @@ namespace WebPortal.Services
         {
             try
             {
-                foreach (Sensor sens in Sensors) {
+                foreach (Sensor sens in Sensors)
+                {
                     SensorLog sensorLog = new SensorLog(sens);
                     this.logCollection.InsertOne(sensorLog);
                 }
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 throw ex;
             }
         }
