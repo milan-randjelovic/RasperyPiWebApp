@@ -205,5 +205,31 @@ namespace WebPortal.Services
                 throw ex;
             }
         }
+
+
+        /// <summary>
+        /// Create test sensors in database
+        /// </summary>
+        /// <param name="numOfSensors"> User define this(maximum is 20)</param>
+        public void CreateTestSensors(int numOfSensors) {
+            if (numOfSensors > 20) {
+                numOfSensors = 20;
+            } 
+
+            try
+            {
+                for (int i = 0; i < numOfSensors; i++) {
+                    MockupSensor mockupSensor = new MockupSensor();
+                    mockupSensor.Name = "TestSensor";
+                    mongoCollection.InsertOne(mockupSensor);
+                }
+                this.SaveConfiguration();
+                this.LoadConfiguration();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

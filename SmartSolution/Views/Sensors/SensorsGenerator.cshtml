@@ -1,0 +1,19 @@
+﻿@model Int32
+@{
+    ViewData["Title"] = "SensorGenerator";
+}
+
+<div>
+    <h2 style="font-family:'Segoe UI';"> Sensors generator </h2>
+</div>
+
+@using (Html.BeginForm("SensorsGenerator", "Sensors", new { Model }))
+{
+    @Html.AntiForgeryToken()
+<input type="number" name="TestSensors" value="" />
+    <input type="submit" value="Create" class="btn btn-danger" />
+}
+
+<div>
+    @Html.ActionLink("Back", "Index", "Sensors", null, new { @class = "btn btn-primary" })
+</div>

@@ -167,5 +167,10 @@ namespace WebPortal.Controllers
 
             return RedirectToAction("Index");
         }
+
+        [HttpGet]
+        public IActionResult SensorsGenerator() {
+            return View();
+        }
     }
 }
