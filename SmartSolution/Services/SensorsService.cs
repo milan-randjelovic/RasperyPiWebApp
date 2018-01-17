@@ -211,10 +211,15 @@ namespace WebPortal.Services
         /// Create test sensors in database
         /// </summary>
         /// <param name="numOfSensors"> User define this(maximum is 20)</param>
-        public void CreateTestSensors(int numOfSensors) {
+        public void GenerateTestSensors(int numOfSensors) {
             if (numOfSensors > 20) {
                 numOfSensors = 20;
-            } 
+            }
+            if (numOfSensors < 0)
+            {
+                numOfSensors = 0;
+            }
+
 
             try
             {

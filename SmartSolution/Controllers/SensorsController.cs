@@ -172,5 +172,21 @@ namespace WebPortal.Controllers
         public IActionResult SensorsGenerator() {
             return View();
         }
+
+        [HttpPost]
+        public IActionResult SensorsGenerator(int numOfSens) {
+            try
+            {
+                SensorsService.GenerateTestSensors(numOfSens);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = ex.Message;
+                return RedirectToAction("Error");
+            }
+
+
+        }
     }
 }

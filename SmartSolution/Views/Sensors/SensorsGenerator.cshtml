@@ -6,14 +6,20 @@
 <div>
     <h2 style="font-family:'Segoe UI';"> Sensors generator </h2>
 </div>
-
+<br />
+<div>
+    <p>Input number of test sensors that you want to create and generate them automatically.</p>
+    <p>Maximum number of sensors that can be created like this at once is 20!</p>
+</div>
 @using (Html.BeginForm("SensorsGenerator", "Sensors", new { Model }))
 {
     @Html.AntiForgeryToken()
-<input type="number" name="TestSensors" value="" />
+<input type="number" name="numOfSens" value=""/>
+    <br />
     <input type="submit" value="Generate" class="btn btn-danger" />
 }
-
+<br />
+<br />
 <div>
     @Html.ActionLink("Back", "Index", "Sensors", null, new { @class = "btn btn-primary" })
 </div>
