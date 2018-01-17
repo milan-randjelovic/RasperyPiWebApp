@@ -14,11 +14,14 @@
 @using (Html.BeginForm("SensorsGenerator", "Sensors", new { Model }))
 {
     @Html.AntiForgeryToken()
-<input type="number" name="numOfSens" value=""/>
+    <input type="number" name="numOfSens" value="" />
     <br />
     <input type="submit" value="Generate" class="btn btn-danger" />
 }
 <br />
+<div>
+    @Html.ActionLink("Delete mockups", "DeleteMockupSensors", "Sensors", null, new { @class = "btn btn-danger" })
+</div>
 <br />
 <div>
     @Html.ActionLink("Back", "Index", "Sensors", null, new { @class = "btn btn-primary" })

@@ -1,0 +1,12 @@
+﻿
+@{
+    ViewData["Title"] = "DeleteMockupSensors";
+}
+
+<h2>Delete mockup sensors</h2>
+<br />
+<p> Are you sure you want to delete all mockup sensors? </p>
+
+@Html.ActionLink("Delete", "DeleteAllMockupSensors", "Sensors", null, new { @class = "btn btn-danger" })
+<br />
+@Html.ActionLink("Back", "Index", "Sensors", null, new { @class = "btn btn-success" })

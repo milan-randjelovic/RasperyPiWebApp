@@ -188,5 +188,26 @@ namespace WebPortal.Controllers
 
 
         }
+
+        [HttpGet]
+        public IActionResult DeleteMockupSensors() {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult DeleteAllMockupSensors() {
+            try
+            {
+                SensorsService.DeleteMockupSensors();
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = ex.Message;
+                return RedirectToAction("Error");
+            }
+        }
+
+
     }
 }

@@ -234,5 +234,20 @@ namespace WebPortal.Services
                 throw ex;
             }
         }
+
+        /// <summary>
+        /// Delete all mockup sensors from db. It will not delete logs for them!
+        /// </summary>
+        public void DeleteMockupSensors() {
+            try
+            {
+                this.mongoCollection.DeleteMany(sens => sens.SensorType == SensorType.Mockup);                
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
     }
 }

@@ -1,0 +1,12 @@
+﻿
+@{
+    ViewData["Title"] = "DeleteMockupSwitches";
+}
+
+<h2>Delete mockup switches</h2>
+<br />
+<p> Are you sure you want to delete all mockup switches? </p>
+
+@Html.ActionLink("Delete", "DeleteAllMockupSwitches", "Switches",null,new { @class="btn btn-danger"})
+<br />
+@Html.ActionLink("Back","Index","Switches",null,new { @class="btn btn-success"})

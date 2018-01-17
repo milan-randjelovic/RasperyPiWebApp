@@ -261,5 +261,21 @@ namespace WebPortal.Services
                 throw ex;
             }
         }
+
+        /// <summary>
+        /// Delete all mockup switches from db. It will not delete logs for them!
+        /// </summary>
+        public void DeleteMockupSwitches()
+        {
+            try
+            {
+                this.mongoCollection.DeleteMany(sw =>sw.SwitchType == SwitchType.Mockup);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
     }
 }

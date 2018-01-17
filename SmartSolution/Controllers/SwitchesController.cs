@@ -305,5 +305,23 @@ namespace WebPortal.Controllers
                 return RedirectToAction("Error");
             }
         }
+
+        [HttpGet]
+        public IActionResult DeleteMockupSwitches() {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult DeleteAllMockupSwitches() {
+            try
+            {
+                SwitchesService.DeleteMockupSwitches();
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex) {
+                TempData["Error"] = ex.Message;
+                return RedirectToAction("Error");
+            }
+        }
     }
 }
