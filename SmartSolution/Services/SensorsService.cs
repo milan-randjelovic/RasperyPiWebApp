@@ -206,7 +206,6 @@ namespace WebPortal.Services
             }
         }
 
-
         /// <summary>
         /// Create test sensors in database
         /// </summary>
@@ -219,7 +218,6 @@ namespace WebPortal.Services
             {
                 numOfSensors = 0;
             }
-
 
             try
             {

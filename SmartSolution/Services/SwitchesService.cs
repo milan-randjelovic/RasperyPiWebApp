@@ -233,5 +233,33 @@ namespace WebPortal.Services
                 throw ex;
             }
         }
+
+        public void GenerateTestSwitches(int numOfSwitches)
+        {
+            if (numOfSwitches > 20)
+            {
+                numOfSwitches = 20;
+            }
+            if (numOfSwitches < 0)
+            {
+                numOfSwitches = 0;
+            }
+
+            try
+            {
+                for (int i = 0; i < numOfSwitches; i++)
+                {
+                    MockupSwitch mockupSwitch = new MockupSwitch();
+                    mockupSwitch.Name = "TestSensor";
+                    mongoCollection.InsertOne(mockupSwitch);
+                }
+                this.SaveConfiguration();
+                this.LoadConfiguration();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

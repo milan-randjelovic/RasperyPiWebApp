@@ -286,5 +286,24 @@ namespace WebPortal.Controllers
                 return StatusCode((int)HttpStatusCode.ServiceUnavailable, ex.Message);
             }
         }
+
+        [HttpGet]
+        public IActionResult SwitchesGenerator() {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult SwitchesGenerator(int numOfSwitches) {
+            try
+            {
+                SwitchesService.GenerateTestSwitches(numOfSwitches);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = ex.Message;
+                return RedirectToAction("Error");
+            }
+        }
     }
 }

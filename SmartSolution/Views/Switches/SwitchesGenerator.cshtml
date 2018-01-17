@@ -1,0 +1,21 @@
+﻿@model Int32
+@{
+    ViewData["Title"] = "SwitchesGenerator";
+}
+
+<h2>SwitchesGenerator</h2>
+<div>
+    <p>Input number of test switches that you want to create and generate them automatically.</p>
+    <p>Maximum number of switches that can be created like this at once is 20!</p>
+</div>
+@using (Html.BeginForm("SwitchesGenerator", "Switches", new { Model }))
+{
+    @Html.AntiForgeryToken()
+    <input type="number" name="numOfSwitches" value="0" />
+    <br />
+    <input type="submit" value="Generate" class="btn btn-danger" />
+}
+<br />
+    <div>
+        @Html.ActionLink("Back", "Index", "Switches", null, new { @class = "btn btn-primary" })
+    </div>
