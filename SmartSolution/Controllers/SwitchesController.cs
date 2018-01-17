@@ -77,7 +77,7 @@ namespace WebPortal.Controllers
 
             try
             {
-                switchObj = SwitchesService.Find(id);
+                switchObj = SwitchesService.GetSwitchFromDatabase(id);
             }
             catch (Exception ex)
             {
@@ -129,7 +129,7 @@ namespace WebPortal.Controllers
             ISwitch switchObj;
             try
             {
-                switchObj = SwitchesService.Find(id);
+                switchObj = SwitchesService.GetSwitchFromDatabase(id);
             }
             catch (Exception ex)
             {
@@ -173,7 +173,7 @@ namespace WebPortal.Controllers
 
             try
             {
-                switchObj = SwitchesService.Find(id);
+                switchObj = SwitchesService.GetSwitchFromDatabase(id);
             }
             catch (Exception ex)
             {

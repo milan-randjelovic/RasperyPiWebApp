@@ -1,13 +1,38 @@
 ﻿$(document).ready(function () {
     $('[data-toggle="popover"]').popover();
-    //paint popover
+
+    //show popover
     $('[data-toggle="popover"]').on('shown.bs.popover', function (object) {
+
+        //paint popup
         var popover = object.currentTarget.nextSibling;
         var cssClass = object.currentTarget.classList[1];
         $(popover).addClass(cssClass);
         for (i = 0; i < popover.childNodes.length; i++) {
             $(popover.childNodes[i]).addClass(cssClass);
         }
+        $('.popover-content').html("Loading data...");
+
+        //get data for pin
+        var pinId = object.currentTarget.id;
+        $.ajax({
+            url: "/Home/GetPinData/",
+            data: { pinCode: pinId },
+            dataType: "text",
+            success: function (data, status) {
+                if (data != "null") {
+                    $('.popover-content').html(data);
+                }
+                else {
+                    $('.popover-content').html("No data available");
+                }
+                console.log("Success");
+            },
+            error: function (status) {
+                console.log("Error");
+            }
+        }
+        );
     })
 });
 

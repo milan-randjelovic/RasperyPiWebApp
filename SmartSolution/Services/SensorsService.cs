@@ -111,39 +111,51 @@ namespace WebPortal.Services
         }
 
         /// <summary>
-        /// Gets sensor by id
+        /// Gets sensor from databse by id
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ISensor Find(string id)
+        public ISensor GetSensorFromDatabase(string id)
         {
             ISensor sensor;
 
             try
             {
                 Sensor s = this.mongoCollection.Find(sw => sw.Id == id).SingleOrDefault();
-                if (s.SensorType == SensorType.Mockup)
-                {
 
-                    MockupSensor mockupSensor = new MockupSensor();
-                    mockupSensor.DeviceType = s.DeviceType;
-                    mockupSensor.Id = s.Id;
-                    mockupSensor.Name = s.Name;
-                    mockupSensor.SensorType = s.SensorType;
-                    mockupSensor.Timestamp = s.Timestamp;
-                    mockupSensor.Value = s.Value;
-                    sensor = mockupSensor;
-                }
-                else
+                if (s != null)
                 {
-                    sensor = s;
+                    if (s.SensorType == SensorType.Mockup)
+                    {
+
+                        MockupSensor mockupSensor = new MockupSensor();
+                        mockupSensor.DeviceType = s.DeviceType;
+                        mockupSensor.Id = s.Id;
+                        mockupSensor.Name = s.Name;
+                        mockupSensor.SensorType = s.SensorType;
+                        mockupSensor.Timestamp = s.Timestamp;
+                        mockupSensor.Value = s.Value;
+                        sensor = mockupSensor;
+                    }
                 }
+
+                sensor = s;
             }
             catch (Exception ex)
             {
                 throw ex;
             }
 
+            return sensor;
+        }
+        /// <summary>
+        /// Gets sensor by pin code
+        /// </summary>
+        /// <param name="pinCode"></param>
+        /// <returns></returns>
+        public ISensor GetSensorFromMemory(PinCode pinCode)
+        {
+            ISensor sensor = Sensors.Where(s => s.RaspberryPin == pinCode).FirstOrDefault();
             return sensor;
         }
 
@@ -210,8 +222,10 @@ namespace WebPortal.Services
         /// Create test sensors in database
         /// </summary>
         /// <param name="numOfSensors"> User define this(maximum is 20)</param>
-        public void GenerateTestSensors(int numOfSensors) {
-            if (numOfSensors > 20) {
+        public void GenerateTestSensors(int numOfSensors)
+        {
+            if (numOfSensors > 20)
+            {
                 numOfSensors = 20;
             }
             if (numOfSensors < 0)
@@ -221,7 +235,8 @@ namespace WebPortal.Services
 
             try
             {
-                for (int i = 0; i < numOfSensors; i++) {
+                for (int i = 0; i < numOfSensors; i++)
+                {
                     MockupSensor mockupSensor = new MockupSensor();
                     mockupSensor.Name = "TestSensor";
                     mongoCollection.InsertOne(mockupSensor);
@@ -238,10 +253,11 @@ namespace WebPortal.Services
         /// <summary>
         /// Delete all mockup sensors from db. It will not delete logs for them!
         /// </summary>
-        public void DeleteMockupSensors() {
+        public void DeleteMockupSensors()
+        {
             try
             {
-                this.mongoCollection.DeleteMany(sens => sens.SensorType == SensorType.Mockup);                
+                this.mongoCollection.DeleteMany(sens => sens.SensorType == SensorType.Mockup);
             }
             catch (Exception ex)
             {

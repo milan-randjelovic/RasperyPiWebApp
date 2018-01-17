@@ -1,7 +1,22 @@
-﻿namespace RaspberryLib
+﻿using System;
+
+namespace RaspberryLib
 {
     public class EnumeratorHelpers
     {
+        public static PinCode GetPinCode(string pinCode)
+        {
+            for (int i = 0; i < 40; i++)
+            {
+                if (((PinCode)i).ToString().ToUpper() == pinCode.ToUpper())
+                {
+                    return (PinCode)i;
+                }
+            }
+
+            return 0;
+        }
+
         public static string GetGPIOName(PinCode pinCode)
         {
             string result = "";

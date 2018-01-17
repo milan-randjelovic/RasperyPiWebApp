@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using WebPortal.Models.Sensors;
 using WebPortal.Services;
 
@@ -65,7 +63,7 @@ namespace WebPortal.Controllers
 
             try
             {
-                sensor = SensorsService.Find(id);
+                sensor = SensorsService.GetSensorFromDatabase(id);
             }
             catch (Exception ex)
             {
@@ -106,7 +104,7 @@ namespace WebPortal.Controllers
 
             try
             {
-                sensor = SensorsService.Find(id);
+                sensor = SensorsService.GetSensorFromDatabase(id);
             }
             catch (Exception ex)
             {
@@ -141,7 +139,7 @@ namespace WebPortal.Controllers
 
             try
             {
-                sensor = SensorsService.Find(id);
+                sensor = SensorsService.GetSensorFromDatabase(id);
             }
             catch (Exception ex)
             {

@@ -116,34 +116,46 @@ namespace WebPortal.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ISwitch Find(string id)
+        public ISwitch GetSwitchFromDatabase(string id)
         {
             ISwitch switchObj;
 
             try
             {
                 Switch s = this.mongoCollection.Find(sw => sw.Id == id).SingleOrDefault();
-                if (s.SwitchType == SwitchType.Mockup)
+
+                if (s != null)
                 {
-                    MockupSwitch mockupSwitch = new MockupSwitch();
-                    mockupSwitch.DeviceType = s.DeviceType;
-                    mockupSwitch.Id = s.Id;
-                    mockupSwitch.Name = s.Name;
-                    mockupSwitch.RaspberryPin = s.RaspberryPin;
-                    mockupSwitch.State = s.State;
-                    mockupSwitch.SwitchType = s.SwitchType;
-                    switchObj = mockupSwitch;
+                    if (s.SwitchType == SwitchType.Mockup)
+                    {
+                        MockupSwitch mockupSwitch = new MockupSwitch();
+                        mockupSwitch.DeviceType = s.DeviceType;
+                        mockupSwitch.Id = s.Id;
+                        mockupSwitch.Name = s.Name;
+                        mockupSwitch.RaspberryPin = s.RaspberryPin;
+                        mockupSwitch.State = s.State;
+                        mockupSwitch.SwitchType = s.SwitchType;
+                        switchObj = mockupSwitch;
+                    }
                 }
-                else
-                {
-                    switchObj = s;
-                }
+
+                switchObj = s;
             }
             catch (Exception ex)
             {
                 throw ex;
             }
 
+            return switchObj;
+        }
+        /// <summary>
+        /// Gets switch by pin code
+        /// </summary>
+        /// <param name="pinCode"></param>
+        /// <returns></returns>
+        public ISwitch GetSwitchFromMemory(PinCode pinCode)
+        {
+            ISwitch switchObj = Switches.Where(s => s.RaspberryPin == pinCode).FirstOrDefault();
             return switchObj;
         }
 
@@ -269,7 +281,7 @@ namespace WebPortal.Services
         {
             try
             {
-                this.mongoCollection.DeleteMany(sw =>sw.SwitchType == SwitchType.Mockup);
+                this.mongoCollection.DeleteMany(sw => sw.SwitchType == SwitchType.Mockup);
             }
             catch (Exception ex)
             {
