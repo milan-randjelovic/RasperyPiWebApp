@@ -50,9 +50,7 @@
     </dl>
 </div>
 <div>
-    @Html.ActionLink("Edit", "Edit", "Sensors", new { Model.Id }, new { @class = "btn btn-warning" }) |
-    @Html.ActionLink("Delete", "Delete", "Sensors", new { Model.Id }, new { @class = "btn btn-danger" })
-    <br />
-    <br />
-    @Html.ActionLink("Back", "Index", "Sensors", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Back", "SensorsConfiguration", "Sensors", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Edit", "SensorsEdit", "Sensors", new { Model.Id }, new { @class = "btn btn-warning" })
+    @Html.ActionLink("Delete", "SensorsDelete", "Sensors", new { Model.Id }, new { @class = "btn btn-danger" })
 </div>

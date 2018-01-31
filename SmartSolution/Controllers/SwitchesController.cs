@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using RestSharp;
 using WebPortal.Models.Switches;
 using WebPortal.Services;
 
@@ -30,40 +33,36 @@ namespace WebPortal.Controllers
         /// <returns></returns>
         public IActionResult Index()
         {
-            IEnumerable<ISwitch> switches;
-
             try
             {
-                switches = SwitchesService.Switches;
+                string result = SmartSolutionAPI.Get(Request.Host.Value, WebPortal.Configuration.Switches, "");
+                IEnumerable<ISwitch> switches = JsonConvert.DeserializeObject<IEnumerable<Switch>>(result);
+                return View(switches);
             }
             catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
                 return RedirectToAction("Error", "Home", null);
             }
-
-            return View(switches);
         }
 
         /// <summary>
         /// Index page
         /// </summary>
         /// <returns></returns>
-        public IActionResult Configuration()
+        public IActionResult SwitchesConfiguration()
         {
-            IEnumerable<ISwitch> switches;
-
             try
             {
-                switches = SwitchesService.Switches;
+                string result = SmartSolutionAPI.Get(Request.Host.Value, WebPortal.Configuration.Switches, "");
+                IEnumerable<ISwitch> switches = JsonConvert.DeserializeObject<IEnumerable<Switch>>(result);
+                return View(switches);
             }
             catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
                 return RedirectToAction("Error", "Home", null);
             }
-
-            return View(switches);
         }
 
         /// <summary>
@@ -71,28 +70,26 @@ namespace WebPortal.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public IActionResult Details(string id)
+        public IActionResult SwitchesDetails(string id)
         {
-            ISwitch switchObj;
-
             try
             {
-                switchObj = SwitchesService.GetSwitchFromDatabase(id);
+                string result = SmartSolutionAPI.Get(Request.Host.Value, WebPortal.Configuration.Switches, id);
+                ISwitch switchObj = JsonConvert.DeserializeObject<Switch>(result);
+                return View(switchObj);
             }
             catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
                 return RedirectToAction("Error", "Home", null);
             }
-
-            return View(switchObj);
         }
 
         /// <summary>
         /// Create new page
         /// </summary>
         /// <returns></returns>
-        public IActionResult Create()
+        public IActionResult SwitchesCreate()
         {
             return View();
         }
@@ -104,19 +101,18 @@ namespace WebPortal.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Switch switchObject)
+        public IActionResult SwitchesCreate(Switch switchObject)
         {
             try
             {
-                SwitchesService.CreateNew(switchObject);
+                string result = SmartSolutionAPI.Post(Request.Host.Value, WebPortal.Configuration.Switches, switchObject.Id, switchObject);
+                return RedirectToAction("SwitchesConfiguration");
             }
             catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
                 return RedirectToAction("Error", "Home", null);
             }
-
-            return RedirectToAction("Index");
         }
 
         /// <summary>
@@ -124,20 +120,19 @@ namespace WebPortal.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public IActionResult Edit(string id)
+        public IActionResult SwitchesEdit(string id)
         {
-            ISwitch switchObj;
             try
             {
-                switchObj = SwitchesService.GetSwitchFromDatabase(id);
+                string result = SmartSolutionAPI.Get(Request.Host.Value, WebPortal.Configuration.Switches, id);
+                ISwitch switchObj = JsonConvert.DeserializeObject<Switch>(result);
+                return View(switchObj);
             }
             catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
                 return RedirectToAction("Error", "Home", null);
             }
-
-            return View(switchObj);
         }
 
         /// <summary>
@@ -147,19 +142,18 @@ namespace WebPortal.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Switch switchObj)
+        public IActionResult SwitchesEdit(Switch switchObject)
         {
             try
             {
-                SwitchesService.Update(switchObj);
+                string result = SmartSolutionAPI.Put(Request.Host.Value, WebPortal.Configuration.Switches, switchObject.Id, switchObject);
+                return RedirectToAction("SwitchesConfiguration");
             }
             catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
                 return RedirectToAction("Error", "Home", null);
             }
-
-            return RedirectToAction("Index");
         }
 
         /// <summary>
@@ -167,21 +161,19 @@ namespace WebPortal.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public IActionResult Delete(string id)
+        public IActionResult SwitchesDelete(string id)
         {
-            ISwitch switchObj;
-
             try
             {
-                switchObj = SwitchesService.GetSwitchFromDatabase(id);
+                string result = SmartSolutionAPI.Get(Request.Host.Value, WebPortal.Configuration.Switches, id);
+                ISwitch switchObj = JsonConvert.DeserializeObject<Switch>(result);
+                return View(switchObj);
             }
             catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
                 return RedirectToAction("Error", "Home", null);
             }
-
-            return View(switchObj);
         }
 
         /// <summary>
@@ -191,20 +183,19 @@ namespace WebPortal.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteSwitch(string id)
+        public IActionResult SwitchesDelete(Switch switchObject)
         {
             try
             {
-                SwitchesService.Delete(id);
+                string result = SmartSolutionAPI.Delete(Request.Host.Value, WebPortal.Configuration.Switches, switchObject.Id, switchObject);
+                ISwitch switchObj = JsonConvert.DeserializeObject<Switch>(result);
+                return RedirectToAction("SwitchesConfiguration");
             }
             catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
                 return RedirectToAction("Error", "Home", null);
             }
-
-            return RedirectToAction("Index");
-
         }
 
         /// <summary>
@@ -213,19 +204,18 @@ namespace WebPortal.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult TurnON(string id)
+        public IActionResult SwitchesTurnON(string id)
         {
             try
             {
                 SwitchesService.TurnON(id);
+                return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
                 return RedirectToAction("Error", "Home", null);
             }
-
-            return RedirectToAction("Index");
         }
 
         /// <summary>
@@ -234,19 +224,18 @@ namespace WebPortal.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult TurnOFF(string id)
+        public IActionResult SwitchesTurnOFF(string id)
         {
             try
             {
                 SwitchesService.TurnOFF(id);
+                return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
                 return RedirectToAction("Error", "Home", null);
             }
-
-            return RedirectToAction("Index");
         }
 
         /// <summary>
@@ -255,7 +244,7 @@ namespace WebPortal.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult TurnONAsync(string id)
+        public IActionResult SwitchesTurnONAsync(string id)
         {
             try
             {
@@ -274,7 +263,7 @@ namespace WebPortal.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult TurnoFFAsync(string id)
+        public IActionResult SwitchesTurnoFFAsync(string id)
         {
             try
             {
@@ -288,12 +277,14 @@ namespace WebPortal.Controllers
         }
 
         [HttpGet]
-        public IActionResult SwitchesGenerator() {
+        public IActionResult SwitchesGenerator()
+        {
             return View();
         }
 
         [HttpPost]
-        public IActionResult SwitchesGenerator(int numOfSwitches) {
+        public IActionResult SwitchesGenerator(int numOfSwitches)
+        {
             try
             {
                 SwitchesService.GenerateTestSwitches(numOfSwitches);
@@ -307,18 +298,21 @@ namespace WebPortal.Controllers
         }
 
         [HttpGet]
-        public IActionResult DeleteMockupSwitches() {
+        public IActionResult DeleteMockupSwitches()
+        {
             return View();
         }
 
         [HttpGet]
-        public IActionResult DeleteAllMockupSwitches() {
+        public IActionResult DeleteAllMockupSwitches()
+        {
             try
             {
                 SwitchesService.DeleteMockupSwitches();
                 return RedirectToAction("Index");
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 TempData["Error"] = ex.Message;
                 return RedirectToAction("Error");
             }

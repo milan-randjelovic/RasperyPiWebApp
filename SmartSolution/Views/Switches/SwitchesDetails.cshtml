@@ -49,9 +49,7 @@
     </dl>
 </div>
 <div>
-    @Html.ActionLink("Edit", "Edit", "Switches", new { Model.Id }, new { @class = "btn btn-warning" }) |
-    @Html.ActionLink("Delete", "Delete", "Switches", new { Model.Id }, new { @class = "btn btn-danger" })
-    <br />
-    <br />
-    @Html.ActionLink("Back", "Index", "Switches", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Back", "SwitchesConfiguration", "Switches", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Edit", "SwitchesEdit", "Switches", new { Model.Id }, new { @class = "btn btn-warning" })
+    @Html.ActionLink("Delete", "SwitchesDelete", "Switches", new { Model.Id }, new { @class = "btn btn-danger" })
 </div>

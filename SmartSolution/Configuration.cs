@@ -36,28 +36,28 @@ namespace WebPortal
                 }
             }
         }
-        public static string SensorsCollection
+        public static string Sensors
         {
             get
             {
                 return "Sensors";
             }
         }
-        public static string SensorsLogCollection
+        public static string SensorsLog
         {
             get
             {
                 return "SensorsLog";
             }
         }
-        public static string SwitchesCollection
+        public static string Switches
         {
             get
             {
                 return "Switches";
             }
         }
-        public static string SwitchesLogCollection
+        public static string SwitchesLog
         {
             get
             {

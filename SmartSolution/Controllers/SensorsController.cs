@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using WebPortal.Models.Sensors;
@@ -23,156 +24,147 @@ namespace WebPortal.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            IEnumerable<ISensor> sensors;
-
             try
             {
-                sensors = SensorsService.Sensors;
+                string result = SmartSolutionAPI.Get(Request.Host.Value, Configuration.Sensors, "");
+                IEnumerable<ISensor> sensors = JsonConvert.DeserializeObject<IEnumerable<Sensor>>(result);
+                return View(sensors);
             }
             catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
                 return RedirectToAction("Error", "Home", null);
             }
-
-            return View(sensors);
         }
 
         [HttpGet]
-        public IActionResult Configuration()
+        public IActionResult SensorsConfiguration()
         {
-            IEnumerable<ISensor> sensors;
-
             try
             {
-                sensors = SensorsService.Sensors;
+                string result = SmartSolutionAPI.Get(Request.Host.Value, Configuration.Sensors, "");
+                IEnumerable<ISensor> sensors = JsonConvert.DeserializeObject<IEnumerable<Sensor>>(result);
+                return View(sensors);
             }
             catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
                 return RedirectToAction("Error", "Home", null);
             }
-
-            return View(sensors);
         }
 
         [HttpGet]
-        public IActionResult Details(string id)
+        public IActionResult SensorsDetails(string id)
         {
-            ISensor sensor;
-
             try
             {
-                sensor = SensorsService.GetSensorFromDatabase(id);
+                string result = SmartSolutionAPI.Get(Request.Host.Value, WebPortal.Configuration.Sensors, id);
+                ISensor sensorObj = JsonConvert.DeserializeObject<Sensor>(result);
+                return View(sensorObj);
             }
             catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
                 return RedirectToAction("Error", "Home", null);
             }
-
-            return View(sensor);
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public IActionResult SensorsCreate()
         {
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Sensor sensor)
+        public IActionResult SensorsCreate(Sensor sensorObject)
         {
             try
             {
-                SensorsService.CreateNew(sensor);
+                string result = SmartSolutionAPI.Post(Request.Host.Value, WebPortal.Configuration.Sensors, sensorObject.Id, sensorObject);
+                return RedirectToAction("SensorsConfiguration");
             }
             catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
                 return RedirectToAction("Error", "Home", null);
             }
-
-            return RedirectToAction("Index", "Sensors");
         }
 
         [HttpGet]
-        public IActionResult Edit(string id)
+        public IActionResult SensorsEdit(string id)
         {
-            ISensor sensor;
-
             try
             {
-                sensor = SensorsService.GetSensorFromDatabase(id);
+                string result = SmartSolutionAPI.Get(Request.Host.Value, Configuration.Sensors, id);
+                ISensor sensorObj = JsonConvert.DeserializeObject<Sensor>(result);
+                return View(sensorObj);
             }
             catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
                 return RedirectToAction("Error", "Home", null);
             }
-
-            return View(sensor);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Sensor sensor)
+        public IActionResult SensorsEdit(Sensor sensorObject)
         {
             try
             {
-                SensorsService.Update(sensor);
+                string result = SmartSolutionAPI.Put(Request.Host.Value, WebPortal.Configuration.Sensors, sensorObject.Id, sensorObject);
+                return RedirectToAction("SensorsConfiguration");
             }
             catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
                 return RedirectToAction("Error", "Home", null);
             }
-
-            return RedirectToAction("Index");
         }
 
         [HttpGet]
-        public IActionResult Delete(string id)
+        public IActionResult SensorsDelete(string id)
         {
-            ISensor sensor;
-
             try
             {
-                sensor = SensorsService.GetSensorFromDatabase(id);
+                string result = SmartSolutionAPI.Get(Request.Host.Value, Configuration.Sensors, id);
+                ISensor sensorObj = JsonConvert.DeserializeObject<Sensor>(result);
+                return View(sensorObj);
             }
             catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
                 return RedirectToAction("Error", "Home", null);
             }
-
-            return View(sensor);
         }
 
         [HttpPost]
-        public IActionResult DeleteSensor(string id)
+        [ValidateAntiForgeryToken]
+        public IActionResult SensorsDelete(Sensor sensorObject)
         {
             try
             {
-                SensorsService.Delete(id);
+                string result = SmartSolutionAPI.Delete(Request.Host.Value, WebPortal.Configuration.Sensors, sensorObject.Id, sensorObject);
+                ISensor switchObj = JsonConvert.DeserializeObject<Sensor>(result);
+                return RedirectToAction("SensorsConfiguration");
             }
             catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
                 return RedirectToAction("Error", "Home", null);
             }
-
-            return RedirectToAction("Index");
         }
 
         [HttpGet]
-        public IActionResult SensorsGenerator() {
+        public IActionResult SensorsGenerator()
+        {
             return View();
         }
 
         [HttpPost]
-        public IActionResult SensorsGenerator(int numOfSens) {
+        public IActionResult SensorsGenerator(int numOfSens)
+        {
             try
             {
                 SensorsService.GenerateTestSensors(numOfSens);
@@ -188,12 +180,14 @@ namespace WebPortal.Controllers
         }
 
         [HttpGet]
-        public IActionResult DeleteMockupSensors() {
+        public IActionResult DeleteMockupSensors()
+        {
             return View();
         }
 
         [HttpGet]
-        public IActionResult DeleteAllMockupSensors() {
+        public IActionResult DeleteAllMockupSensors()
+        {
             try
             {
                 SensorsService.DeleteMockupSensors();
@@ -205,7 +199,5 @@ namespace WebPortal.Controllers
                 return RedirectToAction("Error");
             }
         }
-
-
     }
 }

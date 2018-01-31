@@ -4,38 +4,39 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebPortal.Models.Sensors;
 using WebPortal.Models.Switches;
 using WebPortal.Services;
 
 namespace WebPortal.Controllers.API
 {
     [Produces("application/json")]
-    [Route("api/Switches")]
-    public class SwitchesController : Controller
+    [Route("api/Sensors")]
+    public class SensorsController : Controller
     {
-        protected static SwitchesService SwitchesService { get; private set; }
+        protected static SensorsService SensorsService { get; private set; }
 
         /// <summary>
         /// Default constructor
         /// </summary>
-        public SwitchesController(SwitchesService switchesService)
+        public SensorsController(SensorsService sensorsService)
         {
-            SwitchesService = switchesService;
+            SensorsService = sensorsService;
 
-            if (SwitchesService == null)
+            if (SensorsService == null)
             {
-                SwitchesService = new SwitchesService();
+                SensorsService = new SensorsService();
             }
         }
 
         /// <summary>
-        /// Get all switches
+        /// Get all sensors
         /// </summary>
         /// <returns></returns>
         [HttpGet]
         public IActionResult Get()
         {
-            IEnumerable<ISwitch> result = SwitchesService.Switches;
+            IEnumerable<ISensor> result = SensorsService.Sensors;
 
             if (result == null)
             {
@@ -46,14 +47,14 @@ namespace WebPortal.Controllers.API
         }
 
         /// <summary>
-        /// Get switch by id
+        /// Get sensor by id
         /// </summary>
-        /// <param name="id">Switch Id</param>
+        /// <param name="id">Sensor Id</param>
         /// <returns></returns>
         [HttpGet("{id}")]
         public IActionResult Get(string id)
         {
-            ISwitch result = SwitchesService.GetSwitchFromDatabase(id);
+            ISensor result = SensorsService.GetSensorFromDatabase(id);
 
             if (result == null)
             {
@@ -64,16 +65,16 @@ namespace WebPortal.Controllers.API
         }
 
         /// <summary>
-        /// Create switch
+        /// Create sensor
         /// </summary>
-        /// <param name="switchObject">Switch data</param>
+        /// <param name="switchObject">Sensor data</param>
         [HttpPost("{id}")]
-        public IActionResult Post(string id, [FromBody]Switch switchObject)
+        public IActionResult Post(string id, [FromBody]Sensor sensorObject)
         {
             try
             {
-                SwitchesService.CreateNew(switchObject);
-                return Created(Request.Path + switchObject.Id, switchObject);
+                SensorsService.CreateNew(sensorObject);
+                return Created(Request.Path + sensorObject.Id, sensorObject);
             }
             catch (Exception ex)
             {
@@ -82,17 +83,17 @@ namespace WebPortal.Controllers.API
         }
 
         /// <summary>
-        /// Update switch
+        /// Update sensor
         /// </summary>
-        /// <param name="id">Switch Id</param>
-        /// <param name="value">Switch data</param>
+        /// <param name="id">Sensor Id</param>
+        /// <param name="value">Sensor data</param>
         [HttpPut("{id}")]
-        public IActionResult Put(string id, [FromBody]Switch switchObject)
+        public IActionResult Put(string id, [FromBody]Sensor sensorObject)
         {
             try
             {
-                SwitchesService.Update(switchObject);
-                return Ok(switchObject);
+                SensorsService.Update(sensorObject);
+                return Ok(sensorObject);
             }
             catch (Exception ex)
             {
@@ -101,16 +102,16 @@ namespace WebPortal.Controllers.API
         }
 
         /// <summary>
-        /// Detele switch
+        /// Detele sensor
         /// </summary>
-        /// <param name="id">Switch Id</param>
+        /// <param name="id">Sensor Id</param>
         [HttpDelete("{id}")]
-        public IActionResult Delete(string id, [FromBody]Switch switchObject)
+        public IActionResult Delete(string id, [FromBody]Sensor sensorObject)
         {
             try
             {
-                SwitchesService.Delete(id);
-                return Ok(switchObject);
+                SensorsService.Delete(id);
+                return Ok(sensorObject);
             }
             catch (Exception ex)
             {

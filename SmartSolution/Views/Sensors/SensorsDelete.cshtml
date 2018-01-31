@@ -1,15 +1,16 @@
-﻿@using WebPortal.Models.Switches
-@model ISwitch
+﻿@using WebPortal.Models.Sensors
+@model ISensor
 
 @{
     ViewBag.Title = "Delete";
 }
 
-<h2>@ViewBag.Title</h2>
-<h3>Are you sure you want to delete this?</h3>
 
+<h2>@ViewBag.Title</h2>
+
+<h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>Switch</h4>
+    <h4>Sensor</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -25,10 +26,10 @@
             @Html.DisplayFor(model => model.Name)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.SwitchType)
+            @Html.DisplayNameFor(model => model.SensorType)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.SwitchType)
+            @Html.DisplayFor(model => model.SensorType)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.RaspberryPin)
@@ -37,27 +38,22 @@
             @Html.DisplayFor(model => model.RaspberryPin)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.InverseLogic)
+            @Html.DisplayNameFor(model => model.Value)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.InverseLogic)
+            @Html.DisplayFor(model => model.Value)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.State)
+            @Html.DisplayNameFor(model => model.Timestamp)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.State)
+            @Html.DisplayFor(model => model.Timestamp)
         </dd>
-
     </dl>
-
-    @using (Html.BeginForm("DeleteSwitch", "Switches", new { Model.Id }))
+    @using (Html.BeginForm("SensorsDelete", "Sensors", new { id = Model.Id }, FormMethod.Post))
     {
         @Html.AntiForgeryToken()
+        @Html.ActionLink("Back", "SensorsConfigurtion", "Sensors", null, new { @class = "btn btn-primary" })
         <input type="submit" value="Delete" class="btn btn-danger" />
     }
-    <br />
-    <p>
-        @Html.ActionLink("Back", "Index", "Switches", null, new { @class = "btn btn-primary" })
-    </p>
 </div>

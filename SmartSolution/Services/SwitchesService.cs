@@ -22,8 +22,8 @@ namespace WebPortal.Services
             Raspberry.Initialize();
             this.client = new MongoClient(Configuration.DatabaseConnection);
             this.dbContext = client.GetDatabase(Configuration.DatabaseName);
-            this.mongoCollection = dbContext.GetCollection<Switch>(Configuration.SwitchesCollection);
-            this.logCollection = dbContext.GetCollection<SwitchLog>(Configuration.SwitchesLogCollection);
+            this.mongoCollection = dbContext.GetCollection<Switch>(Configuration.Switches);
+            this.logCollection = dbContext.GetCollection<SwitchLog>(Configuration.SwitchesLog);
             this.Switches = new List<Switch>();
             this.LoadConfiguration();
             if (this.timer == null)

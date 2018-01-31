@@ -23,8 +23,8 @@ namespace WebPortal.Services
             Raspberry.Initialize();
             this.client = new MongoClient(Configuration.DatabaseConnection);
             this.dbContext = client.GetDatabase(Configuration.DatabaseName);
-            this.mongoCollection = dbContext.GetCollection<Sensor>(Configuration.SensorsCollection);
-            this.logCollection = dbContext.GetCollection<SensorLog>(Configuration.SensorsLogCollection);
+            this.mongoCollection = dbContext.GetCollection<Sensor>(Configuration.Sensors);
+            this.logCollection = dbContext.GetCollection<SensorLog>(Configuration.SensorsLog);
             this.LoadConfiguration();
             if (this.timer == null)
             {

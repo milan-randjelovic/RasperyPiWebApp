@@ -1,16 +1,15 @@
-﻿@using WebPortal.Models.Sensors
-@model ISensor
+﻿@using WebPortal.Models.Switches
+@model ISwitch
 
 @{
     ViewBag.Title = "Delete";
 }
 
-
 <h2>@ViewBag.Title</h2>
-
 <h3>Are you sure you want to delete this?</h3>
+
 <div>
-    <h4>Sensor</h4>
+    <h4>Switch</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -26,10 +25,10 @@
             @Html.DisplayFor(model => model.Name)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.SensorType)
+            @Html.DisplayNameFor(model => model.SwitchType)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.SensorType)
+            @Html.DisplayFor(model => model.SwitchType)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.RaspberryPin)
@@ -38,24 +37,24 @@
             @Html.DisplayFor(model => model.RaspberryPin)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Value)
+            @Html.DisplayNameFor(model => model.InverseLogic)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Value)
+            @Html.DisplayFor(model => model.InverseLogic)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Timestamp)
+            @Html.DisplayNameFor(model => model.State)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Timestamp)
+            @Html.DisplayFor(model => model.State)
         </dd>
+
     </dl>
-    @using (Html.BeginForm("DeleteSensor", "Sensors", new { id = Model.Id }, FormMethod.Post))
+
+    @using (Html.BeginForm("SwitchesDelete", "Switches", new { Model.Id }))
     {
         @Html.AntiForgeryToken()
+        @Html.ActionLink("Back", "SwitchesConfiguration", "Switches", null, new { @class = "btn btn-primary" })
         <input type="submit" value="Delete" class="btn btn-danger" />
-        <br />
-        <br />
-        @Html.ActionLink("Back", "Index", "Sensors", null, new { @class = "btn btn-primary" })
     }
 </div>
