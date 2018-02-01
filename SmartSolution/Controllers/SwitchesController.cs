@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using RestSharp;
+using SmartSolutionAPILib;
 using WebPortal.Models.Switches;
 using WebPortal.Services;
 
@@ -35,8 +35,8 @@ namespace WebPortal.Controllers
         {
             try
             {
-                string result = SmartSolutionAPI.Get(Request.Host.Value, WebPortal.Configuration.Switches, "");
-                IEnumerable<ISwitch> switches = JsonConvert.DeserializeObject<IEnumerable<Switch>>(result);
+                IRestResponse result = SmartSolutionAPI.Get(Request.Host.Value, Configuration.Switches, "");
+                IEnumerable<ISwitch> switches = JsonConvert.DeserializeObject<IEnumerable<Switch>>(result.Content);
                 return View(switches);
             }
             catch (Exception ex)
@@ -54,8 +54,8 @@ namespace WebPortal.Controllers
         {
             try
             {
-                string result = SmartSolutionAPI.Get(Request.Host.Value, WebPortal.Configuration.Switches, "");
-                IEnumerable<ISwitch> switches = JsonConvert.DeserializeObject<IEnumerable<Switch>>(result);
+                IRestResponse result = SmartSolutionAPI.Get(Request.Host.Value, Configuration.Switches, "");
+                IEnumerable<ISwitch> switches = JsonConvert.DeserializeObject<IEnumerable<Switch>>(result.Content);
                 return View(switches);
             }
             catch (Exception ex)
@@ -74,8 +74,8 @@ namespace WebPortal.Controllers
         {
             try
             {
-                string result = SmartSolutionAPI.Get(Request.Host.Value, WebPortal.Configuration.Switches, id);
-                ISwitch switchObj = JsonConvert.DeserializeObject<Switch>(result);
+                IRestResponse result = SmartSolutionAPI.Get(Request.Host.Value, Configuration.Switches, id);
+                ISwitch switchObj = JsonConvert.DeserializeObject<Switch>(result.Content);
                 return View(switchObj);
             }
             catch (Exception ex)
@@ -105,7 +105,7 @@ namespace WebPortal.Controllers
         {
             try
             {
-                string result = SmartSolutionAPI.Post(Request.Host.Value, WebPortal.Configuration.Switches, switchObject.Id, switchObject);
+                IRestResponse result = SmartSolutionAPI.Post(Request.Host.Value, WebPortal.Configuration.Switches, switchObject.Id, switchObject);
                 return RedirectToAction("SwitchesConfiguration");
             }
             catch (Exception ex)
@@ -124,8 +124,8 @@ namespace WebPortal.Controllers
         {
             try
             {
-                string result = SmartSolutionAPI.Get(Request.Host.Value, WebPortal.Configuration.Switches, id);
-                ISwitch switchObj = JsonConvert.DeserializeObject<Switch>(result);
+                IRestResponse result = SmartSolutionAPI.Get(Request.Host.Value, Configuration.Switches, id);
+                ISwitch switchObj = JsonConvert.DeserializeObject<Switch>(result.Content);
                 return View(switchObj);
             }
             catch (Exception ex)
@@ -146,7 +146,7 @@ namespace WebPortal.Controllers
         {
             try
             {
-                string result = SmartSolutionAPI.Put(Request.Host.Value, WebPortal.Configuration.Switches, switchObject.Id, switchObject);
+                IRestResponse result = SmartSolutionAPI.Put(Request.Host.Value, WebPortal.Configuration.Switches, switchObject.Id, switchObject);
                 return RedirectToAction("SwitchesConfiguration");
             }
             catch (Exception ex)
@@ -165,8 +165,8 @@ namespace WebPortal.Controllers
         {
             try
             {
-                string result = SmartSolutionAPI.Get(Request.Host.Value, WebPortal.Configuration.Switches, id);
-                ISwitch switchObj = JsonConvert.DeserializeObject<Switch>(result);
+                IRestResponse result = SmartSolutionAPI.Get(Request.Host.Value, Configuration.Switches, id);
+                ISwitch switchObj = JsonConvert.DeserializeObject<Switch>(result.Content);
                 return View(switchObj);
             }
             catch (Exception ex)
@@ -187,8 +187,8 @@ namespace WebPortal.Controllers
         {
             try
             {
-                string result = SmartSolutionAPI.Delete(Request.Host.Value, WebPortal.Configuration.Switches, switchObject.Id, switchObject);
-                ISwitch switchObj = JsonConvert.DeserializeObject<Switch>(result);
+                IRestResponse result = SmartSolutionAPI.Delete(Request.Host.Value, Configuration.Switches, switchObject.Id, switchObject);
+                ISwitch switchObj = JsonConvert.DeserializeObject<Switch>(result.Content);
                 return RedirectToAction("SwitchesConfiguration");
             }
             catch (Exception ex)

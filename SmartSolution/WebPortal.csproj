@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RaspberyLib\RaspberryLib.csproj" />
+    <ProjectReference Include="..\SmartSolutionAPILibrary\SmartSolutionAPILib.csproj" />
   </ItemGroup>
 
 </Project>
