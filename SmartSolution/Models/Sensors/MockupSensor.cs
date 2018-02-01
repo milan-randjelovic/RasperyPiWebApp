@@ -12,7 +12,7 @@ namespace WebPortal.Models.Sensors
         {
             this.SensorType = SensorType.Mockup;
             this.timer = new Timer();
-            this.timer.Interval = 1000;
+            this.timer.Interval = 5000;
             this.timer.Elapsed += TimerRefresh;
             this.timer.Start();
         }

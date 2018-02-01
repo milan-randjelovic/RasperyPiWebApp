@@ -198,8 +198,9 @@ namespace WebPortal.Controllers
             }
         }
 
+
         /// <summary>
-        /// Turn on switch
+        /// Turn on shwitch async
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -208,52 +209,13 @@ namespace WebPortal.Controllers
         {
             try
             {
-                SwitchesService.TurnON(id);
-                return RedirectToAction("Index");
+                IRestResponse result = SmartSolutionAPI.Get(Request.Host.Value, Configuration.Switches+"/TurnON", id);
+                return Ok(result.Content);
             }
             catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
                 return RedirectToAction("Error", "Home", null);
-            }
-        }
-
-        /// <summary>
-        /// Turn off switch
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [HttpGet]
-        public IActionResult SwitchesTurnOFF(string id)
-        {
-            try
-            {
-                SwitchesService.TurnOFF(id);
-                return RedirectToAction("Index");
-            }
-            catch (Exception ex)
-            {
-                TempData["Error"] = ex.Message;
-                return RedirectToAction("Error", "Home", null);
-            }
-        }
-
-        /// <summary>
-        /// Turn on shwitch async
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [HttpGet]
-        public IActionResult SwitchesTurnONAsync(string id)
-        {
-            try
-            {
-                SwitchesService.TurnON(id);
-                return Ok(id);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.ServiceUnavailable, ex.Message);
             }
         }
 
@@ -263,16 +225,17 @@ namespace WebPortal.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult SwitchesTurnoFFAsync(string id)
+        public IActionResult SwitchesTurnOFF(string id)
         {
             try
             {
-                SwitchesService.TurnOFF(id);
-                return Ok(id);
+                IRestResponse result = SmartSolutionAPI.Get(Request.Host.Value, Configuration.Switches + "/TurnOFF", id);
+                return Ok(result.Content);
             }
             catch (Exception ex)
             {
-                return StatusCode((int)HttpStatusCode.ServiceUnavailable, ex.Message);
+                TempData["Error"] = ex.Message;
+                return RedirectToAction("Error", "Home", null);
             }
         }
 

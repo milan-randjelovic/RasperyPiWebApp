@@ -117,5 +117,43 @@ namespace WebPortal.Controllers.API
                 return BadRequest(ex);
             }
         }
+
+        /// <summary>
+        /// Turn on shwitch
+        /// </summary>
+        /// <param name="id">Switch id</param>
+        /// <returns></returns>
+        [HttpGet("TurnON/{id}")]
+        public IActionResult TurnON(string id)
+        {
+            try
+            {
+                SwitchesService.TurnON(id);
+                return Ok(SwitchesService.Switches.Where(sw=>sw.Id==id).FirstOrDefault());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        /// <summary>
+        /// Turn off shwitch
+        /// </summary>
+        /// <param name="id">Switch id</param>
+        /// <returns></returns>
+        [HttpGet("TurnOFF/{id}")]
+        public IActionResult TurnOFF(string id)
+        {
+            try
+            {
+                SwitchesService.TurnOFF(id);
+                return Ok(SwitchesService.Switches.Where(sw => sw.Id == id).FirstOrDefault());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
     }
 }

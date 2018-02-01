@@ -159,6 +159,21 @@ namespace WebPortal.Controllers
         }
 
         [HttpGet]
+        public IActionResult SensorsValues()
+        {
+            try
+            {
+                IRestResponse result = SmartSolutionAPI.Get(Request.Host.Value, Configuration.Sensors, "");
+                return Ok(result.Content);
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = ex.Message;
+                return RedirectToAction("Error", "Home", null);
+            }
+        }
+
+        [HttpGet]
         public IActionResult SensorsGenerator()
         {
             return View();

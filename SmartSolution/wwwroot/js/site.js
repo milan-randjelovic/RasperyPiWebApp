@@ -34,19 +34,25 @@
         }
         );
     })
+
+    if (window.location.pathname == "/Sensors") {
+        RefreshSensors();
+    }
 });
 
+//Turn on switch click
 function TurnONSwitch(switchButton) {
 
     $.ajax({
-        url: "/Switches/TurnONAsync/",
+        url: "/Switches/SwitchesTurnON/",
         data: { id: switchButton.id },
         dataType: "text",
         success: function (data, status) {
-            var switchObject = $("#" + data);
+            var switchid = JSON.parse(data).id;
+            var switchObject = $("#" + switchid);
             switchObject.removeClass('orange');
             switchObject.addClass('green');
-            var button = switchObject.children("#" + data);
+            var button = switchObject.children("#" + switchid);
             button.html("OFF");
             button.attr("onclick", "TurnOFFSwitch(this)");
             console.log("ON");
@@ -58,20 +64,42 @@ function TurnONSwitch(switchButton) {
     );
 }
 
+//Turn off switch click
 function TurnOFFSwitch(switchButton) {
 
     $.ajax({
-        url: "/Switches/TurnOFFAsync/",
+        url: "/Switches/SwitchesTurnOFF/",
         data: { id: switchButton.id },
         dataType: "text",
         success: function (data, status) {
-            var switchObject = $("#" + data);
+            var switchid = JSON.parse(data).id;
+            var switchObject = $("#" + switchid);
             switchObject.removeClass('green');
             switchObject.addClass('orange');
-            var button = switchObject.children("#" + data);
+            var button = switchObject.children("#" + switchid);
             button.html("ON");
             button.attr("onclick", "TurnONSwitch(this)");
             console.log("OFF");
+        },
+        error: function (status) {
+            console.log("Error");
+        }
+    }
+    );
+}
+
+//refresh sensors data
+function RefreshSensors() {
+    $.ajax({
+        url: "/Sensors/SensorsValues",
+        success: function (data, status) {
+            var sensors = JSON.parse(data);
+            for (i = 0; i < sensors.length; i++) {
+                var sensor = sensors[i];
+                var sensorObject = $('[data-sensorid=' + sensor.id + ']')[0];
+                sensorObject.innerHTML = sensor.value;
+            }
+            setTimeout(function () { RefreshSensors(); }, 1000);
         },
         error: function (status) {
             console.log("Error");

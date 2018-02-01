@@ -14,9 +14,9 @@
             if (modelItem.Value != "")
             {
                 <div class="col-sm-4">
-                    <div id="@modelItem.Id" class="tile green">
+                    <div id="@modelItem.Id" data-sensor="@modelItem.Id" class="tile green">
                         <h3 class="title">@modelItem.Name</h3>
-                        <h3 class="title">@modelItem.Value</h3>
+                        <h3 data-sensorid="@modelItem.Id" class="title">@modelItem.Value</h3>
                         <h5 class="title">@modelItem.SensorType</h5>
                         <p>@modelItem.Id</p>
                     </div>
@@ -25,9 +25,9 @@
             else
             {
                 <div class="col-sm-4">
-                    <div id="@modelItem.Id" class="tile orange">
+                    <div id="@modelItem.Id" data-sensor="@modelItem.Id" class="tile orange">
                         <h3 class="title">@modelItem.Name</h3>
-                        <h3 class="title">@modelItem.Value</h3>
+                        <h3 data-sensorid="@modelItem.Id" class="title">@modelItem.Value</h3>
                         <h5 class="title">@modelItem.SensorType</h5>
                         <p>@modelItem.Id</p>
                     </div>
