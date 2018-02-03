@@ -37,7 +37,9 @@ namespace WebPortal
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseDeveloperExceptionPage();
+                app.UseBrowserLink();
+               // app.UseExceptionHandler("/Home/Error");
             }
 
             app.UseStaticFiles();

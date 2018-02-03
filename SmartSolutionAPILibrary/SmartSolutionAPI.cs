@@ -9,8 +9,8 @@ namespace SmartSolutionAPILib
         {
             try
             {
-                IRestClient API = new RestClient("http://" + baseAddress + "/api/");
-                IRestRequest req = new RestRequest("http://" + baseAddress + "/api/" + resource + "/" + query, Method.GET);
+                IRestClient API = new RestClient(baseAddress);
+                IRestRequest req = new RestRequest(baseAddress +"/"+ resource + "/" + query, Method.GET);
                 IRestResponse res = API.Get(req);
                 return res;
             }
@@ -20,12 +20,12 @@ namespace SmartSolutionAPILib
             }
         }
 
-        public static IRestResponse Post(string baseAddress, string resource,string query, object data)
+        public static IRestResponse Post(string baseAddress, string resource, string query, object data)
         {
             try
             {
-                IRestClient API = new RestClient("http://" + baseAddress + "/api/");
-                IRestRequest req = new RestRequest("http://" + baseAddress + "/api/" + resource + "/" + query, Method.POST);
+                IRestClient API = new RestClient(baseAddress);
+                IRestRequest req = new RestRequest(baseAddress + "/" + resource + "/" + query, Method.POST);
                 req.AddJsonBody(data);
                 IRestResponse res = API.Post(req);
                 return res;
@@ -40,8 +40,8 @@ namespace SmartSolutionAPILib
         {
             try
             {
-                IRestClient API = new RestClient("http://" + baseAddress + "/api/");
-                IRestRequest req = new RestRequest("http://" + baseAddress + "/api/" + resource + "/" + query, Method.PUT);
+                IRestClient API = new RestClient(baseAddress);
+                IRestRequest req = new RestRequest(baseAddress + "/" + resource + "/" + query, Method.PUT);
                 req.AddJsonBody(data);
                 IRestResponse res = API.Put(req);
                 return res;
@@ -56,8 +56,8 @@ namespace SmartSolutionAPILib
         {
             try
             {
-                IRestClient API = new RestClient("http://" + baseAddress + "/api/");
-                IRestRequest req = new RestRequest("http://" + baseAddress + "/api/" + resource + "/" + query, Method.DELETE);
+                IRestClient API = new RestClient(baseAddress);
+                IRestRequest req = new RestRequest(baseAddress + "/" + resource + "/" + query, Method.DELETE);
                 req.AddJsonBody(data);
                 IRestResponse res = API.Delete(req);
                 return res;

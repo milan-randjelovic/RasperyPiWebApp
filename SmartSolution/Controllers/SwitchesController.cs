@@ -35,7 +35,7 @@ namespace WebPortal.Controllers
         {
             try
             {
-                IRestResponse result = SmartSolutionAPI.Get(Request.Host.Value, Configuration.Switches, "");
+                IRestResponse result = SmartSolutionAPI.Get(Configuration.APIBaseAddress, Configuration.Switches, "");
                 IEnumerable<ISwitch> switches = JsonConvert.DeserializeObject<IEnumerable<Switch>>(result.Content);
                 return View(switches);
             }
@@ -54,7 +54,7 @@ namespace WebPortal.Controllers
         {
             try
             {
-                IRestResponse result = SmartSolutionAPI.Get(Request.Host.Value, Configuration.Switches, "");
+                IRestResponse result = SmartSolutionAPI.Get(Configuration.APIBaseAddress, Configuration.Switches, "");
                 IEnumerable<ISwitch> switches = JsonConvert.DeserializeObject<IEnumerable<Switch>>(result.Content);
                 return View(switches);
             }
@@ -74,7 +74,7 @@ namespace WebPortal.Controllers
         {
             try
             {
-                IRestResponse result = SmartSolutionAPI.Get(Request.Host.Value, Configuration.Switches, id);
+                IRestResponse result = SmartSolutionAPI.Get(Configuration.APIBaseAddress, Configuration.Switches, id);
                 ISwitch switchObj = JsonConvert.DeserializeObject<Switch>(result.Content);
                 return View(switchObj);
             }
@@ -105,7 +105,7 @@ namespace WebPortal.Controllers
         {
             try
             {
-                IRestResponse result = SmartSolutionAPI.Post(Request.Host.Value, WebPortal.Configuration.Switches, switchObject.Id, switchObject);
+                IRestResponse result = SmartSolutionAPI.Post(Configuration.APIBaseAddress, Configuration.Switches, switchObject.Id, switchObject);
                 return RedirectToAction("SwitchesConfiguration");
             }
             catch (Exception ex)
@@ -124,7 +124,7 @@ namespace WebPortal.Controllers
         {
             try
             {
-                IRestResponse result = SmartSolutionAPI.Get(Request.Host.Value, Configuration.Switches, id);
+                IRestResponse result = SmartSolutionAPI.Get(Configuration.APIBaseAddress, Configuration.Switches, id);
                 ISwitch switchObj = JsonConvert.DeserializeObject<Switch>(result.Content);
                 return View(switchObj);
             }
@@ -146,7 +146,7 @@ namespace WebPortal.Controllers
         {
             try
             {
-                IRestResponse result = SmartSolutionAPI.Put(Request.Host.Value, WebPortal.Configuration.Switches, switchObject.Id, switchObject);
+                IRestResponse result = SmartSolutionAPI.Put(Configuration.APIBaseAddress, Configuration.Switches, switchObject.Id, switchObject);
                 return RedirectToAction("SwitchesConfiguration");
             }
             catch (Exception ex)
@@ -165,7 +165,7 @@ namespace WebPortal.Controllers
         {
             try
             {
-                IRestResponse result = SmartSolutionAPI.Get(Request.Host.Value, Configuration.Switches, id);
+                IRestResponse result = SmartSolutionAPI.Get(Configuration.APIBaseAddress, Configuration.Switches, id);
                 ISwitch switchObj = JsonConvert.DeserializeObject<Switch>(result.Content);
                 return View(switchObj);
             }
@@ -187,7 +187,7 @@ namespace WebPortal.Controllers
         {
             try
             {
-                IRestResponse result = SmartSolutionAPI.Delete(Request.Host.Value, Configuration.Switches, switchObject.Id, switchObject);
+                IRestResponse result = SmartSolutionAPI.Delete(Configuration.APIBaseAddress, Configuration.Switches, switchObject.Id, switchObject);
                 ISwitch switchObj = JsonConvert.DeserializeObject<Switch>(result.Content);
                 return RedirectToAction("SwitchesConfiguration");
             }
@@ -209,7 +209,7 @@ namespace WebPortal.Controllers
         {
             try
             {
-                IRestResponse result = SmartSolutionAPI.Get(Request.Host.Value, Configuration.Switches+"/TurnON", id);
+                IRestResponse result = SmartSolutionAPI.Get(Configuration.APIBaseAddress, Configuration.Switches+"/TurnON", id);
                 return Ok(result.Content);
             }
             catch (Exception ex)
@@ -229,7 +229,7 @@ namespace WebPortal.Controllers
         {
             try
             {
-                IRestResponse result = SmartSolutionAPI.Get(Request.Host.Value, Configuration.Switches + "/TurnOFF", id);
+                IRestResponse result = SmartSolutionAPI.Get(Configuration.APIBaseAddress, Configuration.Switches + "/TurnOFF", id);
                 return Ok(result.Content);
             }
             catch (Exception ex)

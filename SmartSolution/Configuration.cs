@@ -1,12 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace WebPortal
 {
     public class Configuration
     {
+        public static string ServerPort
+        {
+            get
+            {
+                return "8080";
+            }
+        }
         public static string DatabaseConnection
         {
             get
@@ -69,6 +73,13 @@ namespace WebPortal
             get
             {
                 return 1000;
+            }
+        }
+        public static string APIBaseAddress
+        {
+            get
+            {
+                return "http://localhost:" + ServerPort + "/api";
             }
         }
     }

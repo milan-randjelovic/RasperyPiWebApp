@@ -18,9 +18,10 @@ namespace WebPortal
             var host = new WebHostBuilder()
                  .UseKestrel()
                  .UseContentRoot(Directory.GetCurrentDirectory())
-                 .UseUrls("http://*:8080")
+                 .UseUrls("http://*:" + Configuration.ServerPort)
                  .UseIISIntegration()
-                 .ConfigureAppConfiguration((context, configBuilder) => {
+                 .ConfigureAppConfiguration((context, configBuilder) =>
+                 {
                      configBuilder
                          .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                          .AddJsonFile($"appsettings.{context.HostingEnvironment.EnvironmentName}.json", optional: true)
