@@ -4,23 +4,19 @@ using SmartSolutionAPILib;
 using System;
 using System.Collections.Generic;
 using WebPortal.Models.Sensors;
-using WebPortal.Services;
 using RestSharp;
+using WebPortal.Services.Mongo;
+using WebPortal.Services.Core;
 
 namespace WebPortal.Controllers
 {
     public class SensorsController : Controller
     {
-        protected static SensorsService SensorsService { get; private set; }
+        protected static ISensorsService SensorsService { get; private set; }
 
-        public SensorsController(SensorsService sensorsService)
+        public SensorsController(ISensorsService sensorsService)
         {
             SensorsService = sensorsService;
-
-            if (SensorsService == null)
-            {
-                SensorsService = new SensorsService();
-            }
         }
 
         [HttpGet]

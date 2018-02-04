@@ -5,19 +5,18 @@ using System.Linq;
 using WebPortal.Models.Switches;
 using RaspberryLib;
 using System.Timers;
+using WebPortal.Services.Core;
 
-namespace WebPortal.Services
+namespace WebPortal.Services.SQLite
 {
-    public class SwitchesService
+    public class SQLiteSwitchesService : SwitchesService
     {
         private MongoClient client;
         private IMongoDatabase dbContext;
         private IMongoCollection<Switch> mongoCollection;
         private IMongoCollection<SwitchLog> logCollection;
-        public IEnumerable<ISwitch> Switches { get; protected set; }
-        private Timer timer;
 
-        public SwitchesService()
+        public SQLiteSwitchesService() : base()
         {
             Raspberry.Initialize();
             this.client = new MongoClient(Configuration.DatabaseConnection);
@@ -26,31 +25,9 @@ namespace WebPortal.Services
             this.logCollection = dbContext.GetCollection<SwitchLog>(Configuration.SwitchesLog);
             this.Switches = new List<Switch>();
             this.LoadConfiguration();
-            if (this.timer == null)
-            {
-                this.timer = new Timer(Configuration.LogInterval);
-                this.timer.Start();
-                this.timer.Elapsed += LoggSwitchesData;
-            }
         }
 
-        private void LoggSwitchesData(object sender, ElapsedEventArgs e)
-        {
-            try
-            {
-                foreach (Switch sw in Switches)
-                {
-                    SwitchLog switchLog = new SwitchLog(sw);
-                    this.logCollection.InsertOne(switchLog);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        ~SwitchesService()
+        ~SQLiteSwitchesService()
         {
             Raspberry.Dispose();
         }
@@ -58,7 +35,7 @@ namespace WebPortal.Services
         /// <summary>
         /// Save configuration
         /// </summary>
-        public void SaveConfiguration()
+        public override void SaveConfiguration()
         {
             try
             {
@@ -76,7 +53,7 @@ namespace WebPortal.Services
         /// <summary>
         /// Load switches configuration from databse
         /// </summary>
-        public void LoadConfiguration()
+        public override void LoadConfiguration()
         {
             try
             {
@@ -116,7 +93,7 @@ namespace WebPortal.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ISwitch GetSwitchFromDatabase(string id)
+        public override ISwitch GetSwitchFromDatabase(string id)
         {
             ISwitch switchObj;
 
@@ -153,7 +130,7 @@ namespace WebPortal.Services
         /// </summary>
         /// <param name="pinCode"></param>
         /// <returns></returns>
-        public ISwitch GetSwitchFromMemory(PinCode pinCode)
+        public override ISwitch GetSwitchFromMemory(PinCode pinCode)
         {
             ISwitch switchObj = Switches.Where(s => s.RaspberryPin == pinCode).FirstOrDefault();
             return switchObj;
@@ -163,7 +140,7 @@ namespace WebPortal.Services
         /// Create new switch
         /// </summary>
         /// <param name="switchObject"></param>
-        public void CreateNew(Switch switchObject)
+        public override void CreateNew(Switch switchObject)
         {
             try
             {
@@ -181,7 +158,7 @@ namespace WebPortal.Services
         /// Update switch 
         /// </summary>
         /// <param name="switchObject"></param>
-        public void Update(Switch switchObject)
+        public override void Update(Switch switchObject)
         {
             try
             {
@@ -204,7 +181,7 @@ namespace WebPortal.Services
         /// Delete switch
         /// </summary>
         /// <param name="id"></param>
-        public void Delete(string id)
+        public override void Delete(string id)
         {
             try
             {
@@ -218,7 +195,7 @@ namespace WebPortal.Services
             }
         }
 
-        public void TurnON(string id)
+        public override void TurnON(string id)
         {
             try
             {
@@ -232,7 +209,7 @@ namespace WebPortal.Services
             }
         }
 
-        public void TurnOFF(string id)
+        public override void TurnOFF(string id)
         {
             try
             {
@@ -246,7 +223,23 @@ namespace WebPortal.Services
             }
         }
 
-        public void GenerateTestSwitches(int numOfSwitches)
+        public override void LoggSwitchesData(object sender, ElapsedEventArgs e)
+        {
+            try
+            {
+                foreach (Switch sw in Switches)
+                {
+                    SwitchLog switchLog = new SwitchLog(sw);
+                    this.logCollection.InsertOne(switchLog);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public override void GenerateTestSwitches(int numOfSwitches)
         {
             if (numOfSwitches > 20)
             {
@@ -277,7 +270,7 @@ namespace WebPortal.Services
         /// <summary>
         /// Delete all mockup switches from db. It will not delete logs for them!
         /// </summary>
-        public void DeleteMockupSwitches()
+        public override void DeleteMockupSwitches()
         {
             try
             {

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebPortal.Models.Switches;
 using WebPortal.Services;
+using WebPortal.Services.Core;
 
 namespace WebPortal.Controllers.API
 {
@@ -13,19 +14,14 @@ namespace WebPortal.Controllers.API
     [Route("api/Switches")]
     public class SwitchesController : Controller
     {
-        protected static SwitchesService SwitchesService { get; private set; }
+        protected static ISwitchesService SwitchesService { get; private set; }
 
         /// <summary>
         /// Default constructor
         /// </summary>
-        public SwitchesController(SwitchesService switchesService)
+        public SwitchesController(ISwitchesService switchesService)
         {
             SwitchesService = switchesService;
-
-            if (SwitchesService == null)
-            {
-                SwitchesService = new SwitchesService();
-            }
         }
 
         /// <summary>

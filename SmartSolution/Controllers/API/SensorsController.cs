@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebPortal.Models.Sensors;
-using WebPortal.Models.Switches;
-using WebPortal.Services;
+using WebPortal.Services.Core;
+using WebPortal.Services.Mongo;
 
 namespace WebPortal.Controllers.API
 {
@@ -14,19 +11,14 @@ namespace WebPortal.Controllers.API
     [Route("api/Sensors")]
     public class SensorsController : Controller
     {
-        protected static SensorsService SensorsService { get; private set; }
+        protected static ISensorsService SensorsService { get; private set; }
 
         /// <summary>
         /// Default constructor
         /// </summary>
-        public SensorsController(SensorsService sensorsService)
+        public SensorsController(ISensorsService sensorsService)
         {
             SensorsService = sensorsService;
-
-            if (SensorsService == null)
-            {
-                SensorsService = new SensorsService();
-            }
         }
 
         /// <summary>

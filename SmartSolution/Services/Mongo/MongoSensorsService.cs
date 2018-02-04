@@ -5,20 +5,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
 using WebPortal.Models.Sensors;
+using WebPortal.Services.Core;
 
-namespace WebPortal.Services
+namespace WebPortal.Services.Mongo
 {
-    public class SensorsService
+    public class MongoSensorsService : SensorsService
     {
         private IMongoCollection<Sensor> mongoCollection;
         private IMongoCollection<SensorLog> logCollection;
         private MongoClient client;
         private IMongoDatabase dbContext;
-        private Timer timer;
 
-        public IEnumerable<ISensor> Sensors { get; protected set; }
-
-        public SensorsService()
+        public MongoSensorsService():base()
         {
             Raspberry.Initialize();
             this.client = new MongoClient(Configuration.DatabaseConnection);
@@ -26,31 +24,9 @@ namespace WebPortal.Services
             this.mongoCollection = dbContext.GetCollection<Sensor>(Configuration.Sensors);
             this.logCollection = dbContext.GetCollection<SensorLog>(Configuration.SensorsLog);
             this.LoadConfiguration();
-            if (this.timer == null)
-            {
-                this.timer = new Timer(Configuration.LogInterval);
-                this.timer.Start();
-                this.timer.Elapsed += LogSensorsData;
-            }
         }
 
-        private void LogSensorsData(object sender, ElapsedEventArgs e)
-        {
-            try
-            {
-                foreach (Sensor sens in Sensors)
-                {
-                    SensorLog sensorLog = new SensorLog(sens);
-                    this.logCollection.InsertOne(sensorLog);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        ~SensorsService()
+        ~MongoSensorsService()
         {
             Raspberry.Dispose();
         }
@@ -58,7 +34,7 @@ namespace WebPortal.Services
         /// <summary>
         /// Save configuration
         /// </summary>
-        public void SaveConfiguration()
+        public override void SaveConfiguration()
         {
             try
             {
@@ -76,7 +52,7 @@ namespace WebPortal.Services
         /// <summary>
         /// Load sensors configuration from databse
         /// </summary>
-        public void LoadConfiguration()
+        public override void LoadConfiguration()
         {
             try
             {
@@ -115,7 +91,7 @@ namespace WebPortal.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ISensor GetSensorFromDatabase(string id)
+        public override ISensor GetSensorFromDatabase(string id)
         {
             ISensor sensor;
 
@@ -153,7 +129,7 @@ namespace WebPortal.Services
         /// </summary>
         /// <param name="pinCode"></param>
         /// <returns></returns>
-        public ISensor GetSensorFromMemory(PinCode pinCode)
+        public override ISensor GetSensorFromMemory(PinCode pinCode)
         {
             ISensor sensor = Sensors.Where(s => s.RaspberryPin == pinCode).FirstOrDefault();
             return sensor;
@@ -163,7 +139,7 @@ namespace WebPortal.Services
         /// Create new sensor
         /// </summary>
         /// <param name="switchObject"></param>
-        public void CreateNew(Sensor sensor)
+        public override void CreateNew(Sensor sensor)
         {
             try
             {
@@ -181,7 +157,7 @@ namespace WebPortal.Services
         /// Update sensor 
         /// </summary>
         /// <param name="switchObject"></param>
-        public void Update(Sensor sensor)
+        public override void Update(Sensor sensor)
         {
             try
             {
@@ -204,7 +180,7 @@ namespace WebPortal.Services
         /// Delete sensor
         /// </summary>
         /// <param name="id"></param>
-        public void Delete(string id)
+        public override void Delete(string id)
         {
             try
             {
@@ -219,10 +195,31 @@ namespace WebPortal.Services
         }
 
         /// <summary>
+        /// Log sensors data
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public override void LogSensorsData(object sender, ElapsedEventArgs e)
+        {
+            try
+            {
+                foreach (Sensor sens in Sensors)
+                {
+                    SensorLog sensorLog = new SensorLog(sens);
+                    this.logCollection.InsertOne(sensorLog);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
         /// Create test sensors in database
         /// </summary>
         /// <param name="numOfSensors"> User define this(maximum is 20)</param>
-        public void GenerateTestSensors(int numOfSensors)
+        public override void GenerateTestSensors(int numOfSensors)
         {
             if (numOfSensors > 20)
             {
@@ -253,7 +250,7 @@ namespace WebPortal.Services
         /// <summary>
         /// Delete all mockup sensors from db. It will not delete logs for them!
         /// </summary>
-        public void DeleteMockupSensors()
+        public override void DeleteMockupSensors()
         {
             try
             {

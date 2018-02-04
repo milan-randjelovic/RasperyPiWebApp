@@ -11,6 +11,10 @@ namespace WebPortal
                 return "8080";
             }
         }
+        public static DataBase DataBase
+        {
+            get; set;
+        }
         public static string DatabaseConnection
         {
             get
@@ -82,5 +86,11 @@ namespace WebPortal
                 return "http://localhost:" + ServerPort + "/api";
             }
         }
+    }
+
+    public enum DataBase
+    {
+        SQLite,
+        MongoDB
     }
 }
