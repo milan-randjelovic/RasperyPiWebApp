@@ -11,10 +11,10 @@ namespace WebPortal.Services.Mongo
 {
     public class MongoSensorsService : SensorsService
     {
-        private IMongoCollection<Sensor> mongoCollection;
-        private IMongoCollection<SensorLog> logCollection;
         private MongoClient client;
         private IMongoDatabase dbContext;
+        private IMongoCollection<Sensor> mongoCollection;
+        private IMongoCollection<SensorLog> logCollection;
 
         public MongoSensorsService():base()
         {

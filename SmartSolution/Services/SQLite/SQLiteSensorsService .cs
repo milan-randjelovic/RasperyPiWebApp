@@ -11,10 +11,10 @@ namespace WebPortal.Services.SQLite
 {
     public class SQLiteSensorsService : SensorsService
     {
-        private IMongoCollection<Sensor> mongoCollection;
-        private IMongoCollection<SensorLog> logCollection;
         private MongoClient client;
         private IMongoDatabase dbContext;
+        private IMongoCollection<Sensor> mongoCollection;
+        private IMongoCollection<SensorLog> logCollection;
 
         public SQLiteSensorsService() : base()
         {
