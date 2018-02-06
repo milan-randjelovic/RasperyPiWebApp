@@ -5,7 +5,7 @@ using System.Linq;
 using WebPortal.Models.Switches;
 using RaspberryLib;
 using System.Timers;
-using WebPortal.Services.Core;
+using WebPortal.Services.Core.Switches;
 
 namespace WebPortal.Services.SQLite
 {
@@ -16,7 +16,7 @@ namespace WebPortal.Services.SQLite
         public SQLiteSwitchesService() : base()
         {
             Raspberry.Initialize();
-            this.dbContext = new SQLiteDbContext(Configuration.DatabaseConnection);
+            this.dbContext = new SQLiteDbContext(Configuration.DatabaseConnection,Configuration.DatabaseName);
             this.dbContext.Database.EnsureCreated();
             this.LoadConfiguration();
         }
@@ -35,13 +35,16 @@ namespace WebPortal.Services.SQLite
             {
                 foreach (Switch sw in Switches)
                 {
-                    Switch s = this.dbContext.Switches.Find(sw.Id);
-                    s.DeviceType = sw.DeviceType;
-                    s.Name = sw.Name;
-                    s.RaspberryPin = sw.RaspberryPin;
-                    s.SwitchType = sw.SwitchType;
-                    s.State = sw.State;
-                    s.InverseLogic = sw.InverseLogic;
+                    Switch switchObj = this.dbContext.Switches.Where(s => s.Id == sw.Id).SingleOrDefault();
+                    if (switchObj != null)
+                    {
+                        switchObj.DeviceType = sw.DeviceType;
+                        switchObj.Name = sw.Name;
+                        switchObj.RaspberryPin = sw.RaspberryPin;
+                        switchObj.SwitchType = sw.SwitchType;
+                        switchObj.State = sw.State;
+                        switchObj.InverseLogic = sw.InverseLogic;
+                    }
                 }
                 this.dbContext.SaveChanges();
             }
@@ -187,8 +190,8 @@ namespace WebPortal.Services.SQLite
         {
             try
             {
-                Switch sw = this.dbContext.Switches.Where(s => s.Id == id).SingleOrDefault();
-                this.dbContext.Switches.Remove(sw);
+                Switch switchObj = this.dbContext.Switches.Where(s => s.Id == id).SingleOrDefault();
+                this.dbContext.Switches.Remove(switchObj);
                 this.dbContext.SaveChanges();
                 this.SaveConfiguration();
                 this.LoadConfiguration();

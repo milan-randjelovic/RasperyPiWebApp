@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using WebPortal.Services;
-using WebPortal.Services.Core;
+using WebPortal.Services.Core.Sensors;
+using WebPortal.Services.Core.Switches;
 using WebPortal.Services.Mongo;
 using WebPortal.Services.SQLite;
 

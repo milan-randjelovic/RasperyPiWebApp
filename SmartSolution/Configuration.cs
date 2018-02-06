@@ -75,6 +75,13 @@ namespace WebPortal
                 return "SwitchesLog";
             }
         }
+        public static bool LoggingEnabled
+        {
+            get
+            {
+                return false;
+            }
+        }
         public static int LogInterval
         {
             get

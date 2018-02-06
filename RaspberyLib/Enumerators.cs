@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace RaspberryLib
 {
@@ -15,6 +16,11 @@ namespace RaspberryLib
             }
 
             return 0;
+        }
+
+        public static bool IsGPIOPin(PinCode pinCode)
+        {
+            return pinCode.ToString().ToUpper().Contains("GPIO");
         }
 
         public static string GetGPIOName(PinCode pinCode)
@@ -78,6 +84,21 @@ namespace RaspberryLib
             {
                 return PinGroup.GPIO;
             }
+        }
+
+        public static IEnumerable<PinCode> GetGPIOPins()
+        {
+            List<PinCode> result = new List<PinCode>();
+
+            for (int i = 0; i < 40; i++)
+            {
+                if (IsGPIOPin((PinCode)i))
+                {
+                    result.Add((PinCode)i);
+                }
+            }
+
+            return result;
         }
     }
 

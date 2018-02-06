@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Timers;
-using WebPortal.Services;
 
 namespace WebPortal.Models.Sensors
 {

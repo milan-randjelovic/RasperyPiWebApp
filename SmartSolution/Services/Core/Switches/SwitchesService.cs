@@ -3,20 +3,34 @@ using System.Timers;
 using RaspberryLib;
 using WebPortal.Models.Switches;
 
-namespace WebPortal.Services.Core
+namespace WebPortal.Services.Core.Switches
 {
     public abstract class SwitchesService : ISwitchesService
     {
         protected Timer timer;
         public IEnumerable<ISwitch> Switches { get; set; }
+        public bool LoggingEnabled
+        {
+            get
+            {
+                return this.timer.Enabled;
+            }
+            set
+            {
+                this.timer.Enabled = value;
+            }
+        }
 
         public SwitchesService()
         {
             if (this.timer == null)
             {
                 this.timer = new Timer(Configuration.LogInterval);
-                this.timer.Start();
                 this.timer.Elapsed += LoggSwitchesData;
+                if (Configuration.LoggingEnabled)
+                {
+                    this.timer.Start();
+                }
             }
         }
 

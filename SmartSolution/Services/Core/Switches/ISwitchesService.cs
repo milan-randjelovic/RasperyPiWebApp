@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Timers;
 using WebPortal.Models.Switches;
 
-namespace WebPortal.Services.Core
+namespace WebPortal.Services.Core.Switches
 {
     public interface ISwitchesService
     {
@@ -53,6 +53,10 @@ namespace WebPortal.Services.Core
         /// </summary>
         /// <param name="id"></param>
         void TurnOFF(string id);
+        /// <summary>
+        /// Enables/Disables logging
+        /// </summary>
+        bool LoggingEnabled { get; set; }
         /// <summary>
         /// Generate test switches
         /// </summary>

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
 using WebPortal.Models.Sensors;
-using WebPortal.Services.Core;
+using WebPortal.Services.Core.Sensors;
 
 namespace WebPortal.Services.Mongo
 {
@@ -16,7 +16,7 @@ namespace WebPortal.Services.Mongo
         public MongoSensorsService() : base()
         {
             Raspberry.Initialize();
-            this.dbContext = new MongoDbContext(Configuration.DatabaseConnection,Configuration.DatabaseName);
+            this.dbContext = new MongoDbContext(Configuration.DatabaseConnection, Configuration.DatabaseName);
             this.LoadConfiguration();
         }
 
@@ -62,6 +62,7 @@ namespace WebPortal.Services.Mongo
                         mockupSensor.Id = s.Id;
                         mockupSensor.Name = s.Name;
                         mockupSensor.SensorType = s.SensorType;
+                        mockupSensor.RaspberryPin = s.RaspberryPin;
                         mockupSensor.Timestamp = s.Timestamp;
                         mockupSensor.Value = s.Value;
                         result.Add(mockupSensor);
@@ -103,6 +104,7 @@ namespace WebPortal.Services.Mongo
                         mockupSensor.Id = s.Id;
                         mockupSensor.Name = s.Name;
                         mockupSensor.SensorType = s.SensorType;
+                        mockupSensor.RaspberryPin = s.RaspberryPin;
                         mockupSensor.Timestamp = s.Timestamp;
                         mockupSensor.Value = s.Value;
                         sensor = mockupSensor;

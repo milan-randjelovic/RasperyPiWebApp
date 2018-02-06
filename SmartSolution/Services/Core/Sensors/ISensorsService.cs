@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using WebPortal.Models.Sensors;
 
-namespace WebPortal.Services.Core
+namespace WebPortal.Services.Core.Sensors
 {
     public interface ISensorsService
     {
@@ -42,6 +42,10 @@ namespace WebPortal.Services.Core
         /// </summary>
         /// <param name="id"></param>
         void Delete(string id);
+        /// <summary>
+        /// Enables/Disables logging
+        /// </summary>
+        bool LoggingEnabled { get; set; }
         /// <summary>
         /// Create test sensors in database
         /// </summary>

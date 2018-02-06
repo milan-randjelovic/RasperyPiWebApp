@@ -3,20 +3,34 @@ using System.Timers;
 using RaspberryLib;
 using WebPortal.Models.Sensors;
 
-namespace WebPortal.Services.Core
+namespace WebPortal.Services.Core.Sensors
 {
     public abstract class SensorsService : ISensorsService
     {
         protected Timer timer;
         public IEnumerable<ISensor> Sensors { get; set; }
+        public bool LoggingEnabled
+        {
+            get
+            {
+                return this.timer.Enabled;
+            }
+            set
+            {
+                this.timer.Enabled = value;
+            }
+        }
 
         public SensorsService()
         {
             if (this.timer == null)
             {
                 this.timer = new Timer(Configuration.LogInterval);
-                this.timer.Start();
                 this.timer.Elapsed += LogSensorsData;
+                if (Configuration.LoggingEnabled)
+                {
+                    this.timer.Start();
+                }
             }
         }
 

@@ -2,7 +2,7 @@
 
 namespace WebPortal.Models.Switches
 {
-    public class SwitchLog
+    public class SwitchLog : ISwitchLog
     {
         public string Id { get; set; }
         public string SwitchId { get; set; }
@@ -23,7 +23,7 @@ namespace WebPortal.Models.Switches
         public SwitchLog(Switch switchObj)
         {
             this.Id = Guid.NewGuid().ToString();
-            this.SwitchId =switchObj.Id;
+            this.SwitchId = switchObj.Id;
             this.Value = switchObj.State;
             this.Timestamp = DateTime.Now;
         }

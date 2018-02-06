@@ -6,6 +6,7 @@ namespace WebPortal.Services.SQLite
 {
     public class SQLiteDbContext : DbContext
     {
+        private string dbName;
         private string dbConnectionString;
 
         public DbSet<Switch> Switches { get; set; }
@@ -13,9 +14,13 @@ namespace WebPortal.Services.SQLite
         public DbSet<Sensor> Sensors { get; set; }
         public DbSet<SensorLog> SensorsLog { get; set; }
 
-        public SQLiteDbContext(string connectionString)
+        public string DatabaseName { get; set; }
+        public string DatabaseConnectionString { get; set; }
+
+        public SQLiteDbContext(string connectionString,string databaseName)
         {
             this.dbConnectionString = connectionString;
+            this.dbName = databaseName;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -2,7 +2,7 @@
 
 namespace WebPortal.Models.Sensors
 {
-    public class SensorLog
+    public class SensorLog : ISensorLog
     {
         public string Id { get; set; }
         public string SensorId { get; set; }

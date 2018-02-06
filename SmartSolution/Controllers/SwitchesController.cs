@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using RestSharp;
 using SmartSolutionAPILib;
 using WebPortal.Models.Switches;
-using WebPortal.Services;
-using WebPortal.Services.Core;
+using WebPortal.Services.Core.Switches;
 
 namespace WebPortal.Controllers
 {

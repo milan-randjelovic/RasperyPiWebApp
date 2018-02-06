@@ -4,8 +4,8 @@ using RaspberryLib;
 using Test.Models;
 using WebPortal.Models.Sensors;
 using WebPortal.Models.Switches;
-using WebPortal.Services.Core;
-using WebPortal.Services.Mongo;
+using WebPortal.Services.Core.Sensors;
+using WebPortal.Services.Core.Switches;
 
 namespace Test.Controllers
 {

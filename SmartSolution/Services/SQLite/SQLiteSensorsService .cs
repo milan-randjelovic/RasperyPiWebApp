@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
 using WebPortal.Models.Sensors;
-using WebPortal.Services.Core;
+using WebPortal.Services.Core.Sensors;
 
 namespace WebPortal.Services.SQLite
 {
@@ -16,7 +16,7 @@ namespace WebPortal.Services.SQLite
         public SQLiteSensorsService() : base()
         {
             Raspberry.Initialize();
-            this.dbContext = new SQLiteDbContext(Configuration.DatabaseConnection);
+            this.dbContext = new SQLiteDbContext(Configuration.DatabaseConnection, Configuration.DatabaseName);
             this.dbContext.Database.EnsureCreated();
             this.LoadConfiguration();
         }
@@ -33,15 +33,18 @@ namespace WebPortal.Services.SQLite
         {
             try
             {
-                foreach (Sensor sensor in Sensors)
+                foreach (Sensor sens in Sensors)
                 {
-                    Sensor s = this.dbContext.Sensors.Find(sensor.Id);
-                    s.DeviceType = sensor.DeviceType;
-                    s.Name = sensor.Name;
-                    s.RaspberryPin = sensor.RaspberryPin;
-                    s.SensorType = sensor.SensorType;
-                    s.Timestamp = sensor.Timestamp;
-                    s.Value = sensor.Value;
+                    Sensor sensor = this.dbContext.Sensors.Where(s => s.Id == sens.Id).SingleOrDefault();
+                    if (sensor != null)
+                    {
+                        sensor.DeviceType = sens.DeviceType;
+                        sensor.Name = sens.Name;
+                        sensor.RaspberryPin = sens.RaspberryPin;
+                        sensor.SensorType = sens.SensorType;
+                        sensor.Timestamp = sens.Timestamp;
+                        sensor.Value = sens.Value;
+                    }
                 }
                 this.dbContext.SaveChanges();
             }
@@ -70,6 +73,7 @@ namespace WebPortal.Services.SQLite
                         mockupSensor.Id = s.Id;
                         mockupSensor.Name = s.Name;
                         mockupSensor.SensorType = s.SensorType;
+                        mockupSensor.RaspberryPin = s.RaspberryPin;
                         mockupSensor.Timestamp = s.Timestamp;
                         mockupSensor.Value = s.Value;
                         result.Add(mockupSensor);
@@ -111,6 +115,7 @@ namespace WebPortal.Services.SQLite
                         mockupSensor.Id = sens.Id;
                         mockupSensor.Name = sens.Name;
                         mockupSensor.SensorType = sens.SensorType;
+                        mockupSensor.RaspberryPin = sens.RaspberryPin;
                         mockupSensor.Timestamp = sens.Timestamp;
                         mockupSensor.Value = sens.Value;
                         sensor = mockupSensor;

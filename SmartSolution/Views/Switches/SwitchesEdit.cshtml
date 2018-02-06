@@ -4,8 +4,7 @@
 
 @{
     ViewBag.Title = "Switch";
-    var raspberryPins = Enum.GetNames(typeof(PinCode));
-    SelectList raspberryPinsList = new SelectList(raspberryPins);
+    SelectList raspberryPinsList = new SelectList(EnumeratorHelpers.GetGPIOPins());
     var switchTypes = Enum.GetNames(typeof(SwitchType));
     SelectList switchTypesList = new SelectList(switchTypes);
 }

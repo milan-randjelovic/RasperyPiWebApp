@@ -5,8 +5,7 @@ using System;
 using System.Collections.Generic;
 using WebPortal.Models.Sensors;
 using RestSharp;
-using WebPortal.Services.Mongo;
-using WebPortal.Services.Core;
+using WebPortal.Services.Core.Sensors;
 
 namespace WebPortal.Controllers
 {

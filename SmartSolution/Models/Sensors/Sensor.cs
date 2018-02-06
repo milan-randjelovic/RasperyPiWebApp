@@ -22,7 +22,7 @@ namespace WebPortal.Models.Sensors
         {
             this.RaspberryPin = PinCode.PIN1_3V3;
             this.SensorType = SensorType.Regular;
-            this.Value = "";
+            this.Value = "0";
             this.Timestamp = DateTime.Now;
         }
     }

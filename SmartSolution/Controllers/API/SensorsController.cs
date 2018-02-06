@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using WebPortal.Models.Sensors;
-using WebPortal.Services.Core;
-using WebPortal.Services.Mongo;
+using WebPortal.Services.Core.Sensors;
 
 namespace WebPortal.Controllers.API
 {
