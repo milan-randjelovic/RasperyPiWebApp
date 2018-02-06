@@ -11,18 +11,12 @@ namespace WebPortal.Services.Mongo
 {
     public class MongoSwitchesService : SwitchesService
     {
-        private MongoClient client;
-        private IMongoDatabase dbContext;
-        private IMongoCollection<Switch> mongoCollection;
-        private IMongoCollection<SwitchLog> logCollection;
+        private MongoDbContext dbContext;
 
         public MongoSwitchesService() : base()
         {
             Raspberry.Initialize();
-            this.client = new MongoClient(Configuration.DatabaseConnection);
-            this.dbContext = client.GetDatabase(Configuration.DatabaseName);
-            this.mongoCollection = dbContext.GetCollection<Switch>(Configuration.Switches);
-            this.logCollection = dbContext.GetCollection<SwitchLog>(Configuration.SwitchesLog);
+            this.dbContext = new MongoDbContext(Configuration.DatabaseConnection, Configuration.DatabaseName);
             this.LoadConfiguration();
         }
 
@@ -40,7 +34,7 @@ namespace WebPortal.Services.Mongo
             {
                 foreach (Switch sw in Switches)
                 {
-                    this.mongoCollection.FindOneAndReplace(s => s.Id == sw.Id, sw);
+                    this.dbContext.Switches.FindOneAndReplace(s => s.Id == sw.Id, sw);
                 }
             }
             catch (Exception ex)
@@ -56,7 +50,7 @@ namespace WebPortal.Services.Mongo
         {
             try
             {
-                List<Switch> switches = this.mongoCollection.Find(s => s.Id != "").ToList();
+                List<Switch> switches = this.dbContext.Switches.Find(s => s.Id != "").ToList();
                 List<Switch> result = new List<Switch>();
 
                 foreach (Switch s in switches)
@@ -98,7 +92,7 @@ namespace WebPortal.Services.Mongo
 
             try
             {
-                Switch s = this.mongoCollection.Find(sw => sw.Id == id).SingleOrDefault();
+                Switch s = this.dbContext.Switches.Find(sw => sw.Id == id).SingleOrDefault();
 
                 if (s != null)
                 {
@@ -143,7 +137,7 @@ namespace WebPortal.Services.Mongo
         {
             try
             {
-                this.mongoCollection.InsertOne(switchObject);
+                this.dbContext.Switches.InsertOne(switchObject);
                 this.SaveConfiguration();
                 this.LoadConfiguration();
             }
@@ -184,7 +178,7 @@ namespace WebPortal.Services.Mongo
         {
             try
             {
-                this.mongoCollection.FindOneAndDelete(sw => sw.Id == id);
+                this.dbContext.Switches.FindOneAndDelete(sw => sw.Id == id);
                 this.SaveConfiguration();
                 this.LoadConfiguration();
             }
@@ -229,7 +223,7 @@ namespace WebPortal.Services.Mongo
                 foreach (Switch sw in Switches)
                 {
                     SwitchLog switchLog = new SwitchLog(sw);
-                    this.logCollection.InsertOne(switchLog);
+                    this.dbContext.SwitchesLog.InsertOne(switchLog);
                 }
             }
             catch (Exception ex)
@@ -255,7 +249,7 @@ namespace WebPortal.Services.Mongo
                 {
                     MockupSwitch mockupSwitch = new MockupSwitch();
                     mockupSwitch.Name = "TestSensor";
-                    mongoCollection.InsertOne(mockupSwitch);
+                    this.dbContext.Switches.InsertOne(mockupSwitch);
                 }
                 this.SaveConfiguration();
                 this.LoadConfiguration();
@@ -273,13 +267,12 @@ namespace WebPortal.Services.Mongo
         {
             try
             {
-                this.mongoCollection.DeleteMany(sw => sw.SwitchType == SwitchType.Mockup);
+                this.dbContext.Switches.DeleteMany(sw => sw.SwitchType == SwitchType.Mockup);
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-
         }
     }
 }

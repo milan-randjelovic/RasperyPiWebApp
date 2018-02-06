@@ -11,12 +11,12 @@ namespace WebPortal.Services.SQLite
 {
     public class SQLiteSwitchesService : SwitchesService
     {
-        private SQLiteDatabase dbContext;
+        private SQLiteDbContext dbContext;
 
         public SQLiteSwitchesService() : base()
         {
             Raspberry.Initialize();
-            this.dbContext = new SQLiteDatabase(Configuration.DatabaseConnection);
+            this.dbContext = new SQLiteDbContext(Configuration.DatabaseConnection);
             this.dbContext.Database.EnsureCreated();
             this.LoadConfiguration();
         }

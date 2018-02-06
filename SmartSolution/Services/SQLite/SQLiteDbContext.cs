@@ -4,7 +4,7 @@ using WebPortal.Models.Switches;
 
 namespace WebPortal.Services.SQLite
 {
-    public class SQLiteDatabase : DbContext
+    public class SQLiteDbContext : DbContext
     {
         private string dbConnectionString;
 
@@ -13,7 +13,7 @@ namespace WebPortal.Services.SQLite
         public DbSet<Sensor> Sensors { get; set; }
         public DbSet<SensorLog> SensorsLog { get; set; }
 
-        public SQLiteDatabase(string connectionString)
+        public SQLiteDbContext(string connectionString)
         {
             this.dbConnectionString = connectionString;
         }

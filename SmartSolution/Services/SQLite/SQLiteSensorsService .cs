@@ -11,12 +11,12 @@ namespace WebPortal.Services.SQLite
 {
     public class SQLiteSensorsService : SensorsService
     {
-        private SQLiteDatabase dbContext;
+        private SQLiteDbContext dbContext;
 
         public SQLiteSensorsService() : base()
         {
             Raspberry.Initialize();
-            this.dbContext = new SQLiteDatabase(Configuration.DatabaseConnection);
+            this.dbContext = new SQLiteDbContext(Configuration.DatabaseConnection);
             this.dbContext.Database.EnsureCreated();
             this.LoadConfiguration();
         }

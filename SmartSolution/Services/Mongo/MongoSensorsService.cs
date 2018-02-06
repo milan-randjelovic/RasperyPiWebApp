@@ -11,18 +11,12 @@ namespace WebPortal.Services.Mongo
 {
     public class MongoSensorsService : SensorsService
     {
-        private MongoClient client;
-        private IMongoDatabase dbContext;
-        private IMongoCollection<Sensor> mongoCollection;
-        private IMongoCollection<SensorLog> logCollection;
+        private MongoDbContext dbContext;
 
         public MongoSensorsService() : base()
         {
             Raspberry.Initialize();
-            this.client = new MongoClient(Configuration.DatabaseConnection);
-            this.dbContext = client.GetDatabase(Configuration.DatabaseName);
-            this.mongoCollection = dbContext.GetCollection<Sensor>(Configuration.Sensors);
-            this.logCollection = dbContext.GetCollection<SensorLog>(Configuration.SensorsLog);
+            this.dbContext = new MongoDbContext(Configuration.DatabaseConnection,Configuration.DatabaseName);
             this.LoadConfiguration();
         }
 
@@ -40,7 +34,7 @@ namespace WebPortal.Services.Mongo
             {
                 foreach (Sensor sensor in Sensors)
                 {
-                    this.mongoCollection.FindOneAndReplace(s => s.Id == sensor.Id, sensor);
+                    this.dbContext.Sensors.FindOneAndReplace(s => s.Id == sensor.Id, sensor);
                 }
             }
             catch (Exception ex)
@@ -56,7 +50,7 @@ namespace WebPortal.Services.Mongo
         {
             try
             {
-                List<Sensor> sensors = this.mongoCollection.Find(s => s.Id != "").ToList();
+                List<Sensor> sensors = this.dbContext.Sensors.Find(s => s.Id != "").ToList();
                 List<Sensor> result = new List<Sensor>();
 
                 foreach (Sensor s in sensors)
@@ -97,7 +91,7 @@ namespace WebPortal.Services.Mongo
 
             try
             {
-                Sensor s = this.mongoCollection.Find(sw => sw.Id == id).SingleOrDefault();
+                Sensor s = this.dbContext.Sensors.Find(sw => sw.Id == id).SingleOrDefault();
 
                 if (s != null)
                 {
@@ -143,7 +137,7 @@ namespace WebPortal.Services.Mongo
         {
             try
             {
-                this.mongoCollection.InsertOne(sensor);
+                this.dbContext.Sensors.InsertOne(sensor);
                 this.SaveConfiguration();
                 this.LoadConfiguration();
             }
@@ -184,7 +178,7 @@ namespace WebPortal.Services.Mongo
         {
             try
             {
-                this.mongoCollection.FindOneAndDelete(sw => sw.Id == id);
+                this.dbContext.Sensors.FindOneAndDelete(sw => sw.Id == id);
                 this.SaveConfiguration();
                 this.LoadConfiguration();
             }
@@ -206,7 +200,7 @@ namespace WebPortal.Services.Mongo
                 foreach (Sensor sens in Sensors)
                 {
                     SensorLog sensorLog = new SensorLog(sens);
-                    this.logCollection.InsertOne(sensorLog);
+                    this.dbContext.SensorsLog.InsertOne(sensorLog);
                 }
             }
             catch (Exception ex)
@@ -236,7 +230,7 @@ namespace WebPortal.Services.Mongo
                 {
                     MockupSensor mockupSensor = new MockupSensor();
                     mockupSensor.Name = "TestSensor";
-                    mongoCollection.InsertOne(mockupSensor);
+                    this.dbContext.Sensors.InsertOne(mockupSensor);
                 }
                 this.SaveConfiguration();
                 this.LoadConfiguration();
@@ -254,13 +248,12 @@ namespace WebPortal.Services.Mongo
         {
             try
             {
-                this.mongoCollection.DeleteMany(sens => sens.SensorType == SensorType.Mockup);
+                this.dbContext.Sensors.DeleteMany(sens => sens.SensorType == SensorType.Mockup);
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-
         }
     }
 }
