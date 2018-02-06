@@ -27,7 +27,6 @@ namespace WebPortal
         {
             services.AddMvc();
 
-            WebPortal.Configuration.DataBase = DataBase.MongoDB;
             ISensorsService SensorsService;
             ISwitchesService SwitchesService;
             switch (WebPortal.Configuration.DataBase)

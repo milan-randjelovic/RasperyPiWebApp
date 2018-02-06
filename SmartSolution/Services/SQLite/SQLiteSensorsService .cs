@@ -11,25 +11,14 @@ namespace WebPortal.Services.SQLite
 {
     public class SQLiteSensorsService : SensorsService
     {
-        private MongoClient client;
-        private IMongoDatabase dbContext;
-        private IMongoCollection<Sensor> mongoCollection;
-        private IMongoCollection<SensorLog> logCollection;
+        private SQLiteDatabase dbContext;
 
         public SQLiteSensorsService() : base()
         {
             Raspberry.Initialize();
-            this.client = new MongoClient(Configuration.DatabaseConnection);
-            this.dbContext = client.GetDatabase(Configuration.DatabaseName);
-            this.mongoCollection = dbContext.GetCollection<Sensor>(Configuration.Sensors);
-            this.logCollection = dbContext.GetCollection<SensorLog>(Configuration.SensorsLog);
+            this.dbContext = new SQLiteDatabase(Configuration.DatabaseConnection);
+            this.dbContext.Database.EnsureCreated();
             this.LoadConfiguration();
-            if (this.timer == null)
-            {
-                this.timer = new Timer(Configuration.LogInterval);
-                this.timer.Start();
-                this.timer.Elapsed += LogSensorsData;
-            }
         }
 
         ~SQLiteSensorsService()
@@ -46,8 +35,15 @@ namespace WebPortal.Services.SQLite
             {
                 foreach (Sensor sensor in Sensors)
                 {
-                    this.mongoCollection.FindOneAndReplace(s => s.Id == sensor.Id, sensor);
+                    Sensor s = this.dbContext.Sensors.Find(sensor.Id);
+                    s.DeviceType = sensor.DeviceType;
+                    s.Name = sensor.Name;
+                    s.RaspberryPin = sensor.RaspberryPin;
+                    s.SensorType = sensor.SensorType;
+                    s.Timestamp = sensor.Timestamp;
+                    s.Value = sensor.Value;
                 }
+                this.dbContext.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -62,7 +58,7 @@ namespace WebPortal.Services.SQLite
         {
             try
             {
-                List<Sensor> sensors = this.mongoCollection.Find(s => s.Id != "").ToList();
+                List<Sensor> sensors = this.dbContext.Sensors.ToList();
                 List<Sensor> result = new List<Sensor>();
 
                 foreach (Sensor s in sensors)
@@ -103,25 +99,25 @@ namespace WebPortal.Services.SQLite
 
             try
             {
-                Sensor s = this.mongoCollection.Find(sw => sw.Id == id).SingleOrDefault();
+                Sensor sens = this.dbContext.Sensors.Where(s => s.Id == id).SingleOrDefault();
 
-                if (s != null)
+                if (sens != null)
                 {
-                    if (s.SensorType == SensorType.Mockup)
+                    if (sens.SensorType == SensorType.Mockup)
                     {
 
                         MockupSensor mockupSensor = new MockupSensor();
-                        mockupSensor.DeviceType = s.DeviceType;
-                        mockupSensor.Id = s.Id;
-                        mockupSensor.Name = s.Name;
-                        mockupSensor.SensorType = s.SensorType;
-                        mockupSensor.Timestamp = s.Timestamp;
-                        mockupSensor.Value = s.Value;
+                        mockupSensor.DeviceType = sens.DeviceType;
+                        mockupSensor.Id = sens.Id;
+                        mockupSensor.Name = sens.Name;
+                        mockupSensor.SensorType = sens.SensorType;
+                        mockupSensor.Timestamp = sens.Timestamp;
+                        mockupSensor.Value = sens.Value;
                         sensor = mockupSensor;
                     }
                 }
 
-                sensor = s;
+                sensor = sens;
             }
             catch (Exception ex)
             {
@@ -149,7 +145,8 @@ namespace WebPortal.Services.SQLite
         {
             try
             {
-                this.mongoCollection.InsertOne(sensor);
+                this.dbContext.Sensors.Add(sensor);
+                this.dbContext.SaveChanges();
                 this.SaveConfiguration();
                 this.LoadConfiguration();
             }
@@ -190,7 +187,9 @@ namespace WebPortal.Services.SQLite
         {
             try
             {
-                this.mongoCollection.FindOneAndDelete(sw => sw.Id == id);
+                Sensor sensor = this.dbContext.Sensors.Where(s => s.Id == id).SingleOrDefault();
+                this.dbContext.Sensors.Remove(sensor);
+                this.dbContext.SaveChanges();
                 this.SaveConfiguration();
                 this.LoadConfiguration();
             }
@@ -212,8 +211,9 @@ namespace WebPortal.Services.SQLite
                 foreach (Sensor sens in Sensors)
                 {
                     SensorLog sensorLog = new SensorLog(sens);
-                    this.logCollection.InsertOne(sensorLog);
+                    this.dbContext.SensorsLog.Add(sensorLog);
                 }
+                this.dbContext.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -242,8 +242,9 @@ namespace WebPortal.Services.SQLite
                 {
                     MockupSensor mockupSensor = new MockupSensor();
                     mockupSensor.Name = "TestSensor";
-                    mongoCollection.InsertOne(mockupSensor);
+                    this.dbContext.Sensors.Add(mockupSensor);
                 }
+                this.dbContext.SaveChanges();
                 this.SaveConfiguration();
                 this.LoadConfiguration();
             }
@@ -260,7 +261,9 @@ namespace WebPortal.Services.SQLite
         {
             try
             {
-                this.mongoCollection.DeleteMany(sens => sens.SensorType == SensorType.Mockup);
+                List<Sensor> sensors = this.dbContext.Sensors.Where(sens => sens.SensorType == SensorType.Mockup).ToList();
+                this.dbContext.RemoveRange(sensors);
+                this.dbContext.SaveChanges();
             }
             catch (Exception ex)
             {

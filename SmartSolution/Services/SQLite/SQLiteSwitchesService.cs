@@ -11,19 +11,13 @@ namespace WebPortal.Services.SQLite
 {
     public class SQLiteSwitchesService : SwitchesService
     {
-        private MongoClient client;
-        private IMongoDatabase dbContext;
-        private IMongoCollection<Switch> mongoCollection;
-        private IMongoCollection<SwitchLog> logCollection;
+        private SQLiteDatabase dbContext;
 
         public SQLiteSwitchesService() : base()
         {
             Raspberry.Initialize();
-            this.client = new MongoClient(Configuration.DatabaseConnection);
-            this.dbContext = client.GetDatabase(Configuration.DatabaseName);
-            this.mongoCollection = dbContext.GetCollection<Switch>(Configuration.Switches);
-            this.logCollection = dbContext.GetCollection<SwitchLog>(Configuration.SwitchesLog);
-            this.Switches = new List<Switch>();
+            this.dbContext = new SQLiteDatabase(Configuration.DatabaseConnection);
+            this.dbContext.Database.EnsureCreated();
             this.LoadConfiguration();
         }
 
@@ -41,8 +35,15 @@ namespace WebPortal.Services.SQLite
             {
                 foreach (Switch sw in Switches)
                 {
-                    this.mongoCollection.FindOneAndReplace(s => s.Id == sw.Id, sw);
+                    Switch s = this.dbContext.Switches.Find(sw.Id);
+                    s.DeviceType = sw.DeviceType;
+                    s.Name = sw.Name;
+                    s.RaspberryPin = sw.RaspberryPin;
+                    s.SwitchType = sw.SwitchType;
+                    s.State = sw.State;
+                    s.InverseLogic = sw.InverseLogic;
                 }
+                this.dbContext.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -57,7 +58,7 @@ namespace WebPortal.Services.SQLite
         {
             try
             {
-                List<Switch> switches = this.mongoCollection.Find(s => s.Id != "").ToList();
+                List<Switch> switches = this.dbContext.Switches.ToList();
                 List<Switch> result = new List<Switch>();
 
                 foreach (Switch s in switches)
@@ -99,7 +100,7 @@ namespace WebPortal.Services.SQLite
 
             try
             {
-                Switch s = this.mongoCollection.Find(sw => sw.Id == id).SingleOrDefault();
+                Switch s = this.dbContext.Switches.Where(sw => sw.Id == id).SingleOrDefault();
 
                 if (s != null)
                 {
@@ -144,7 +145,8 @@ namespace WebPortal.Services.SQLite
         {
             try
             {
-                this.mongoCollection.InsertOne(switchObject);
+                this.dbContext.Switches.Add(switchObject);
+                this.dbContext.SaveChanges();
                 this.SaveConfiguration();
                 this.LoadConfiguration();
             }
@@ -185,7 +187,9 @@ namespace WebPortal.Services.SQLite
         {
             try
             {
-                this.mongoCollection.FindOneAndDelete(sw => sw.Id == id);
+                Switch sw = this.dbContext.Switches.Where(s => s.Id == id).SingleOrDefault();
+                this.dbContext.Switches.Remove(sw);
+                this.dbContext.SaveChanges();
                 this.SaveConfiguration();
                 this.LoadConfiguration();
             }
@@ -230,8 +234,9 @@ namespace WebPortal.Services.SQLite
                 foreach (Switch sw in Switches)
                 {
                     SwitchLog switchLog = new SwitchLog(sw);
-                    this.logCollection.InsertOne(switchLog);
+                    this.dbContext.SwitchesLog.Add(switchLog);
                 }
+                this.dbContext.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -256,8 +261,9 @@ namespace WebPortal.Services.SQLite
                 {
                     MockupSwitch mockupSwitch = new MockupSwitch();
                     mockupSwitch.Name = "TestSensor";
-                    mongoCollection.InsertOne(mockupSwitch);
+                    this.dbContext.Switches.Add(mockupSwitch);
                 }
+                this.dbContext.SaveChanges();
                 this.SaveConfiguration();
                 this.LoadConfiguration();
             }
@@ -274,7 +280,9 @@ namespace WebPortal.Services.SQLite
         {
             try
             {
-                this.mongoCollection.DeleteMany(sw => sw.SwitchType == SwitchType.Mockup);
+                List<Switch> switches = this.dbContext.Switches.Where(s => s.SwitchType == SwitchType.Mockup).ToList();
+                this.dbContext.RemoveRange(switches);
+                this.dbContext.SaveChanges();
             }
             catch (Exception ex)
             {

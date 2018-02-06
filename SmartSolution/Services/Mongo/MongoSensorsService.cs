@@ -16,7 +16,7 @@ namespace WebPortal.Services.Mongo
         private IMongoCollection<Sensor> mongoCollection;
         private IMongoCollection<SensorLog> logCollection;
 
-        public MongoSensorsService():base()
+        public MongoSensorsService() : base()
         {
             Raspberry.Initialize();
             this.client = new MongoClient(Configuration.DatabaseConnection);

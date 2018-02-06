@@ -23,14 +23,7 @@ namespace WebPortal.Services.Mongo
             this.dbContext = client.GetDatabase(Configuration.DatabaseName);
             this.mongoCollection = dbContext.GetCollection<Switch>(Configuration.Switches);
             this.logCollection = dbContext.GetCollection<SwitchLog>(Configuration.SwitchesLog);
-            this.Switches = new List<Switch>();
             this.LoadConfiguration();
-            if (this.timer == null)
-            {
-                this.timer = new Timer(Configuration.LogInterval);
-                this.timer.Start();
-                this.timer.Elapsed += LoggSwitchesData;
-            }
         }
 
         ~MongoSwitchesService()

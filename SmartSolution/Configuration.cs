@@ -4,6 +4,13 @@ namespace WebPortal
 {
     public class Configuration
     {
+        public static DataBase DataBase
+        {
+            get
+            {
+                return DataBase.SQLite;
+            }
+        }
         public static string ServerPort
         {
             get
@@ -11,22 +18,18 @@ namespace WebPortal
                 return "8080";
             }
         }
-        public static DataBase DataBase
-        {
-            get; set;
-        }
         public static string DatabaseConnection
         {
             get
             {
-                if (Environment.OSVersion.Platform == PlatformID.Unix)
+                switch (DataBase)
                 {
-                    //return "mongodb://SmartSolution:SmartSolution2017@localhost:19735/SmartSolution";
-                    return "mongodb://SmartSolution:SmartSolution2017@35.160.134.78:19735/SmartSolution";
-                }
-                else
-                {
-                    return "mongodb://SmartSolution:SmartSolution2017@35.160.134.78:19735/SmartSolution";
+                    case DataBase.SQLite:
+                        return "Data Source = SmartSolution.db";
+                    case DataBase.MongoDB:
+                        return "mongodb://SmartSolution:SmartSolution2017@35.160.134.78:19735/SmartSolution";
+                    default:
+                        return "Data Source = SmartSolution.db";
                 }
             }
         }
