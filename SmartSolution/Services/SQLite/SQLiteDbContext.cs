@@ -1,14 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebPortal.Models.Sensors;
 using WebPortal.Models.Switches;
+using WebPortal.Services.Core;
 
 namespace WebPortal.Services.SQLite
 {
-    public class SQLiteDbContext : DbContext
+    public class SQLiteDbContext : DbContext, IDbContext
     {
-        private string dbName;
-        private string dbConnectionString;
-
         public DbSet<Switch> Switches { get; set; }
         public DbSet<SwitchLog> SwitchesLog { get; set; }
         public DbSet<Sensor> Sensors { get; set; }
@@ -19,13 +17,13 @@ namespace WebPortal.Services.SQLite
 
         public SQLiteDbContext(string connectionString,string databaseName)
         {
-            this.dbConnectionString = connectionString;
-            this.dbName = databaseName;
+            this.DatabaseConnectionString = connectionString;
+            this.DatabaseName = databaseName;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite(this.dbConnectionString);
+            optionsBuilder.UseSqlite(this.DatabaseConnectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

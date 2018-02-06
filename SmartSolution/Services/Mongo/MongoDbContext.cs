@@ -1,10 +1,11 @@
 ﻿using MongoDB.Driver;
 using WebPortal.Models.Sensors;
 using WebPortal.Models.Switches;
+using WebPortal.Services.Core;
 
 namespace WebPortal.Services.Mongo
 {
-    public class MongoDbContext
+    public class MongoDbContext: IDbContext
     {
         private MongoClient client;
         private IMongoDatabase dbContext;

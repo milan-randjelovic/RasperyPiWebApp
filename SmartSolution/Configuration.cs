@@ -79,7 +79,7 @@ namespace WebPortal
         {
             get
             {
-                return false;
+                return true;
             }
         }
         public static int LogInterval

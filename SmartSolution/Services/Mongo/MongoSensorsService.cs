@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
 using WebPortal.Models.Sensors;
+using WebPortal.Services.Core;
 using WebPortal.Services.Core.Sensors;
 
 namespace WebPortal.Services.Mongo
@@ -13,10 +14,10 @@ namespace WebPortal.Services.Mongo
     {
         private MongoDbContext dbContext;
 
-        public MongoSensorsService() : base()
+        public MongoSensorsService(IDbContext dbContext) : base()
         {
             Raspberry.Initialize();
-            this.dbContext = new MongoDbContext(Configuration.DatabaseConnection, Configuration.DatabaseName);
+            this.dbContext = (MongoDbContext)dbContext;
             this.LoadConfiguration();
         }
 

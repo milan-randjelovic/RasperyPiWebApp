@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WebPortal.Services.Core;
 using WebPortal.Services.Core.Sensors;
 using WebPortal.Services.Core.Switches;
 using WebPortal.Services.Mongo;
@@ -23,21 +24,26 @@ namespace WebPortal
         {
             services.AddMvc();
 
+            IDbContext dbContext;
             ISensorsService SensorsService;
             ISwitchesService SwitchesService;
+
             switch (WebPortal.Configuration.DataBase)
             {
                 case DataBase.MongoDB:
-                    SensorsService = new MongoSensorsService();
-                    SwitchesService = new MongoSwitchesService();
+                    dbContext = new MongoDbContext(WebPortal.Configuration.DatabaseConnection, WebPortal.Configuration.DatabaseName);
+                    SensorsService = new MongoSensorsService(dbContext);
+                    SwitchesService = new MongoSwitchesService(dbContext);
                     break;
                 case DataBase.SQLite:
-                    SensorsService = new SQLiteSensorsService();
-                    SwitchesService = new SQLiteSwitchesService();
+                    dbContext = new SQLiteDbContext(WebPortal.Configuration.DatabaseConnection, WebPortal.Configuration.DatabaseName);
+                    SensorsService = new SQLiteSensorsService(dbContext);
+                    SwitchesService = new SQLiteSwitchesService(dbContext);
                     break;
                 default:
-                    SensorsService = new SQLiteSensorsService();
-                    SwitchesService = new SQLiteSwitchesService();
+                    dbContext = new SQLiteDbContext(WebPortal.Configuration.DatabaseConnection, WebPortal.Configuration.DatabaseName);
+                    SensorsService = new SQLiteSensorsService(dbContext);
+                    SwitchesService = new SQLiteSwitchesService(dbContext);
                     break;
             }
 

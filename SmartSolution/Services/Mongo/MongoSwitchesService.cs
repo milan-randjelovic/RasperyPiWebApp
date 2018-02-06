@@ -6,6 +6,7 @@ using WebPortal.Models.Switches;
 using RaspberryLib;
 using System.Timers;
 using WebPortal.Services.Core.Switches;
+using WebPortal.Services.Core;
 
 namespace WebPortal.Services.Mongo
 {
@@ -13,10 +14,10 @@ namespace WebPortal.Services.Mongo
     {
         private MongoDbContext dbContext;
 
-        public MongoSwitchesService() : base()
+        public MongoSwitchesService(IDbContext dbContext) : base()
         {
             Raspberry.Initialize();
-            this.dbContext = new MongoDbContext(Configuration.DatabaseConnection, Configuration.DatabaseName);
+            this.dbContext = (MongoDbContext)dbContext;
             this.LoadConfiguration();
         }
 

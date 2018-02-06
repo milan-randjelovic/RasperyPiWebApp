@@ -6,6 +6,7 @@ using WebPortal.Models.Switches;
 using RaspberryLib;
 using System.Timers;
 using WebPortal.Services.Core.Switches;
+using WebPortal.Services.Core;
 
 namespace WebPortal.Services.SQLite
 {
@@ -13,10 +14,10 @@ namespace WebPortal.Services.SQLite
     {
         private SQLiteDbContext dbContext;
 
-        public SQLiteSwitchesService() : base()
+        public SQLiteSwitchesService(IDbContext dbContext) : base()
         {
             Raspberry.Initialize();
-            this.dbContext = new SQLiteDbContext(Configuration.DatabaseConnection,Configuration.DatabaseName);
+            this.dbContext = (SQLiteDbContext)dbContext;
             this.dbContext.Database.EnsureCreated();
             this.LoadConfiguration();
         }

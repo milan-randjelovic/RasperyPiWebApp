@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
 using WebPortal.Models.Sensors;
+using WebPortal.Services.Core;
 using WebPortal.Services.Core.Sensors;
 
 namespace WebPortal.Services.SQLite
@@ -13,10 +14,10 @@ namespace WebPortal.Services.SQLite
     {
         private SQLiteDbContext dbContext;
 
-        public SQLiteSensorsService() : base()
+        public SQLiteSensorsService(IDbContext dbContext) : base()
         {
             Raspberry.Initialize();
-            this.dbContext = new SQLiteDbContext(Configuration.DatabaseConnection, Configuration.DatabaseName);
+            this.dbContext = (SQLiteDbContext)dbContext;
             this.dbContext.Database.EnsureCreated();
             this.LoadConfiguration();
         }
