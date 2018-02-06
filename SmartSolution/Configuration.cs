@@ -1,100 +1,110 @@
 ﻿using System;
+using System.IO;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace WebPortal
 {
-    public class Configuration
+    public class ApplicationConfiguration
     {
-        public static DataBase DataBase
+        public DataBase DataBase { get; set; }
+        public string ServerPort { get; set; }
+        public string DatabaseConnection { get; set; }
+        public string DatabaseName { get; set; }
+        public string Sensors { get; set; }
+        public string SensorsLog { get; set; }
+        public string Switches { get; set; }
+        public string SwitchesLog { get; set; }
+        public bool LoggingEnabled { get; set; }
+        public int LoggingInterval { get; set; }
+        public string APIBaseAddress { get; set; }
+
+        /// <summary>
+        /// Save configuration
+        /// </summary>
+        /// <param name="fileName"></param>
+        public void Save(string fileName = "ApplicationConfiguration.xml")
         {
-            get
+            try
             {
-                return DataBase.SQLite;
-            }
-        }
-        public static string ServerPort
-        {
-            get
-            {
-                return "8080";
-            }
-        }
-        public static string DatabaseConnection
-        {
-            get
-            {
-                switch (DataBase)
+                using (var writer = new StreamWriter(fileName))
                 {
-                    case DataBase.SQLite:
-                        return "Data Source = SmartSolution.db";
-                    case DataBase.MongoDB:
-                        return "mongodb://SmartSolution:SmartSolution2017@35.160.134.78:19735/SmartSolution";
-                    default:
-                        return "Data Source = SmartSolution.db";
+                    var serializer = new XmlSerializer(typeof(ApplicationConfiguration));
+                    serializer.Serialize(writer, this);
+                    writer.Flush();
                 }
             }
-        }
-        public static string DatabaseName
-        {
-            get
+            catch (Exception ex)
             {
-                if (Environment.OSVersion.Platform == PlatformID.Unix)
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// Load configuration
+        /// </summary>
+        public void Load(string fileName = "ApplicationConfiguration.xml")
+        {
+            try
+            {
+                if (File.Exists(fileName))
                 {
-                    return "SmartSolution";
+                    using (var stream = File.OpenRead(fileName))
+                    {
+                        var serializer = new XmlSerializer(typeof(ApplicationConfiguration));
+                        ApplicationConfiguration config = serializer.Deserialize(stream) as ApplicationConfiguration;
+                        this.ServerPort = config.ServerPort;
+                        this.APIBaseAddress = config.APIBaseAddress;
+                        this.DataBase = config.DataBase;
+                        this.DatabaseName = config.DatabaseName;
+                        this.DatabaseConnection = config.DatabaseConnection;
+                        this.Sensors = config.Sensors;
+                        this.SensorsLog = config.SensorsLog;
+                        this.Switches = config.Switches;
+                        this.SwitchesLog = config.SwitchesLog;
+                        this.LoggingEnabled = config.LoggingEnabled;
+                        this.LoggingInterval = config.LoggingInterval;
+                    }
                 }
                 else
                 {
-                    return "SmartSolution";
+                    Ininitialize();
                 }
             }
-        }
-        public static string Sensors
-        {
-            get
+            catch (Exception ex)
             {
-                return "Sensors";
+                throw ex;
             }
         }
-        public static string SensorsLog
+
+        /// <summary>
+        /// Initialize config
+        /// </summary>
+        public void Ininitialize()
         {
-            get
+            this.ServerPort = "8080";
+            this.APIBaseAddress = "http://localhost:" + ServerPort + "/api";
+            this.DataBase = DataBase.SQLite;
+            this.DatabaseName = "SmartSolution";
+            switch (DataBase)
             {
-                return "SensorsLog";
+                case DataBase.SQLite:
+                    this.DatabaseConnection = "Data Source = SmartSolution.db";
+                    break;
+                case DataBase.MongoDB:
+                    this.DatabaseConnection = "mongodb://SmartSolution:SmartSolution2017@35.160.134.78:19735/SmartSolution";
+                    break;
+                default:
+                    this.DatabaseConnection = "Data Source = SmartSolution.db";
+                    break;
             }
-        }
-        public static string Switches
-        {
-            get
-            {
-                return "Switches";
-            }
-        }
-        public static string SwitchesLog
-        {
-            get
-            {
-                return "SwitchesLog";
-            }
-        }
-        public static bool LoggingEnabled
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public static int LogInterval
-        {
-            get
-            {
-                return 1000;
-            }
-        }
-        public static string APIBaseAddress
-        {
-            get
-            {
-                return "http://localhost:" + ServerPort + "/api";
-            }
+            this.Sensors = "Sensors";
+            this.SensorsLog = "SensorsLog";
+            this.Switches = "Switches";
+            this.SwitchesLog = "SwitchesLog";
+            this.LoggingEnabled = true;
+            this.LoggingInterval = 1000;
+            this.Save();
         }
     }
 

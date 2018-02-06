@@ -15,10 +15,10 @@ namespace WebPortal.Services.SQLite
         public string DatabaseName { get; set; }
         public string DatabaseConnectionString { get; set; }
 
-        public SQLiteDbContext(string connectionString,string databaseName)
+        public SQLiteDbContext(ApplicationConfiguration configurtion)
         {
-            this.DatabaseConnectionString = connectionString;
-            this.DatabaseName = databaseName;
+            this.DatabaseConnectionString = configurtion.DatabaseConnection;
+            this.DatabaseName = configurtion.DatabaseName;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

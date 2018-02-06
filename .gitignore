@@ -260,3 +260,6 @@ paket-files/
 __pycache__/
 *.pyc
 /SmartSolution/SmartSolution.db
+/SmartSolution/ApplicationConfiguration.xml
+/SmartSolution/SmartSolution.db-wal
+/SmartSolution/SmartSolution.db-shm

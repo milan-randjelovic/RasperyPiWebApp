@@ -14,7 +14,7 @@ namespace WebPortal.Services.SQLite
     {
         private SQLiteDbContext dbContext;
 
-        public SQLiteSensorsService(IDbContext dbContext) : base()
+        public SQLiteSensorsService(IDbContext dbContext, ApplicationConfiguration configuration) : base(configuration)
         {
             Raspberry.Initialize();
             this.dbContext = (SQLiteDbContext)dbContext;

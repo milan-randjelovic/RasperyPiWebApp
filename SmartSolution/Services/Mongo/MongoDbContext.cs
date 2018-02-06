@@ -17,16 +17,16 @@ namespace WebPortal.Services.Mongo
         public string DatabaseName { get; set; }
         public string DatabaseConnectionString { get; set; }
 
-        public MongoDbContext(string connectionString, string databaseName)
+        public MongoDbContext(ApplicationConfiguration configuration)
         {
-            this.DatabaseConnectionString = connectionString;
-            this.DatabaseName = databaseName;
+            this.DatabaseConnectionString = configuration.DatabaseConnection;
+            this.DatabaseName = configuration.DatabaseName;
             this.client = new MongoClient(this.DatabaseConnectionString);
             this.dbContext = client.GetDatabase(this.DatabaseName);
-            this.Switches = dbContext.GetCollection<Switch>(Configuration.Switches);
-            this.SwitchesLog = dbContext.GetCollection<SwitchLog>(Configuration.SwitchesLog);
-            this.Sensors = dbContext.GetCollection<Sensor>(Configuration.Sensors);
-            this.SensorsLog = dbContext.GetCollection<SensorLog>(Configuration.SensorsLog);
+            this.Switches = dbContext.GetCollection<Switch>(configuration.Switches);
+            this.SwitchesLog = dbContext.GetCollection<SwitchLog>(configuration.SwitchesLog);
+            this.Sensors = dbContext.GetCollection<Sensor>(configuration.Sensors);
+            this.SensorsLog = dbContext.GetCollection<SensorLog>(configuration.SensorsLog);
         }
     }
 }

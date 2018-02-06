@@ -8,24 +8,15 @@ namespace WebPortal.Services.Core.Sensors
     public abstract class SensorsService : ISensorsService
     {
         protected Timer timer;
+        public ApplicationConfiguration Configuration { get; set; }
         public IEnumerable<ISensor> Sensors { get; set; }
-        public bool LoggingEnabled
-        {
-            get
-            {
-                return this.timer.Enabled;
-            }
-            set
-            {
-                this.timer.Enabled = value;
-            }
-        }
 
-        public SensorsService()
+        public SensorsService(ApplicationConfiguration configuration)
         {
+            this.Configuration = configuration;
             if (this.timer == null)
             {
-                this.timer = new Timer(Configuration.LogInterval);
+                this.timer = new Timer(Configuration.LoggingInterval);
                 this.timer.Elapsed += LogSensorsData;
                 if (Configuration.LoggingEnabled)
                 {

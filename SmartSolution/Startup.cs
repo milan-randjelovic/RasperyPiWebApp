@@ -24,26 +24,29 @@ namespace WebPortal
         {
             services.AddMvc();
 
+            ApplicationConfiguration configuration = new ApplicationConfiguration();
+            configuration.Load();
+
             IDbContext dbContext;
             ISensorsService SensorsService;
             ISwitchesService SwitchesService;
 
-            switch (WebPortal.Configuration.DataBase)
+            switch (configuration.DataBase)
             {
                 case DataBase.MongoDB:
-                    dbContext = new MongoDbContext(WebPortal.Configuration.DatabaseConnection, WebPortal.Configuration.DatabaseName);
-                    SensorsService = new MongoSensorsService(dbContext);
-                    SwitchesService = new MongoSwitchesService(dbContext);
+                    dbContext = new MongoDbContext(configuration);
+                    SensorsService = new MongoSensorsService(dbContext, configuration);
+                    SwitchesService = new MongoSwitchesService(dbContext, configuration);
                     break;
                 case DataBase.SQLite:
-                    dbContext = new SQLiteDbContext(WebPortal.Configuration.DatabaseConnection, WebPortal.Configuration.DatabaseName);
-                    SensorsService = new SQLiteSensorsService(dbContext);
-                    SwitchesService = new SQLiteSwitchesService(dbContext);
+                    dbContext = new SQLiteDbContext(configuration);
+                    SensorsService = new SQLiteSensorsService(dbContext, configuration);
+                    SwitchesService = new SQLiteSwitchesService(dbContext, configuration);
                     break;
                 default:
-                    dbContext = new SQLiteDbContext(WebPortal.Configuration.DatabaseConnection, WebPortal.Configuration.DatabaseName);
-                    SensorsService = new SQLiteSensorsService(dbContext);
-                    SwitchesService = new SQLiteSwitchesService(dbContext);
+                    dbContext = new SQLiteDbContext(configuration);
+                    SensorsService = new SQLiteSensorsService(dbContext, configuration);
+                    SwitchesService = new SQLiteSwitchesService(dbContext, configuration);
                     break;
             }
 

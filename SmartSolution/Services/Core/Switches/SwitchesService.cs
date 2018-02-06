@@ -8,24 +8,15 @@ namespace WebPortal.Services.Core.Switches
     public abstract class SwitchesService : ISwitchesService
     {
         protected Timer timer;
+        public ApplicationConfiguration Configuration { get; set; }
         public IEnumerable<ISwitch> Switches { get; set; }
-        public bool LoggingEnabled
-        {
-            get
-            {
-                return this.timer.Enabled;
-            }
-            set
-            {
-                this.timer.Enabled = value;
-            }
-        }
 
-        public SwitchesService()
+        public SwitchesService(ApplicationConfiguration configuration)
         {
+            this.Configuration = configuration;
             if (this.timer == null)
             {
-                this.timer = new Timer(Configuration.LogInterval);
+                this.timer = new Timer(Configuration.LoggingInterval);
                 this.timer.Elapsed += LoggSwitchesData;
                 if (Configuration.LoggingEnabled)
                 {

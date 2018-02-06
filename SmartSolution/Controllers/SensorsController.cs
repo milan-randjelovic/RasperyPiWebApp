@@ -11,11 +11,13 @@ namespace WebPortal.Controllers
 {
     public class SensorsController : Controller
     {
+        protected string APIBaseAddress { get; set; }
         protected static ISensorsService SensorsService { get; private set; }
 
         public SensorsController(ISensorsService sensorsService)
         {
             SensorsService = sensorsService;
+            this.APIBaseAddress = sensorsService.Configuration.APIBaseAddress;
         }
 
         [HttpGet]
@@ -23,7 +25,7 @@ namespace WebPortal.Controllers
         {
             try
             {
-                IRestResponse result = SmartSolutionAPI.Get(Configuration.APIBaseAddress, Configuration.Sensors, "");
+                IRestResponse result = SmartSolutionAPI.Get(SensorsService.Configuration.APIBaseAddress, SensorsService.Configuration.Sensors, "");
                 IEnumerable<ISensor> sensors = JsonConvert.DeserializeObject<IEnumerable<Sensor>>(result.Content);
                 return View(sensors);
             }
@@ -39,7 +41,7 @@ namespace WebPortal.Controllers
         {
             try
             {
-                IRestResponse result = SmartSolutionAPI.Get(Configuration.APIBaseAddress, Configuration.Sensors, "");
+                IRestResponse result = SmartSolutionAPI.Get(SensorsService.Configuration.APIBaseAddress, SensorsService.Configuration.Sensors, "");
                 IEnumerable<ISensor> sensors = JsonConvert.DeserializeObject<IEnumerable<Sensor>>(result.Content);
                 return View(sensors);
             }
@@ -55,7 +57,7 @@ namespace WebPortal.Controllers
         {
             try
             {
-                IRestResponse result = SmartSolutionAPI.Get(Configuration.APIBaseAddress, Configuration.Sensors, id);
+                IRestResponse result = SmartSolutionAPI.Get(SensorsService.Configuration.APIBaseAddress, SensorsService.Configuration.Sensors, id);
                 ISensor sensorObj = JsonConvert.DeserializeObject<Sensor>(result.Content);
                 return View(sensorObj);
             }
@@ -78,7 +80,7 @@ namespace WebPortal.Controllers
         {
             try
             {
-                IRestResponse result = SmartSolutionAPI.Post(Configuration.APIBaseAddress, Configuration.Sensors, sensorObject.Id, sensorObject);
+                IRestResponse result = SmartSolutionAPI.Post(SensorsService.Configuration.APIBaseAddress, SensorsService.Configuration.Sensors, sensorObject.Id, sensorObject);
                 return RedirectToAction("SensorsConfiguration");
             }
             catch (Exception ex)
@@ -93,7 +95,7 @@ namespace WebPortal.Controllers
         {
             try
             {
-                IRestResponse result = SmartSolutionAPI.Get(Configuration.APIBaseAddress, Configuration.Sensors, id);
+                IRestResponse result = SmartSolutionAPI.Get(SensorsService.Configuration.APIBaseAddress, SensorsService.Configuration.Sensors, id);
                 ISensor sensorObj = JsonConvert.DeserializeObject<Sensor>(result.Content);
                 return View(sensorObj);
             }
@@ -110,7 +112,7 @@ namespace WebPortal.Controllers
         {
             try
             {
-                IRestResponse result = SmartSolutionAPI.Put(Configuration.APIBaseAddress, Configuration.Sensors, sensorObject.Id, sensorObject);
+                IRestResponse result = SmartSolutionAPI.Put(SensorsService.Configuration.APIBaseAddress, SensorsService.Configuration.Sensors, sensorObject.Id, sensorObject);
                 return RedirectToAction("SensorsConfiguration");
             }
             catch (Exception ex)
@@ -125,7 +127,7 @@ namespace WebPortal.Controllers
         {
             try
             {
-                IRestResponse result = SmartSolutionAPI.Get(Configuration.APIBaseAddress, Configuration.Sensors, id);
+                IRestResponse result = SmartSolutionAPI.Get(SensorsService.Configuration.APIBaseAddress, SensorsService.Configuration.Sensors, id);
                 ISensor sensorObj = JsonConvert.DeserializeObject<Sensor>(result.Content);
                 return View(sensorObj);
             }
@@ -142,7 +144,7 @@ namespace WebPortal.Controllers
         {
             try
             {
-                IRestResponse result = SmartSolutionAPI.Delete(Configuration.APIBaseAddress, Configuration.Sensors, sensorObject.Id, sensorObject);
+                IRestResponse result = SmartSolutionAPI.Delete(SensorsService.Configuration.APIBaseAddress, SensorsService.Configuration.Sensors, sensorObject.Id, sensorObject);
                 ISensor switchObj = JsonConvert.DeserializeObject<Sensor>(result.Content);
                 return RedirectToAction("SensorsConfiguration");
             }
@@ -158,7 +160,7 @@ namespace WebPortal.Controllers
         {
             try
             {
-                IRestResponse result = SmartSolutionAPI.Get(Configuration.APIBaseAddress, Configuration.Sensors, "");
+                IRestResponse result = SmartSolutionAPI.Get(SensorsService.Configuration.APIBaseAddress, SensorsService.Configuration.Sensors, "");
                 return Ok(result.Content);
             }
             catch (Exception ex)

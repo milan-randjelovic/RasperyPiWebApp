@@ -54,10 +54,6 @@ namespace WebPortal.Services.Core.Switches
         /// <param name="id"></param>
         void TurnOFF(string id);
         /// <summary>
-        /// Enables/Disables logging
-        /// </summary>
-        bool LoggingEnabled { get; set; }
-        /// <summary>
         /// Generate test switches
         /// </summary>
         /// <param name="numOfSwitches"></param>
@@ -66,5 +62,9 @@ namespace WebPortal.Services.Core.Switches
         /// Delete all mockup switches from db. It will not delete logs for them!
         /// </summary>
         void DeleteMockupSwitches();
+        /// <summary>
+        /// App configuration
+        /// </summary>
+        ApplicationConfiguration Configuration { get; set; }
     }
 }

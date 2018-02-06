@@ -15,10 +15,13 @@ namespace WebPortal
     {
         public static void Main(string[] args)
         {
+            ApplicationConfiguration configuration = new ApplicationConfiguration();
+            configuration.Load();
+
             var host = new WebHostBuilder()
                  .UseKestrel()
                  .UseContentRoot(Directory.GetCurrentDirectory())
-                 .UseUrls("http://*:" + Configuration.ServerPort)
+                 .UseUrls("http://*:" + configuration.ServerPort)
                  .UseIISIntegration()
                  .ConfigureAppConfiguration((context, configBuilder) =>
                  {
