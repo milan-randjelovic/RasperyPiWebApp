@@ -47,7 +47,11 @@ namespace WebPortal.Services.SQLite
                         switchObj.InverseLogic = sw.InverseLogic;
                     }
                 }
+                this.timer.Stop();
+                this.timer.Enabled = false;
                 this.dbContext.SaveChanges();
+                this.timer.Enabled = true;
+                this.timer.Start();
             }
             catch (Exception ex)
             {
@@ -150,8 +154,11 @@ namespace WebPortal.Services.SQLite
             try
             {
                 this.dbContext.Switches.Add(switchObject);
+                this.timer.Stop();
+                this.timer.Enabled = false;
                 this.dbContext.SaveChanges();
-                this.SaveConfiguration();
+                this.timer.Enabled = true;
+                this.timer.Start(); this.SaveConfiguration();
                 this.LoadConfiguration();
             }
             catch (Exception ex)
@@ -193,7 +200,11 @@ namespace WebPortal.Services.SQLite
             {
                 Switch switchObj = this.dbContext.Switches.Where(s => s.Id == id).SingleOrDefault();
                 this.dbContext.Switches.Remove(switchObj);
+                this.timer.Stop();
+                this.timer.Enabled = false;
                 this.dbContext.SaveChanges();
+                this.timer.Enabled = true;
+                this.timer.Start();
                 this.SaveConfiguration();
                 this.LoadConfiguration();
             }
@@ -240,7 +251,11 @@ namespace WebPortal.Services.SQLite
                     SwitchLog switchLog = new SwitchLog(sw);
                     this.dbContext.SwitchesLog.Add(switchLog);
                 }
+                this.timer.Stop();
+                this.timer.Enabled = false;
                 this.dbContext.SaveChanges();
+                this.timer.Enabled = true;
+                this.timer.Start();
             }
             catch (Exception ex)
             {
@@ -267,8 +282,11 @@ namespace WebPortal.Services.SQLite
                     mockupSwitch.Name = "TestSensor";
                     this.dbContext.Switches.Add(mockupSwitch);
                 }
+                this.timer.Stop();
+                this.timer.Enabled = false;
                 this.dbContext.SaveChanges();
-                this.SaveConfiguration();
+                this.timer.Enabled = true;
+                this.timer.Start(); this.SaveConfiguration();
                 this.LoadConfiguration();
             }
             catch (Exception ex)
@@ -286,7 +304,11 @@ namespace WebPortal.Services.SQLite
             {
                 List<Switch> switches = this.dbContext.Switches.Where(s => s.SwitchType == SwitchType.Mockup).ToList();
                 this.dbContext.RemoveRange(switches);
+                this.timer.Stop();
+                this.timer.Enabled = false;
                 this.dbContext.SaveChanges();
+                this.timer.Enabled = true;
+                this.timer.Start();
             }
             catch (Exception ex)
             {

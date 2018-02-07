@@ -47,7 +47,11 @@ namespace WebPortal.Services.SQLite
                         sensor.Value = sens.Value;
                     }
                 }
+                this.timer.Stop();
+                this.timer.Enabled = false;
                 this.dbContext.SaveChanges();
+                this.timer.Enabled = true;
+                this.timer.Start();
             }
             catch (Exception ex)
             {
@@ -152,8 +156,11 @@ namespace WebPortal.Services.SQLite
             try
             {
                 this.dbContext.Sensors.Add(sensor);
+                this.timer.Stop();
+                this.timer.Enabled = false;
                 this.dbContext.SaveChanges();
-                this.SaveConfiguration();
+                this.timer.Enabled = true;
+                this.timer.Start(); this.SaveConfiguration();
                 this.LoadConfiguration();
             }
             catch (Exception ex)
@@ -195,8 +202,11 @@ namespace WebPortal.Services.SQLite
             {
                 Sensor sensor = this.dbContext.Sensors.Where(s => s.Id == id).SingleOrDefault();
                 this.dbContext.Sensors.Remove(sensor);
+                this.timer.Stop();
+                this.timer.Enabled = false;
                 this.dbContext.SaveChanges();
-                this.SaveConfiguration();
+                this.timer.Enabled = true;
+                this.timer.Start(); this.SaveConfiguration();
                 this.LoadConfiguration();
             }
             catch (Exception ex)
@@ -219,7 +229,11 @@ namespace WebPortal.Services.SQLite
                     SensorLog sensorLog = new SensorLog(sens);
                     this.dbContext.SensorsLog.Add(sensorLog);
                 }
+                this.timer.Stop();
+                this.timer.Enabled = false;
                 this.dbContext.SaveChanges();
+                this.timer.Enabled = true;
+                this.timer.Start();
             }
             catch (Exception ex)
             {
@@ -250,7 +264,11 @@ namespace WebPortal.Services.SQLite
                     mockupSensor.Name = "TestSensor";
                     this.dbContext.Sensors.Add(mockupSensor);
                 }
+                this.timer.Stop();
+                this.timer.Enabled = false;
                 this.dbContext.SaveChanges();
+                this.timer.Enabled = true;
+                this.timer.Start();
                 this.SaveConfiguration();
                 this.LoadConfiguration();
             }
@@ -269,7 +287,11 @@ namespace WebPortal.Services.SQLite
             {
                 List<Sensor> sensors = this.dbContext.Sensors.Where(sens => sens.SensorType == SensorType.Mockup).ToList();
                 this.dbContext.RemoveRange(sensors);
+                this.timer.Stop();
+                this.timer.Enabled = false;
                 this.dbContext.SaveChanges();
+                this.timer.Enabled = true;
+                this.timer.Start();
             }
             catch (Exception ex)
             {

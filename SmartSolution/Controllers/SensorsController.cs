@@ -26,6 +26,11 @@ namespace WebPortal.Controllers
             try
             {
                 IRestResponse result = SmartSolutionAPI.Get(SensorsService.Configuration.APIBaseAddress, SensorsService.Configuration.Sensors, "");
+                if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    TempData["Error"] = result.Content;
+                    return RedirectToAction("Error", "Home", null);
+                }
                 IEnumerable<ISensor> sensors = JsonConvert.DeserializeObject<IEnumerable<Sensor>>(result.Content);
                 return View(sensors);
             }
@@ -42,6 +47,11 @@ namespace WebPortal.Controllers
             try
             {
                 IRestResponse result = SmartSolutionAPI.Get(SensorsService.Configuration.APIBaseAddress, SensorsService.Configuration.Sensors, "");
+                if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    TempData["Error"] = result.Content;
+                    return RedirectToAction("Error", "Home", null);
+                }
                 IEnumerable<ISensor> sensors = JsonConvert.DeserializeObject<IEnumerable<Sensor>>(result.Content);
                 return View(sensors);
             }
@@ -58,6 +68,11 @@ namespace WebPortal.Controllers
             try
             {
                 IRestResponse result = SmartSolutionAPI.Get(SensorsService.Configuration.APIBaseAddress, SensorsService.Configuration.Sensors, id);
+                if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    TempData["Error"] = result.Content;
+                    return RedirectToAction("Error", "Home", null);
+                }
                 ISensor sensorObj = JsonConvert.DeserializeObject<Sensor>(result.Content);
                 return View(sensorObj);
             }
@@ -78,9 +93,19 @@ namespace WebPortal.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult SensorsCreate(Sensor sensorObject)
         {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
             try
             {
                 IRestResponse result = SmartSolutionAPI.Post(SensorsService.Configuration.APIBaseAddress, SensorsService.Configuration.Sensors, sensorObject.Id, sensorObject);
+                if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    TempData["Error"] = result.Content;
+                    return RedirectToAction("Error", "Home", null);
+                }
                 return RedirectToAction("SensorsConfiguration");
             }
             catch (Exception ex)
@@ -96,6 +121,11 @@ namespace WebPortal.Controllers
             try
             {
                 IRestResponse result = SmartSolutionAPI.Get(SensorsService.Configuration.APIBaseAddress, SensorsService.Configuration.Sensors, id);
+                if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    TempData["Error"] = result.Content;
+                    return RedirectToAction("Error", "Home", null);
+                }
                 ISensor sensorObj = JsonConvert.DeserializeObject<Sensor>(result.Content);
                 return View(sensorObj);
             }
@@ -110,9 +140,19 @@ namespace WebPortal.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult SensorsEdit(Sensor sensorObject)
         {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
             try
             {
                 IRestResponse result = SmartSolutionAPI.Put(SensorsService.Configuration.APIBaseAddress, SensorsService.Configuration.Sensors, sensorObject.Id, sensorObject);
+                if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    TempData["Error"] = result.Content;
+                    return RedirectToAction("Error", "Home", null);
+                }
                 return RedirectToAction("SensorsConfiguration");
             }
             catch (Exception ex)
@@ -128,6 +168,11 @@ namespace WebPortal.Controllers
             try
             {
                 IRestResponse result = SmartSolutionAPI.Get(SensorsService.Configuration.APIBaseAddress, SensorsService.Configuration.Sensors, id);
+                if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    TempData["Error"] = result.Content;
+                    return RedirectToAction("Error", "Home", null);
+                }
                 ISensor sensorObj = JsonConvert.DeserializeObject<Sensor>(result.Content);
                 return View(sensorObj);
             }
@@ -145,6 +190,11 @@ namespace WebPortal.Controllers
             try
             {
                 IRestResponse result = SmartSolutionAPI.Delete(SensorsService.Configuration.APIBaseAddress, SensorsService.Configuration.Sensors, sensorObject.Id, sensorObject);
+                if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    TempData["Error"] = result.Content;
+                    return RedirectToAction("Error", "Home", null);
+                }
                 ISensor switchObj = JsonConvert.DeserializeObject<Sensor>(result.Content);
                 return RedirectToAction("SensorsConfiguration");
             }
@@ -161,6 +211,11 @@ namespace WebPortal.Controllers
             try
             {
                 IRestResponse result = SmartSolutionAPI.Get(SensorsService.Configuration.APIBaseAddress, SensorsService.Configuration.Sensors, "");
+                if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    TempData["Error"] = result.Content;
+                    return RedirectToAction("Error", "Home", null);
+                }
                 return Ok(result.Content);
             }
             catch (Exception ex)

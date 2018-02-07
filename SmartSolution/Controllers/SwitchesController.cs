@@ -30,6 +30,11 @@ namespace WebPortal.Controllers
             try
             {
                 IRestResponse result = SmartSolutionAPI.Get(SwitchesService.Configuration.APIBaseAddress, SwitchesService.Configuration.Switches, "");
+                if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    TempData["Error"] = result.Content;
+                    return RedirectToAction("Error", "Home", null);
+                }
                 IEnumerable<ISwitch> switches = JsonConvert.DeserializeObject<IEnumerable<Switch>>(result.Content);
                 return View(switches);
             }
@@ -49,6 +54,11 @@ namespace WebPortal.Controllers
             try
             {
                 IRestResponse result = SmartSolutionAPI.Get(SwitchesService.Configuration.APIBaseAddress, SwitchesService.Configuration.Switches, "");
+                if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    TempData["Error"] = result.Content;
+                    return RedirectToAction("Error", "Home", null);
+                }
                 IEnumerable<ISwitch> switches = JsonConvert.DeserializeObject<IEnumerable<Switch>>(result.Content);
                 return View(switches);
             }
@@ -69,6 +79,11 @@ namespace WebPortal.Controllers
             try
             {
                 IRestResponse result = SmartSolutionAPI.Get(SwitchesService.Configuration.APIBaseAddress, SwitchesService.Configuration.Switches, id);
+                if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    TempData["Error"] = result.Content;
+                    return RedirectToAction("Error", "Home", null);
+                }
                 ISwitch switchObj = JsonConvert.DeserializeObject<Switch>(result.Content);
                 return View(switchObj);
             }
@@ -97,9 +112,19 @@ namespace WebPortal.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult SwitchesCreate(Switch switchObject)
         {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
             try
             {
                 IRestResponse result = SmartSolutionAPI.Post(SwitchesService.Configuration.APIBaseAddress, SwitchesService.Configuration.Switches, switchObject.Id, switchObject);
+                if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    TempData["Error"] = result.Content;
+                    return RedirectToAction("Error", "Home", null);
+                }
                 return RedirectToAction("SwitchesConfiguration");
             }
             catch (Exception ex)
@@ -119,6 +144,11 @@ namespace WebPortal.Controllers
             try
             {
                 IRestResponse result = SmartSolutionAPI.Get(SwitchesService.Configuration.APIBaseAddress, SwitchesService.Configuration.Switches, id);
+                if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    TempData["Error"] = result.Content;
+                    return RedirectToAction("Error", "Home", null);
+                }
                 ISwitch switchObj = JsonConvert.DeserializeObject<Switch>(result.Content);
                 return View(switchObj);
             }
@@ -138,9 +168,19 @@ namespace WebPortal.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult SwitchesEdit(Switch switchObject)
         {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
             try
             {
                 IRestResponse result = SmartSolutionAPI.Put(SwitchesService.Configuration.APIBaseAddress, SwitchesService.Configuration.Switches, switchObject.Id, switchObject);
+                if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    TempData["Error"] = result.Content;
+                    return RedirectToAction("Error", "Home", null);
+                }
                 return RedirectToAction("SwitchesConfiguration");
             }
             catch (Exception ex)
@@ -160,6 +200,11 @@ namespace WebPortal.Controllers
             try
             {
                 IRestResponse result = SmartSolutionAPI.Get(SwitchesService.Configuration.APIBaseAddress, SwitchesService.Configuration.Switches, id);
+                if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    TempData["Error"] = result.Content;
+                    return RedirectToAction("Error", "Home", null);
+                }
                 ISwitch switchObj = JsonConvert.DeserializeObject<Switch>(result.Content);
                 return View(switchObj);
             }
@@ -182,6 +227,11 @@ namespace WebPortal.Controllers
             try
             {
                 IRestResponse result = SmartSolutionAPI.Delete(SwitchesService.Configuration.APIBaseAddress, SwitchesService.Configuration.Switches, switchObject.Id, switchObject);
+                if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    TempData["Error"] = result.Content;
+                    return RedirectToAction("Error", "Home", null);
+                }
                 ISwitch switchObj = JsonConvert.DeserializeObject<Switch>(result.Content);
                 return RedirectToAction("SwitchesConfiguration");
             }
@@ -202,7 +252,12 @@ namespace WebPortal.Controllers
         {
             try
             {
-                IRestResponse result = SmartSolutionAPI.Get(SwitchesService.Configuration.APIBaseAddress, SwitchesService.Configuration.Switches+"/TurnON", id);
+                IRestResponse result = SmartSolutionAPI.Get(SwitchesService.Configuration.APIBaseAddress, SwitchesService.Configuration.Switches + "/TurnON", id);
+                if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    TempData["Error"] = result.Content;
+                    return RedirectToAction("Error", "Home", null);
+                }
                 return Ok(result.Content);
             }
             catch (Exception ex)
@@ -223,6 +278,11 @@ namespace WebPortal.Controllers
             try
             {
                 IRestResponse result = SmartSolutionAPI.Get(SwitchesService.Configuration.APIBaseAddress, SwitchesService.Configuration.Switches + "/TurnOFF", id);
+                if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    TempData["Error"] = result.Content;
+                    return RedirectToAction("Error", "Home", null);
+                }
                 return Ok(result.Content);
             }
             catch (Exception ex)
