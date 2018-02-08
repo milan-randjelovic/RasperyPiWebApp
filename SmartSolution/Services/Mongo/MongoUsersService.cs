@@ -6,11 +6,11 @@ using WebPortal.Services.Core.Users;
 
 namespace WebPortal.Services.Mongo
 {
-    public class MongoUsersService : UserService
+    public class MongoUserService : UsersService
     {
         MongoDbContext dbContext;
 
-        public MongoUsersService(IDbContext dbContext, ApplicationConfiguration configuration) : base(configuration)
+        public MongoUserService(IDbContext dbContext, ApplicationConfiguration configuration) : base(configuration)
         {
             try
             {
