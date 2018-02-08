@@ -5,7 +5,7 @@ using WebPortal.Services.Core.Users;
 
 namespace WebPortal.Services.Mongo
 {
-    public class MongoUserService : UserService
+    public class MongoUserService : UsersService
     {
         MongoDbContext dbContext;
 

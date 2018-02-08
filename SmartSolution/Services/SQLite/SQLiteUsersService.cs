@@ -6,7 +6,7 @@ using WebPortal.Services.SQLite;
 
 namespace WebPortal.Services.Mongo
 {
-    public class SQLiteUsersService : UserService
+    public class SQLiteUsersService : UsersService
     {
         private SQLiteDbContext dbContext;
 

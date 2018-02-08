@@ -31,7 +31,7 @@ namespace WebPortal
             IDbContext dbContext;
             ISensorsService SensorsService;
             ISwitchesService SwitchesService;
-            IUserService UserService;
+            IUsersService UserService;
 
             switch (configuration.DataBase)
             {

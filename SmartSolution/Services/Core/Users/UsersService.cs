@@ -2,11 +2,11 @@
 
 namespace WebPortal.Services.Core.Users
 {
-    public abstract class UserService : IUserService
+    public abstract class UsersService : IUsersService
     {
         public ApplicationConfiguration configuration { get; set; }
 
-        public UserService(ApplicationConfiguration config)
+        public UsersService(ApplicationConfiguration config)
         {
             this.configuration = config;
         }

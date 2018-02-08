@@ -2,7 +2,7 @@
 
 namespace WebPortal.Services.Core.Users
 {
-    interface IUserService
+    interface IUsersService
     {
         /// <summary>
         /// Add new user to database
