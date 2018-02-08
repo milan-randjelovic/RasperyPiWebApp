@@ -61,8 +61,8 @@ namespace WebPortal.Controllers.API
         /// </summary>
         /// <param name="id">Switch id</param>
         /// <returns></returns>
-        [HttpGet("Log/{from}&{to}")]
-        public IActionResult Get(DateTime from, DateTime to)
+        [HttpGet("Log")]
+        public IActionResult Log(DateTime from, DateTime to)
         {
             try
             {
