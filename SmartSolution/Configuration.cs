@@ -15,6 +15,9 @@ namespace WebPortal
         public string SensorsLog { get; set; }
         public string Switches { get; set; }
         public string SwitchesLog { get; set; }
+        public string Users { get; set; }
+        public string UsersAppending { get; set; }
+        public string Admin { get; set; }
         public bool LoggingEnabled { get; set; }
         public int LoggingInterval { get; set; }
         public string APIBaseAddress { get; set; }
@@ -62,6 +65,9 @@ namespace WebPortal
                         this.SensorsLog = config.SensorsLog;
                         this.Switches = config.Switches;
                         this.SwitchesLog = config.SwitchesLog;
+                        this.Users = config.Users;
+                        this.UsersAppending = config.UsersAppending;
+                        this.Admin = config.Admin;
                         this.LoggingEnabled = config.LoggingEnabled;
                         this.LoggingInterval = config.LoggingInterval;
                     }
@@ -102,6 +108,9 @@ namespace WebPortal
             this.SensorsLog = "SensorsLog";
             this.Switches = "Switches";
             this.SwitchesLog = "SwitchesLog";
+            this.Users = "Users";
+            this.UsersAppending = "UsersAppending";
+            this.Admin = "Admin";
             this.LoggingEnabled = true;
             this.LoggingInterval = 1000;
             this.Save();

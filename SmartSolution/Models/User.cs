@@ -20,6 +20,7 @@ namespace WebPortal.Models
         public string Username { get; set; }
         [DataType(DataType.Password)]
         public string Password { get; set; }
+        public UserStatus Status { get; set; }
 
         public User()
         {
@@ -31,4 +32,5 @@ namespace WebPortal.Models
             this.Password = "";
         }
     }
+    public enum UserStatus { Admin, User, UserAppending}
 }
