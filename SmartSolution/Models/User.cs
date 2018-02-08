@@ -30,7 +30,5 @@ namespace WebPortal.Models
             this.Username = "";
             this.Password = "";
         }
-       
-
     }
 }
