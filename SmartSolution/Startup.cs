@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using WebPortal.Services.Core;
 using WebPortal.Services.Core.Sensors;
 using WebPortal.Services.Core.Switches;
+using WebPortal.Services.Core.Users;
 using WebPortal.Services.Mongo;
 using WebPortal.Services.SQLite;
 
@@ -30,6 +31,7 @@ namespace WebPortal
             IDbContext dbContext;
             ISensorsService SensorsService;
             ISwitchesService SwitchesService;
+            IUserService UserService;
 
             switch (configuration.DataBase)
             {
@@ -37,16 +39,19 @@ namespace WebPortal
                     dbContext = new MongoDbContext(configuration);
                     SensorsService = new MongoSensorsService(dbContext, configuration);
                     SwitchesService = new MongoSwitchesService(dbContext, configuration);
+                    UserService = new MongoUserService(dbContext, configuration);
                     break;
                 case DataBase.SQLite:
                     dbContext = new SQLiteDbContext(configuration);
                     SensorsService = new SQLiteSensorsService(dbContext, configuration);
                     SwitchesService = new SQLiteSwitchesService(dbContext, configuration);
+                    UserService = new SQLiteUsersService(dbContext, configuration);
                     break;
                 default:
                     dbContext = new SQLiteDbContext(configuration);
                     SensorsService = new SQLiteSensorsService(dbContext, configuration);
                     SwitchesService = new SQLiteSwitchesService(dbContext, configuration);
+                    UserService = new SQLiteUsersService(dbContext, configuration);
                     break;
             }
 
