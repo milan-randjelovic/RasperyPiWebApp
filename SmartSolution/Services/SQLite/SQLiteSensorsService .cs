@@ -148,6 +148,26 @@ namespace WebPortal.Services.SQLite
         }
 
         /// <summary>
+        /// Get sensos log
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
+        public override IEnumerable<ISensorLog> GetSensorsLog(DateTime from, DateTime to)
+        {
+            try
+            {
+                IEnumerable<ISensorLog> result = new List<SensorLog>();
+                result = this.dbContext.SensorsLog.Where(s => s.Timestamp >= from && s.Timestamp <= to);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
         /// Create new sensor
         /// </summary>
         /// <param name="switchObject"></param>

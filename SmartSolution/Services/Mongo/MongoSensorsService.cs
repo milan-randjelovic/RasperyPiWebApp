@@ -133,6 +133,26 @@ namespace WebPortal.Services.Mongo
         }
 
         /// <summary>
+        /// Get sensors log
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
+        public override IEnumerable<ISensorLog> GetSensorsLog(DateTime from, DateTime to)
+        {
+            try
+            {
+                IEnumerable<ISensorLog> result = new List<ISensorLog>();
+                result = this.dbContext.SensorsLog.Find(s => s.Timestamp >= from && s.Timestamp <= to).ToList();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
         /// Create new sensor
         /// </summary>
         /// <param name="switchObject"></param>

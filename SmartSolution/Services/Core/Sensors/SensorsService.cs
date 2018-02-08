@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Timers;
 using RaspberryLib;
 using WebPortal.Models.Sensors;
@@ -29,6 +30,7 @@ namespace WebPortal.Services.Core.Sensors
         public abstract void LoadConfiguration();
         public abstract ISensor GetSensorFromDatabase(string id);
         public abstract ISensor GetSensorFromMemory(PinCode pinCode);
+        public abstract IEnumerable<ISensorLog> GetSensorsLog(DateTime from, DateTime to);
         public abstract void CreateNew(Sensor sensor);
         public abstract void Update(Sensor sensor);
         public abstract void Delete(string id);

@@ -146,6 +146,26 @@ namespace WebPortal.Services.SQLite
         }
 
         /// <summary>
+        /// Get switches log
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
+        public override IEnumerable<ISwitchLog> GetSwitchesLog(DateTime from, DateTime to)
+        {
+            try
+            {
+                IEnumerable<ISwitchLog> result = new List<ISwitchLog>();
+                result = this.dbContext.SwitchesLog.Where(s => s.Timestamp >= from && s.Timestamp <= to);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
         /// Create new switch
         /// </summary>
         /// <param name="switchObject"></param>

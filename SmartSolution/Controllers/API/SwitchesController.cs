@@ -57,6 +57,25 @@ namespace WebPortal.Controllers.API
         }
 
         /// <summary>
+        /// Get switches log
+        /// </summary>
+        /// <param name="id">Switch id</param>
+        /// <returns></returns>
+        [HttpGet("Log/{from}&{to}")]
+        public IActionResult Get(DateTime from, DateTime to)
+        {
+            try
+            {
+                IEnumerable<ISwitchLog> result = SwitchesService.GetSwitchesLog(from, to);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        /// <summary>
         /// Create switch
         /// </summary>
         /// <param name="switchObject">Switch data</param>
@@ -122,7 +141,7 @@ namespace WebPortal.Controllers.API
             try
             {
                 SwitchesService.TurnON(id);
-                return Ok(SwitchesService.Switches.Where(sw=>sw.Id==id).FirstOrDefault());
+                return Ok(SwitchesService.Switches.Where(sw => sw.Id == id).FirstOrDefault());
             }
             catch (Exception ex)
             {
