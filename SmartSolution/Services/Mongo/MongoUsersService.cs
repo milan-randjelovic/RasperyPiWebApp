@@ -26,6 +26,9 @@ namespace WebPortal.Services.Mongo
             try
             {
                 //Check if its valid (already exist) in users and usersAppending
+                
+
+
                 // If it is valid
                 //add user to users appending and get back to login
             }

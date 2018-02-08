@@ -30,8 +30,7 @@ namespace WebPortal.Services.Mongo
             this.SwitchesLog = dbContext.GetCollection<SwitchLog>(configuration.SwitchesLog);
             this.Sensors = dbContext.GetCollection<Sensor>(configuration.Sensors);
             this.SensorsLog = dbContext.GetCollection<SensorLog>(configuration.SensorsLog);
-            this.Users = dbContext.GetCollection<User>(configuration.Users);
-            this.UsersAppending = dbContext.GetCollection<User>(configuration.UsersAppending);
+            this.Users = dbContext.GetCollection<User>(configuration.Users);           
         }
     }
 }
