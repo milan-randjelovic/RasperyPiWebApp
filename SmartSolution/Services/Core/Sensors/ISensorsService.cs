@@ -1,4 +1,5 @@
 ﻿using RaspberryLib;
+using System;
 using System.Collections.Generic;
 using WebPortal.Models.Sensors;
 
@@ -27,6 +28,13 @@ namespace WebPortal.Services.Core.Sensors
         /// <param name="pinCode"></param>
         /// <returns></returns>
         ISensor GetSensorFromMemory(PinCode pinCode);
+        /// <summary>
+        /// Get log from database
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
+        IEnumerable<ISensorLog> GetSensorsLog(DateTime from, DateTime to);
         /// <summary>
         /// Create new sensor
         /// </summary>

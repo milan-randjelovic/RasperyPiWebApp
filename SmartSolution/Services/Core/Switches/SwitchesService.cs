@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Timers;
 using RaspberryLib;
 using WebPortal.Models.Switches;
@@ -29,6 +30,7 @@ namespace WebPortal.Services.Core.Switches
         public abstract void LoadConfiguration();
         public abstract ISwitch GetSwitchFromDatabase(string id);
         public abstract ISwitch GetSwitchFromMemory(PinCode pinCode);
+        public abstract IEnumerable<ISwitchLog> GetSwitchesLog(DateTime from, DateTime to);
         public abstract void CreateNew(Switch switchObject);
         public abstract void Update(Switch switchObject);
         public abstract void Delete(string id);

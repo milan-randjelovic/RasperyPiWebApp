@@ -1,4 +1,5 @@
 ﻿using RaspberryLib;
+using System;
 using System.Collections.Generic;
 using System.Timers;
 using WebPortal.Models.Switches;
@@ -28,6 +29,13 @@ namespace WebPortal.Services.Core.Switches
         /// <param name="pinCode"></param>
         /// <returns></returns>
         ISwitch GetSwitchFromMemory(PinCode pinCode);
+        /// <summary>
+        /// Get log from database
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
+        IEnumerable<ISwitchLog> GetSwitchesLog(DateTime from, DateTime to);
         /// <summary>
         /// Create new switch
         /// </summary>

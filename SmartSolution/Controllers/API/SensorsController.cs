@@ -56,6 +56,25 @@ namespace WebPortal.Controllers.API
         }
 
         /// <summary>
+        /// Get sensors log
+        /// </summary>
+        /// <param name="id">Switch id</param>
+        /// <returns></returns>
+        [HttpGet("Log/{from}&{to}")]
+        public IActionResult Get(DateTime from, DateTime to)
+        {
+            try
+            {
+                IEnumerable<ISensorLog> result = SensorsService.GetSensorsLog(from, to);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        /// <summary>
         /// Create sensor
         /// </summary>
         /// <param name="switchObject">Sensor data</param>

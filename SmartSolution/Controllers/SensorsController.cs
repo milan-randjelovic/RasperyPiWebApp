@@ -226,6 +226,27 @@ namespace WebPortal.Controllers
         }
 
         [HttpGet]
+        public IActionResult Log(DateTime from, DateTime to)
+        {
+            try
+            {
+                IRestResponse result = SmartSolutionAPI.Get(SensorsService.Configuration.APIBaseAddress, SensorsService.Configuration.Sensors + "/Log", from.ToShortDateString() + "&" + to.ToShortDateString());
+                if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    TempData["Error"] = result.Content;
+                    return RedirectToAction("Error", "Home", null);
+                }
+                IEnumerable<ISensorLog> sensors = JsonConvert.DeserializeObject<IEnumerable<SensorLog>>(result.Content);
+                return View(sensors);
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = ex.Message;
+                return RedirectToAction("Error", "Home", null);
+            }
+        }
+
+        [HttpGet]
         public IActionResult SensorsGenerator()
         {
             return View();
