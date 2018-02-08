@@ -30,6 +30,7 @@ namespace WebPortal.Models
             this.Email = "";
             this.Username = "";
             this.Password = "";
+            this.Status = UserStatus.User;
         }
     }
     public enum UserStatus { Admin, User, UserAppending}

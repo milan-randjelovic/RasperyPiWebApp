@@ -15,8 +15,7 @@ namespace WebPortal.Services.Mongo
         public IMongoCollection<Sensor> Sensors { get; set; }
         public IMongoCollection<SensorLog> SensorsLog { get; set; }
         public IMongoCollection<User> Users { get; set; }
-        public IMongoCollection<User> UsersAppending { get; set; }
-
+        
         public string DatabaseName { get; set; }
         public string DatabaseConnectionString { get; set; }
 

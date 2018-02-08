@@ -8,7 +8,7 @@ namespace WebPortal.Services.Core.Users
         /// Add new user to database
         /// </summary>
         /// <param name="user"></param>
-        void SignUp(User user);
+        bool SignUp(User user);
         /// <summary>
         /// Compare user info with db's info
         /// </summary>
