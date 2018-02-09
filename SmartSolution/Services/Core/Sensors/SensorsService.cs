@@ -18,11 +18,7 @@ namespace WebPortal.Services.Core.Sensors
             if (this.timer == null)
             {
                 this.timer = new Timer(Configuration.LoggingInterval);
-                this.timer.Elapsed += LogSensorsData;
-                if (Configuration.LoggingEnabled)
-                {
-                    this.timer.Start();
-                }
+                this.timer.Elapsed += LogSensorsData;                
             }
         }
 

@@ -18,11 +18,7 @@ namespace WebPortal.Services.Core.Switches
             if (this.timer == null)
             {
                 this.timer = new Timer(Configuration.LoggingInterval);
-                this.timer.Elapsed += LoggSwitchesData;
-                if (Configuration.LoggingEnabled)
-                {
-                    this.timer.Start();
-                }
+                this.timer.Elapsed += LoggSwitchesData;              
             }
         }
 

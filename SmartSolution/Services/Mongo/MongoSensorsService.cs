@@ -19,6 +19,10 @@ namespace WebPortal.Services.Mongo
             Raspberry.Initialize();
             this.dbContext = (MongoDbContext)dbContext;
             this.LoadConfiguration();
+            if (Configuration.LoggingEnabled)
+            {
+                this.timer.Start();
+            }
         }
 
         ~MongoSensorsService()
