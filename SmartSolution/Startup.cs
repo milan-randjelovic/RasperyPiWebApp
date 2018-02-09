@@ -31,7 +31,7 @@ namespace WebPortal
             IDbContext dbContext;
             ISensorsService SensorsService;
             ISwitchesService SwitchesService;
-            IUsersService UserService;
+            IUsersService UsersService;
 
             switch (configuration.DataBase)
             {
@@ -39,24 +39,25 @@ namespace WebPortal
                     dbContext = new MongoDbContext(configuration);
                     SensorsService = new MongoSensorsService(dbContext, configuration);
                     SwitchesService = new MongoSwitchesService(dbContext, configuration);
-                    UserService = new MongoUserService(dbContext, configuration);
+                    UsersService = new MongoUserService(dbContext, configuration);
                     break;
                 case DataBase.SQLite:
                     dbContext = new SQLiteDbContext(configuration);
                     SensorsService = new SQLiteSensorsService(dbContext, configuration);
                     SwitchesService = new SQLiteSwitchesService(dbContext, configuration);
-                    UserService = new SQLiteUsersService(dbContext, configuration);
+                    UsersService = new SQLiteUsersService(dbContext, configuration);
                     break;
                 default:
                     dbContext = new SQLiteDbContext(configuration);
                     SensorsService = new SQLiteSensorsService(dbContext, configuration);
                     SwitchesService = new SQLiteSwitchesService(dbContext, configuration);
-                    UserService = new SQLiteUsersService(dbContext, configuration);
+                    UsersService = new SQLiteUsersService(dbContext, configuration);
                     break;
             }
 
             services.AddSingleton(SensorsService);
             services.AddSingleton(SwitchesService);
+            services.AddSingleton(UsersService);
 
         }
 

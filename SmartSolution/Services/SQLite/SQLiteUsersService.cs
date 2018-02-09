@@ -22,13 +22,14 @@ namespace WebPortal.Services.Mongo
             }
         }
 
-        public override void SignUp(User user)
+        public override bool SignUp(User user)
         {
             try
             {
                 //Check if its valid (already exist) in users and usersAppending
                 // If it is valid
                 //add user to users appending and get back to login
+                return false;
             }
             catch (Exception ex)
             {

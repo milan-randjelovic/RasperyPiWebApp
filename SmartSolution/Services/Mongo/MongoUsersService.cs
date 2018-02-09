@@ -10,11 +10,11 @@ namespace WebPortal.Services.Mongo
     {
         MongoDbContext dbContext;
 
-        public MongoUserService(IDbContext dbContext, ApplicationConfiguration configuration) : base(configuration)
+        public MongoUserService(IDbContext DbContext, ApplicationConfiguration configuration) : base(configuration)
         {
             try
             {
-                this.dbContext = (MongoDbContext)dbContext;
+                this.dbContext = (MongoDbContext)DbContext;
             }
             catch (Exception ex)
             {
