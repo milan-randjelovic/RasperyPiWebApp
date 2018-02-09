@@ -10,7 +10,7 @@ namespace WebPortal.Services.Core.Users
         {
             this.configuration = config;
         }
-        public abstract bool SignUp(User user);    
+        public abstract bool SignIn(User user);    
         public abstract void LogIn(string username, string password);         
     }
 }

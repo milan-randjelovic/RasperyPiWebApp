@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RaspberryLib;
 using Test.Models;
+using WebPortal.Models;
 using WebPortal.Models.Sensors;
 using WebPortal.Models.Switches;
 using WebPortal.Services.Core.Sensors;
@@ -22,7 +23,9 @@ namespace Test.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            //Check if user is logged
+            //if it is not-redirect to Login page whitch contains signIn button
+            return RedirectToAction("Login");
         }
 
         public IActionResult GetPinData(string pinCode)
@@ -47,6 +50,27 @@ namespace Test.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [HttpGet]
+        public IActionResult SignIn()
+        {
+            return View();
+        }
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult SignIn(User user)
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Login(User user)
+        {
+            return View();
         }
     }
 }

@@ -20,6 +20,10 @@ namespace WebPortal.Services.SQLite
             this.dbContext = (SQLiteDbContext)dbContext;
             this.dbContext.Database.EnsureCreated();
             this.LoadConfiguration();
+            if (Configuration.LoggingEnabled)
+            {
+                this.timer.Start();
+            }
         }
 
         ~SQLiteSwitchesService()
