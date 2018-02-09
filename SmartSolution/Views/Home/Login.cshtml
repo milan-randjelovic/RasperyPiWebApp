@@ -1,0 +1,17 @@
+﻿@model WebPortal.Models.User
+@{
+    ViewData["Title"] = "Login";
+}
+<h2>Login</h2>
+
+@using(Html.BeginForm("Login", "Home", new { Model }, FormMethod.Post)){
+    @Html.AntiForgeryToken()
+        @Html.TextBoxFor(u=>u.Username)
+<br />
+        @Html.PasswordFor(u=>u.Password)
+            <input type="submit" value="Login">
+
+}
+
+@Html.ActionLink("Sign in", "SignIn", "Home", null, new { @class = "btn btn-primary" })
+

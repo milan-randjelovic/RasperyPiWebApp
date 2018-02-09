@@ -22,7 +22,7 @@ namespace WebPortal.Services.Mongo
             }
         }
 
-        public override bool SignUp(User user)
+        public override bool SignIn(User user)
         {
             try
             {
