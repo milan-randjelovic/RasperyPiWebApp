@@ -14,7 +14,7 @@ namespace WebPortal.Services.Mongo
     {
         private MongoDbContext dbContext;
 
-        public MongoSwitchesService(IDbContext dbContext, ApplicationConfiguration configuration) : base(configuration)
+        public MongoSwitchesService(IMongoDbContext dbContext, ApplicationConfiguration configuration) : base(configuration)
         {
             Raspberry.Initialize();
             this.dbContext = (MongoDbContext)dbContext;

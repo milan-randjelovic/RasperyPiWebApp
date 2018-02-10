@@ -37,21 +37,21 @@ namespace WebPortal
             {
                 case DataBase.MongoDB:
                     dbContext = new MongoDbContext(configuration);
-                    SensorsService = new MongoSensorsService(dbContext, configuration);
-                    SwitchesService = new MongoSwitchesService(dbContext, configuration);
-                    UsersService = new MongoUserService(dbContext, configuration);
+                    SensorsService = new MongoSensorsService((IMongoDbContext)dbContext, configuration);
+                    SwitchesService = new MongoSwitchesService((IMongoDbContext)dbContext, configuration);
+                    UsersService = new MongoUserService((IMongoDbContext)dbContext, configuration);
                     break;
                 case DataBase.SQLite:
                     dbContext = new SQLiteDbContext(configuration);
-                    SensorsService = new SQLiteSensorsService(dbContext, configuration);
-                    SwitchesService = new SQLiteSwitchesService(dbContext, configuration);
-                    UsersService = new SQLiteUsersService(dbContext, configuration);
+                    SensorsService = new SQLiteSensorsService((ISQLiteDbContext)dbContext, configuration);
+                    SwitchesService = new SQLiteSwitchesService((ISQLiteDbContext)dbContext, configuration);
+                    UsersService = new SQLiteUsersService((ISQLiteDbContext)dbContext, configuration);
                     break;
                 default:
                     dbContext = new SQLiteDbContext(configuration);
-                    SensorsService = new SQLiteSensorsService(dbContext, configuration);
-                    SwitchesService = new SQLiteSwitchesService(dbContext, configuration);
-                    UsersService = new SQLiteUsersService(dbContext, configuration);
+                    SensorsService = new SQLiteSensorsService((ISQLiteDbContext)dbContext, configuration);
+                    SwitchesService = new SQLiteSwitchesService((ISQLiteDbContext)dbContext, configuration);
+                    UsersService = new SQLiteUsersService((ISQLiteDbContext)dbContext, configuration);
                     break;
             }
 

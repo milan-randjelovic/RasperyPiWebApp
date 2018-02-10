@@ -12,13 +12,13 @@ namespace WebPortal.Services.SQLite
 {
     public class SQLiteSwitchesService : SwitchesService
     {
-        private SQLiteDbContext dbContext;
-
-        public SQLiteSwitchesService(IDbContext dbContext, ApplicationConfiguration configuration) : base(configuration)
+        public SQLiteSwitchesService(ISQLiteDbContext dbContext, ApplicationConfiguration configuration) : base(configuration)
         {
             Raspberry.Initialize();
-            this.dbContext = (SQLiteDbContext)dbContext;
-            this.dbContext.Database.EnsureCreated();
+            using (SQLiteDbContext context = new SQLiteDbContext(this.Configuration))
+            {
+                context.Database.EnsureCreated();
+            }
             this.LoadConfiguration();
             if (Configuration.LoggingEnabled)
             {
@@ -38,20 +38,23 @@ namespace WebPortal.Services.SQLite
         {
             try
             {
-                foreach (Switch sw in Switches)
+                using (SQLiteDbContext dbContext = new SQLiteDbContext(this.Configuration))
                 {
-                    Switch switchObj = this.dbContext.Switches.Where(s => s.Id == sw.Id).SingleOrDefault();
-                    if (switchObj != null)
+                    foreach (Switch sw in Switches)
                     {
-                        switchObj.DeviceType = sw.DeviceType;
-                        switchObj.Name = sw.Name;
-                        switchObj.RaspberryPin = sw.RaspberryPin;
-                        switchObj.SwitchType = sw.SwitchType;
-                        switchObj.State = sw.State;
-                        switchObj.InverseLogic = sw.InverseLogic;
+                        Switch switchObj = dbContext.Switches.Where(s => s.Id == sw.Id).SingleOrDefault();
+                        if (switchObj != null)
+                        {
+                            switchObj.DeviceType = sw.DeviceType;
+                            switchObj.Name = sw.Name;
+                            switchObj.RaspberryPin = sw.RaspberryPin;
+                            switchObj.SwitchType = sw.SwitchType;
+                            switchObj.State = sw.State;
+                            switchObj.InverseLogic = sw.InverseLogic;
+                        }
                     }
+                    dbContext.SaveChanges();
                 }
-                this.dbContext.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -66,32 +69,35 @@ namespace WebPortal.Services.SQLite
         {
             try
             {
-                List<Switch> switches = this.dbContext.Switches.ToList();
-                List<Switch> result = new List<Switch>();
-
-                foreach (Switch s in switches)
+                using (SQLiteDbContext dbContext = new SQLiteDbContext(this.Configuration))
                 {
-                    if (s.SwitchType == SwitchType.Mockup)
-                    {
-                        MockupSwitch mockupSwitch = new MockupSwitch
-                        {
-                            DeviceType = s.DeviceType,
-                            Id = s.Id,
-                            Name = s.Name,
-                            RaspberryPin = s.RaspberryPin,
-                            State = s.State,
-                            SwitchType = s.SwitchType,
-                            InverseLogic = s.InverseLogic
-                        };
-                        result.Add(mockupSwitch);
-                    }
-                    else
-                    {
-                        result.Add(s);
-                    }
-                }
+                    List<Switch> switches = dbContext.Switches.ToList();
+                    List<Switch> result = new List<Switch>();
 
-                this.Switches = result;
+                    foreach (Switch s in switches)
+                    {
+                        if (s.SwitchType == SwitchType.Mockup)
+                        {
+                            MockupSwitch mockupSwitch = new MockupSwitch
+                            {
+                                DeviceType = s.DeviceType,
+                                Id = s.Id,
+                                Name = s.Name,
+                                RaspberryPin = s.RaspberryPin,
+                                State = s.State,
+                                SwitchType = s.SwitchType,
+                                InverseLogic = s.InverseLogic
+                            };
+                            result.Add(mockupSwitch);
+                        }
+                        else
+                        {
+                            result.Add(s);
+                        }
+                    }
+
+                    this.Switches = result;
+                }
             }
             catch (Exception ex)
             {
@@ -110,26 +116,29 @@ namespace WebPortal.Services.SQLite
 
             try
             {
-                Switch s = this.dbContext.Switches.Where(sw => sw.Id == id).SingleOrDefault();
-
-                if (s != null)
+                using (SQLiteDbContext dbContext = new SQLiteDbContext(this.Configuration))
                 {
-                    if (s.SwitchType == SwitchType.Mockup)
-                    {
-                        MockupSwitch mockupSwitch = new MockupSwitch
-                        {
-                            DeviceType = s.DeviceType,
-                            Id = s.Id,
-                            Name = s.Name,
-                            RaspberryPin = s.RaspberryPin,
-                            State = s.State,
-                            SwitchType = s.SwitchType
-                        };
-                        switchObj = mockupSwitch;
-                    }
-                }
+                    Switch s = dbContext.Switches.Where(sw => sw.Id == id).SingleOrDefault();
 
-                switchObj = s;
+                    if (s != null)
+                    {
+                        if (s.SwitchType == SwitchType.Mockup)
+                        {
+                            MockupSwitch mockupSwitch = new MockupSwitch
+                            {
+                                DeviceType = s.DeviceType,
+                                Id = s.Id,
+                                Name = s.Name,
+                                RaspberryPin = s.RaspberryPin,
+                                State = s.State,
+                                SwitchType = s.SwitchType
+                            };
+                            switchObj = mockupSwitch;
+                        }
+                    }
+
+                    switchObj = s;
+                }
             }
             catch (Exception ex)
             {
@@ -159,9 +168,12 @@ namespace WebPortal.Services.SQLite
         {
             try
             {
-                IEnumerable<ISwitchLog> result = new List<ISwitchLog>();
-                result = this.dbContext.SwitchesLog.Where(s => s.Timestamp >= from && s.Timestamp <= to);
-                return result;
+                using (SQLiteDbContext dbContext = new SQLiteDbContext(this.Configuration))
+                {
+                    IEnumerable<ISwitchLog> result = new List<ISwitchLog>();
+                    result = dbContext.SwitchesLog.Where(s => s.Timestamp >= from && s.Timestamp <= to);
+                    return result;
+                }
             }
             catch (Exception ex)
             {
@@ -177,8 +189,11 @@ namespace WebPortal.Services.SQLite
         {
             try
             {
-                this.dbContext.Switches.Add(switchObject);
-                this.dbContext.SaveChanges();
+                using (SQLiteDbContext dbContext = new SQLiteDbContext(this.Configuration))
+                {
+                    dbContext.Switches.Add(switchObject);
+                    dbContext.SaveChanges();
+                }
                 this.SaveConfiguration();
                 this.LoadConfiguration();
             }
@@ -219,9 +234,12 @@ namespace WebPortal.Services.SQLite
         {
             try
             {
-                Switch switchObj = this.dbContext.Switches.Where(s => s.Id == id).SingleOrDefault();
-                this.dbContext.Switches.Remove(switchObj);
-                this.dbContext.SaveChanges();
+                using (SQLiteDbContext dbContext = new SQLiteDbContext(this.Configuration))
+                {
+                    Switch switchObj = dbContext.Switches.Where(s => s.Id == id).SingleOrDefault();
+                    dbContext.Switches.Remove(switchObj);
+                    dbContext.SaveChanges();
+                }
                 this.SaveConfiguration();
                 this.LoadConfiguration();
             }
@@ -259,16 +277,21 @@ namespace WebPortal.Services.SQLite
             }
         }
 
+        
+
         public override void LogSwitchesData(object sender, ElapsedEventArgs e)
         {
             try
             {
-                foreach (Switch sw in Switches)
+                using (SQLiteDbContext dbContext = new SQLiteDbContext(this.Configuration))
                 {
-                    SwitchLog switchLog = new SwitchLog(sw);
-                    this.dbContext.SwitchesLog.Add(switchLog);
+                    foreach (Switch sw in Switches)
+                    {
+                        SwitchLog switchLog = new SwitchLog(sw);
+                        dbContext.SwitchesLog.Add(switchLog);
+                    }
+                    dbContext.SaveChanges();
                 }
-                this.dbContext.SaveChanges();
             }
             catch (Exception ex)
             {

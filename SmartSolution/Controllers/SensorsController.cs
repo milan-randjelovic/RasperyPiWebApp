@@ -252,6 +252,30 @@ namespace WebPortal.Controllers
         }
 
         /// <summary>
+        /// Refresh sensor values
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult SensorsValues()
+        {
+            try
+            {
+                IRestResponse result = SmartSolutionAPI.Get(SensorsService.Configuration.APIBaseAddress, SensorsService.Configuration.Sensors, "");
+                if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    TempData["Error"] = result.Content;
+                    return RedirectToAction("Error", "Home", null);
+                }
+                return Ok(result.Content);
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = ex.Message;
+                return RedirectToAction("Error", "Home", null);
+            }
+        }
+
+        /// <summary>
         /// Get sensor log
         /// </summary>
         /// <param name="from"></param>

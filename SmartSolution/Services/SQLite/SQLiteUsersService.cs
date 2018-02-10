@@ -10,7 +10,7 @@ namespace WebPortal.Services.Mongo
     {
         private SQLiteDbContext dbContext;
 
-        public SQLiteUsersService(IDbContext dbContext, ApplicationConfiguration configuration) : base(configuration)
+        public SQLiteUsersService(ISQLiteDbContext dbContext, ApplicationConfiguration configuration) : base(configuration)
         {
             try
             {

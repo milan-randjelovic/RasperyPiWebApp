@@ -12,13 +12,13 @@ namespace WebPortal.Services.SQLite
 {
     public class SQLiteSensorsService : SensorsService
     {
-        private SQLiteDbContext dbContext;
-
-        public SQLiteSensorsService(IDbContext dbContext, ApplicationConfiguration configuration) : base(configuration)
+        public SQLiteSensorsService(ISQLiteDbContext dbContext, ApplicationConfiguration configuration) : base(configuration)
         {
             Raspberry.Initialize();
-            this.dbContext = (SQLiteDbContext)dbContext;
-            this.dbContext.Database.EnsureCreated();
+            using (SQLiteDbContext context = new SQLiteDbContext(this.Configuration))
+            {
+                context.Database.EnsureCreated();
+            }
             this.LoadConfiguration();
             if (Configuration.LoggingEnabled)
             {
@@ -38,20 +38,23 @@ namespace WebPortal.Services.SQLite
         {
             try
             {
-                foreach (Sensor sens in Sensors)
+                using (SQLiteDbContext dbContext = new SQLiteDbContext(this.Configuration))
                 {
-                    Sensor sensor = this.dbContext.Sensors.Where(s => s.Id == sens.Id).SingleOrDefault();
-                    if (sensor != null)
+                    foreach (Sensor sens in Sensors)
                     {
-                        sensor.DeviceType = sens.DeviceType;
-                        sensor.Name = sens.Name;
-                        sensor.RaspberryPin = sens.RaspberryPin;
-                        sensor.SensorType = sens.SensorType;
-                        sensor.Timestamp = sens.Timestamp;
-                        sensor.Value = sens.Value;
+                        Sensor sensor = dbContext.Sensors.Where(s => s.Id == sens.Id).SingleOrDefault();
+                        if (sensor != null)
+                        {
+                            sensor.DeviceType = sens.DeviceType;
+                            sensor.Name = sens.Name;
+                            sensor.RaspberryPin = sens.RaspberryPin;
+                            sensor.SensorType = sens.SensorType;
+                            sensor.Timestamp = sens.Timestamp;
+                            sensor.Value = sens.Value;
+                        }
                     }
+                    dbContext.SaveChanges();
                 }
-                this.dbContext.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -66,32 +69,35 @@ namespace WebPortal.Services.SQLite
         {
             try
             {
-                List<Sensor> sensors = this.dbContext.Sensors.ToList();
-                List<Sensor> result = new List<Sensor>();
-
-                foreach (Sensor s in sensors)
+                using (SQLiteDbContext dbContext = new SQLiteDbContext(this.Configuration))
                 {
-                    if (s.SensorType == SensorType.Mockup)
-                    {
-                        MockupSensor mockupSensor = new MockupSensor
-                        {
-                            DeviceType = s.DeviceType,
-                            Id = s.Id,
-                            Name = s.Name,
-                            SensorType = s.SensorType,
-                            RaspberryPin = s.RaspberryPin,
-                            Timestamp = s.Timestamp,
-                            Value = s.Value
-                        };
-                        result.Add(mockupSensor);
-                    }
-                    else
-                    {
-                        result.Add(s);
-                    }
-                }
+                    List<Sensor> sensors = dbContext.Sensors.ToList();
+                    List<Sensor> result = new List<Sensor>();
 
-                this.Sensors = result;
+                    foreach (Sensor s in sensors)
+                    {
+                        if (s.SensorType == SensorType.Mockup)
+                        {
+                            MockupSensor mockupSensor = new MockupSensor
+                            {
+                                DeviceType = s.DeviceType,
+                                Id = s.Id,
+                                Name = s.Name,
+                                SensorType = s.SensorType,
+                                RaspberryPin = s.RaspberryPin,
+                                Timestamp = s.Timestamp,
+                                Value = s.Value
+                            };
+                            result.Add(mockupSensor);
+                        }
+                        else
+                        {
+                            result.Add(s);
+                        }
+                    }
+
+                    this.Sensors = result;
+                }
             }
             catch (Exception ex)
             {
@@ -110,28 +116,31 @@ namespace WebPortal.Services.SQLite
 
             try
             {
-                Sensor sens = this.dbContext.Sensors.Where(s => s.Id == id).SingleOrDefault();
-
-                if (sens != null)
+                using (SQLiteDbContext dbContext = new SQLiteDbContext(this.Configuration))
                 {
-                    if (sens.SensorType == SensorType.Mockup)
+                    Sensor sens = dbContext.Sensors.Where(s => s.Id == id).SingleOrDefault();
+
+                    if (sens != null)
                     {
-
-                        MockupSensor mockupSensor = new MockupSensor
+                        if (sens.SensorType == SensorType.Mockup)
                         {
-                            DeviceType = sens.DeviceType,
-                            Id = sens.Id,
-                            Name = sens.Name,
-                            SensorType = sens.SensorType,
-                            RaspberryPin = sens.RaspberryPin,
-                            Timestamp = sens.Timestamp,
-                            Value = sens.Value
-                        };
-                        sensor = mockupSensor;
-                    }
-                }
 
-                sensor = sens;
+                            MockupSensor mockupSensor = new MockupSensor
+                            {
+                                DeviceType = sens.DeviceType,
+                                Id = sens.Id,
+                                Name = sens.Name,
+                                SensorType = sens.SensorType,
+                                RaspberryPin = sens.RaspberryPin,
+                                Timestamp = sens.Timestamp,
+                                Value = sens.Value
+                            };
+                            sensor = mockupSensor;
+                        }
+                    }
+
+                    sensor = sens;
+                }
             }
             catch (Exception ex)
             {
@@ -161,9 +170,12 @@ namespace WebPortal.Services.SQLite
         {
             try
             {
-                IEnumerable<ISensorLog> result = new List<SensorLog>();
-                result = this.dbContext.SensorsLog.Where(s => s.Timestamp >= from && s.Timestamp <= to);
-                return result;
+                using (SQLiteDbContext dbContext = new SQLiteDbContext(this.Configuration))
+                {
+                    IEnumerable<ISensorLog> result = new List<SensorLog>();
+                    result = dbContext.SensorsLog.Where(s => s.Timestamp >= from && s.Timestamp <= to);
+                    return result;
+                }
             }
             catch (Exception ex)
             {
@@ -179,8 +191,11 @@ namespace WebPortal.Services.SQLite
         {
             try
             {
-                this.dbContext.Sensors.Add(sensor);
-                this.dbContext.SaveChanges();
+                using (SQLiteDbContext dbContext = new SQLiteDbContext(this.Configuration))
+                {
+                    dbContext.Sensors.Add(sensor);
+                    dbContext.SaveChanges();
+                }
                 this.SaveConfiguration();
                 this.LoadConfiguration();
             }
@@ -221,9 +236,12 @@ namespace WebPortal.Services.SQLite
         {
             try
             {
-                Sensor sensor = this.dbContext.Sensors.Where(s => s.Id == id).SingleOrDefault();
-                this.dbContext.Sensors.Remove(sensor);
-                this.dbContext.SaveChanges();
+                using (SQLiteDbContext dbContext = new SQLiteDbContext(this.Configuration))
+                {
+                    Sensor sensor = dbContext.Sensors.Where(s => s.Id == id).SingleOrDefault();
+                    dbContext.Sensors.Remove(sensor);
+                    dbContext.SaveChanges();
+                }
                 this.SaveConfiguration();
                 this.LoadConfiguration();
             }
@@ -242,12 +260,15 @@ namespace WebPortal.Services.SQLite
         {
             try
             {
-                foreach (Sensor sens in Sensors)
+                using (SQLiteDbContext dbContext = new SQLiteDbContext(this.Configuration))
                 {
-                    SensorLog sensorLog = new SensorLog(sens);
-                    this.dbContext.SensorsLog.Add(sensorLog);
+                    foreach (Sensor sens in Sensors)
+                    {
+                        SensorLog sensorLog = new SensorLog(sens);
+                        dbContext.SensorsLog.Add(sensorLog);
+                    }
+                    dbContext.SaveChanges();
                 }
-                this.dbContext.SaveChanges();
             }
             catch (Exception ex)
             {
