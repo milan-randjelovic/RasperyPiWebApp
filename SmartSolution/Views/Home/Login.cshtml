@@ -4,10 +4,8 @@
     ViewData["Title"] = "Login";
 }
 
+<div class="col-md-offset-4">
 <h2>Login</h2>
-
-<h4>User</h4>
-<hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Login">
@@ -30,8 +28,7 @@
 </div>
 <br />
 <br />
-
 <div>
     @Html.ActionLink("Sign in", "SignIn", "Home", null, new { @class = "btn btn-primary btn-sm" })
 </div>
-
+   </div>
