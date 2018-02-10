@@ -6,7 +6,7 @@ using WebPortal.Services.Core;
 
 namespace WebPortal.Services.Mongo
 {
-    public class MongoDbContext: IDbContext
+    public class MongoDbContext: IMongoDbContext
     {
         private MongoClient client;
         private IMongoDatabase dbContext;

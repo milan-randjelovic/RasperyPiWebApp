@@ -51,11 +51,7 @@ namespace WebPortal.Services.SQLite
                         switchObj.InverseLogic = sw.InverseLogic;
                     }
                 }
-                this.timer.Stop();
-                this.timer.Enabled = false;
                 this.dbContext.SaveChanges();
-                this.timer.Enabled = true;
-                this.timer.Start();
             }
             catch (Exception ex)
             {

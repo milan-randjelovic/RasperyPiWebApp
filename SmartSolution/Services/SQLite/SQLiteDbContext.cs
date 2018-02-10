@@ -5,7 +5,7 @@ using WebPortal.Services.Core;
 
 namespace WebPortal.Services.SQLite
 {
-    public class SQLiteDbContext : DbContext, IDbContext
+    public class SQLiteDbContext : DbContext, ISQLiteDbContext
     {
         public DbSet<Switch> Switches { get; set; }
         public DbSet<SwitchLog> SwitchesLog { get; set; }
@@ -32,6 +32,11 @@ namespace WebPortal.Services.SQLite
             modelBuilder.Entity<SwitchLog>().HasKey(s => s.Id);
             modelBuilder.Entity<Sensor>().HasKey(s => s.Id);
             modelBuilder.Entity<SensorLog>().HasKey(s => s.Id);
+        }
+
+        public override int SaveChanges()
+        {
+            return base.SaveChanges();
         }
     }
 }

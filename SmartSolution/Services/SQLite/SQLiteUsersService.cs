@@ -22,6 +22,14 @@ namespace WebPortal.Services.Mongo
             }
         }
 
+        /// <summary>
+        /// Save changes od db context
+        /// </summary>
+        private void SaveChanges()
+        {
+            this.dbContext.SaveChanges();
+        }
+
         public override bool SignIn(User user)
         {
             try
