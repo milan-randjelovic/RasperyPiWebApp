@@ -46,7 +46,7 @@ namespace WebPortal.Controllers
         }
 
         /// <summary>
-        /// Index page
+        /// Switches configuration page
         /// </summary>
         /// <returns></returns>
         public IActionResult SwitchesConfiguration()
@@ -70,7 +70,7 @@ namespace WebPortal.Controllers
         }
 
         /// <summary>
-        /// Details page
+        /// Switch details page
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -95,7 +95,7 @@ namespace WebPortal.Controllers
         }
 
         /// <summary>
-        /// Create new page
+        /// Create switch page
         /// </summary>
         /// <returns></returns>
         public IActionResult SwitchesCreate()
@@ -135,7 +135,7 @@ namespace WebPortal.Controllers
         }
 
         /// <summary>
-        /// Edit page
+        /// Edit switch page
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -191,7 +191,7 @@ namespace WebPortal.Controllers
         }
 
         /// <summary>
-        /// Delete page
+        /// Delete switch page
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -292,6 +292,12 @@ namespace WebPortal.Controllers
             }
         }
 
+        /// <summary>
+        /// Get switch log
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult Log(DateTime from, DateTime to)
         {
@@ -310,48 +316,6 @@ namespace WebPortal.Controllers
             {
                 TempData["Error"] = ex.Message;
                 return RedirectToAction("Error", "Home", null);
-            }
-        }
-
-        [HttpGet]
-        public IActionResult SwitchesGenerator()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult SwitchesGenerator(int numOfSwitches)
-        {
-            try
-            {
-                SwitchesService.GenerateTestSwitches(numOfSwitches);
-                return RedirectToAction("Index");
-            }
-            catch (Exception ex)
-            {
-                TempData["Error"] = ex.Message;
-                return RedirectToAction("Error");
-            }
-        }
-
-        [HttpGet]
-        public IActionResult DeleteMockupSwitches()
-        {
-            return View();
-        }
-
-        [HttpGet]
-        public IActionResult DeleteAllMockupSwitches()
-        {
-            try
-            {
-                SwitchesService.DeleteMockupSwitches();
-                return RedirectToAction("Index");
-            }
-            catch (Exception ex)
-            {
-                TempData["Error"] = ex.Message;
-                return RedirectToAction("Error");
             }
         }
     }

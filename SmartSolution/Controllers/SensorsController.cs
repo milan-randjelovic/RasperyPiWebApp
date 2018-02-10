@@ -14,12 +14,20 @@ namespace WebPortal.Controllers
         protected string APIBaseAddress { get; set; }
         protected static ISensorsService SensorsService { get; private set; }
 
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        /// <param name="sensorsService"></param>
         public SensorsController(ISensorsService sensorsService)
         {
             SensorsService = sensorsService;
             this.APIBaseAddress = sensorsService.Configuration.APIBaseAddress;
         }
 
+        /// <summary>
+        /// Index page
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult Index()
         {
@@ -41,6 +49,10 @@ namespace WebPortal.Controllers
             }
         }
 
+        /// <summary>
+        /// Sensor configuration page
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult SensorsConfiguration()
         {
@@ -62,6 +74,11 @@ namespace WebPortal.Controllers
             }
         }
 
+        /// <summary>
+        /// Sensor details page
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult SensorsDetails(string id)
         {
@@ -83,12 +100,21 @@ namespace WebPortal.Controllers
             }
         }
 
+        /// <summary>
+        /// Sensor create page
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult SensorsCreate()
         {
             return View();
         }
 
+        /// <summary>
+        /// Create sensor
+        /// </summary>
+        /// <param name="sensorObject"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult SensorsCreate(Sensor sensorObject)
@@ -115,6 +141,11 @@ namespace WebPortal.Controllers
             }
         }
 
+        /// <summary>
+        /// Sensor edit page
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult SensorsEdit(string id)
         {
@@ -136,6 +167,11 @@ namespace WebPortal.Controllers
             }
         }
 
+        /// <summary>
+        /// Edit sensor
+        /// </summary>
+        /// <param name="sensorObject"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult SensorsEdit(Sensor sensorObject)
@@ -162,6 +198,11 @@ namespace WebPortal.Controllers
             }
         }
 
+        /// <summary>
+        /// Sensor delete page
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult SensorsDelete(string id)
         {
@@ -183,6 +224,11 @@ namespace WebPortal.Controllers
             }
         }
 
+        /// <summary>
+        /// Delete sensor
+        /// </summary>
+        /// <param name="sensorObject"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult SensorsDelete(Sensor sensorObject)
@@ -205,26 +251,12 @@ namespace WebPortal.Controllers
             }
         }
 
-        [HttpGet]
-        public IActionResult SensorsValues()
-        {
-            try
-            {
-                IRestResponse result = SmartSolutionAPI.Get(SensorsService.Configuration.APIBaseAddress, SensorsService.Configuration.Sensors, "");
-                if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
-                {
-                    TempData["Error"] = result.Content;
-                    return RedirectToAction("Error", "Home", null);
-                }
-                return Ok(result.Content);
-            }
-            catch (Exception ex)
-            {
-                TempData["Error"] = ex.Message;
-                return RedirectToAction("Error", "Home", null);
-            }
-        }
-
+        /// <summary>
+        /// Get sensor log
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult Log(DateTime from, DateTime to)
         {
@@ -243,50 +275,6 @@ namespace WebPortal.Controllers
             {
                 TempData["Error"] = ex.Message;
                 return RedirectToAction("Error", "Home", null);
-            }
-        }
-
-        [HttpGet]
-        public IActionResult SensorsGenerator()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult SensorsGenerator(int numOfSens)
-        {
-            try
-            {
-                SensorsService.GenerateTestSensors(numOfSens);
-                return RedirectToAction("Index");
-            }
-            catch (Exception ex)
-            {
-                TempData["Error"] = ex.Message;
-                return RedirectToAction("Error");
-            }
-
-
-        }
-
-        [HttpGet]
-        public IActionResult DeleteMockupSensors()
-        {
-            return View();
-        }
-
-        [HttpGet]
-        public IActionResult DeleteAllMockupSensors()
-        {
-            try
-            {
-                SensorsService.DeleteMockupSensors();
-                return RedirectToAction("Index");
-            }
-            catch (Exception ex)
-            {
-                TempData["Error"] = ex.Message;
-                return RedirectToAction("Error");
             }
         }
     }

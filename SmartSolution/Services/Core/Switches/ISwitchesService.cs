@@ -62,16 +62,7 @@ namespace WebPortal.Services.Core.Switches
         /// <param name="id"></param>
         void TurnOFF(string id);
         /// <summary>
-        /// Generate test switches
-        /// </summary>
-        /// <param name="numOfSwitches"></param>
-        void GenerateTestSwitches(int numOfSwitches);
-        /// <summary>
-        /// Delete all mockup switches from db. It will not delete logs for them!
-        /// </summary>
-        void DeleteMockupSwitches();
-        /// <summary>
-        /// App configuration
+        /// Get configuration
         /// </summary>
         ApplicationConfiguration Configuration { get; set; }
     }

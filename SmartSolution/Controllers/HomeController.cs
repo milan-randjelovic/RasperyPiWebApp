@@ -28,6 +28,11 @@ namespace Test.Controllers
             return RedirectToAction("Login");
         }
 
+        /// <summary>
+        /// Get data for pin
+        /// </summary>
+        /// <param name="pinCode"></param>
+        /// <returns></returns>
         public IActionResult GetPinData(string pinCode)
         {
             PinCode code = EnumeratorHelpers.GetPinCode(pinCode);
@@ -47,26 +52,50 @@ namespace Test.Controllers
             return Json(null);
         }
 
+        /// <summary>
+        /// Show error page
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        /// <summary>
+        /// Show sing in page
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult SignIn()
         {
             return View();
         }
-        [HttpGet]
-        public IActionResult Login()
-        {
-            return View();
-        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult SignIn(User user)
         {
             return View();
         }
+
+        /// <summary>
+        /// Show login page
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// Login user
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult Login(User user)
         {

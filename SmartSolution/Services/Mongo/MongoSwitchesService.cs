@@ -62,14 +62,16 @@ namespace WebPortal.Services.Mongo
                 {
                     if (s.SwitchType == SwitchType.Mockup)
                     {
-                        MockupSwitch mockupSwitch = new MockupSwitch();
-                        mockupSwitch.DeviceType = s.DeviceType;
-                        mockupSwitch.Id = s.Id;
-                        mockupSwitch.Name = s.Name;
-                        mockupSwitch.RaspberryPin = s.RaspberryPin;
-                        mockupSwitch.State = s.State;
-                        mockupSwitch.SwitchType = s.SwitchType;
-                        mockupSwitch.InverseLogic = s.InverseLogic;
+                        MockupSwitch mockupSwitch = new MockupSwitch
+                        {
+                            DeviceType = s.DeviceType,
+                            Id = s.Id,
+                            Name = s.Name,
+                            RaspberryPin = s.RaspberryPin,
+                            State = s.State,
+                            SwitchType = s.SwitchType,
+                            InverseLogic = s.InverseLogic
+                        };
                         result.Add(mockupSwitch);
                     }
                     else
@@ -103,13 +105,15 @@ namespace WebPortal.Services.Mongo
                 {
                     if (s.SwitchType == SwitchType.Mockup)
                     {
-                        MockupSwitch mockupSwitch = new MockupSwitch();
-                        mockupSwitch.DeviceType = s.DeviceType;
-                        mockupSwitch.Id = s.Id;
-                        mockupSwitch.Name = s.Name;
-                        mockupSwitch.RaspberryPin = s.RaspberryPin;
-                        mockupSwitch.State = s.State;
-                        mockupSwitch.SwitchType = s.SwitchType;
+                        MockupSwitch mockupSwitch = new MockupSwitch
+                        {
+                            DeviceType = s.DeviceType,
+                            Id = s.Id,
+                            Name = s.Name,
+                            RaspberryPin = s.RaspberryPin,
+                            State = s.State,
+                            SwitchType = s.SwitchType
+                        };
                         switchObj = mockupSwitch;
                     }
                 }
@@ -241,7 +245,7 @@ namespace WebPortal.Services.Mongo
             }
         }
 
-        public override void LoggSwitchesData(object sender, ElapsedEventArgs e)
+        public override void LogSwitchesData(object sender, ElapsedEventArgs e)
         {
             try
             {
@@ -250,49 +254,6 @@ namespace WebPortal.Services.Mongo
                     SwitchLog switchLog = new SwitchLog(sw);
                     this.dbContext.SwitchesLog.InsertOne(switchLog);
                 }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        public override void GenerateTestSwitches(int numOfSwitches)
-        {
-            if (numOfSwitches > 20)
-            {
-                numOfSwitches = 20;
-            }
-            if (numOfSwitches < 0)
-            {
-                numOfSwitches = 0;
-            }
-
-            try
-            {
-                for (int i = 0; i < numOfSwitches; i++)
-                {
-                    MockupSwitch mockupSwitch = new MockupSwitch();
-                    mockupSwitch.Name = "TestSensor";
-                    this.dbContext.Switches.InsertOne(mockupSwitch);
-                }
-                this.SaveConfiguration();
-                this.LoadConfiguration();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        /// <summary>
-        /// Delete all mockup switches from db. It will not delete logs for them!
-        /// </summary>
-        public override void DeleteMockupSwitches()
-        {
-            try
-            {
-                this.dbContext.Switches.DeleteMany(sw => sw.SwitchType == SwitchType.Mockup);
             }
             catch (Exception ex)
             {
