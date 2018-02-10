@@ -22,16 +22,53 @@ namespace WebPortal.Services.Core.Sensors
             }
         }
 
+        /// <summary>
+        /// Save configuration
+        /// </summary>
         public abstract void SaveConfiguration();
+        /// <summary>
+        /// Load sensors configuration from databse
+        /// </summary>
         public abstract void LoadConfiguration();
+        /// <summary>
+        /// Gets sensor from databse by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public abstract ISensor GetSensorFromDatabase(string id);
+        /// <summary>
+        /// Gets sensor by pin code
+        /// </summary>
+        /// <param name="pinCode"></param>
+        /// <returns></returns>
         public abstract ISensor GetSensorFromMemory(PinCode pinCode);
+        /// <summary>
+        /// Get log from database
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         public abstract IEnumerable<ISensorLog> GetSensorsLog(DateTime from, DateTime to);
+        /// <summary>
+        /// Create new sensor
+        /// </summary>
+        /// <param name="switchObject"></param>
         public abstract void CreateNew(Sensor sensor);
+        /// <summary>
+        /// Update sensor 
+        /// </summary>
+        /// <param name="switchObject"></param>
         public abstract void Update(Sensor sensor);
+        /// <summary>
+        /// Delete sensor
+        /// </summary>
+        /// <param name="id"></param>
         public abstract void Delete(string id);
+        /// <summary>
+        /// Log sensor data
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public abstract void LogSensorsData(object sender, ElapsedEventArgs e);
-        public abstract void GenerateTestSensors(int numOfSensors);
-        public abstract void DeleteMockupSensors();
     }
 }

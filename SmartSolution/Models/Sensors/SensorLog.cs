@@ -10,7 +10,7 @@ namespace WebPortal.Models.Sensors
         public DateTime Timestamp { get; set; }
 
         /// <summary>
-        /// Initialize LogSensor manualy, it is null
+        /// Create new instance of SensorLog
         /// </summary>
         public SensorLog()
         {
@@ -20,6 +20,10 @@ namespace WebPortal.Models.Sensors
             this.Timestamp = DateTime.Now;
         }
 
+        /// <summary>
+        /// Create new instance of SensorLog based on sensor
+        /// </summary>
+        /// <param name="sensor"></param>
         public SensorLog(Sensor sensor)
         {
             this.Id = Guid.NewGuid().ToString();

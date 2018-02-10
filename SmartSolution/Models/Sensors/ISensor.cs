@@ -1,6 +1,5 @@
 ﻿using RaspberryLib;
 using System;
-using WebPortal.Services;
 
 namespace WebPortal.Models.Sensors
 {

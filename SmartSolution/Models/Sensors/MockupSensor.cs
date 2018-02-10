@@ -10,8 +10,10 @@ namespace WebPortal.Models.Sensors
         public MockupSensor() : base()
         {
             this.SensorType = SensorType.Mockup;
-            this.timer = new Timer();
-            this.timer.Interval = 5000;
+            this.timer = new Timer
+            {
+                Interval = 5000
+            };
             this.timer.Elapsed += TimerRefresh;
             this.timer.Start();
         }

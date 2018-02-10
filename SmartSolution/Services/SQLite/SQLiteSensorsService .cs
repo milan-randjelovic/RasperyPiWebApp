@@ -77,14 +77,16 @@ namespace WebPortal.Services.SQLite
                 {
                     if (s.SensorType == SensorType.Mockup)
                     {
-                        MockupSensor mockupSensor = new MockupSensor();
-                        mockupSensor.DeviceType = s.DeviceType;
-                        mockupSensor.Id = s.Id;
-                        mockupSensor.Name = s.Name;
-                        mockupSensor.SensorType = s.SensorType;
-                        mockupSensor.RaspberryPin = s.RaspberryPin;
-                        mockupSensor.Timestamp = s.Timestamp;
-                        mockupSensor.Value = s.Value;
+                        MockupSensor mockupSensor = new MockupSensor
+                        {
+                            DeviceType = s.DeviceType,
+                            Id = s.Id,
+                            Name = s.Name,
+                            SensorType = s.SensorType,
+                            RaspberryPin = s.RaspberryPin,
+                            Timestamp = s.Timestamp,
+                            Value = s.Value
+                        };
                         result.Add(mockupSensor);
                     }
                     else
@@ -119,14 +121,16 @@ namespace WebPortal.Services.SQLite
                     if (sens.SensorType == SensorType.Mockup)
                     {
 
-                        MockupSensor mockupSensor = new MockupSensor();
-                        mockupSensor.DeviceType = sens.DeviceType;
-                        mockupSensor.Id = sens.Id;
-                        mockupSensor.Name = sens.Name;
-                        mockupSensor.SensorType = sens.SensorType;
-                        mockupSensor.RaspberryPin = sens.RaspberryPin;
-                        mockupSensor.Timestamp = sens.Timestamp;
-                        mockupSensor.Value = sens.Value;
+                        MockupSensor mockupSensor = new MockupSensor
+                        {
+                            DeviceType = sens.DeviceType,
+                            Id = sens.Id,
+                            Name = sens.Name,
+                            SensorType = sens.SensorType,
+                            RaspberryPin = sens.RaspberryPin,
+                            Timestamp = sens.Timestamp,
+                            Value = sens.Value
+                        };
                         sensor = mockupSensor;
                     }
                 }
@@ -226,10 +230,7 @@ namespace WebPortal.Services.SQLite
             {
                 Sensor sensor = this.dbContext.Sensors.Where(s => s.Id == id).SingleOrDefault();
                 this.dbContext.Sensors.Remove(sensor);
-                this.timer.Stop();
-                this.timer.Enabled = false;
                 this.dbContext.SaveChanges();
-                this.timer.Enabled = true;
                 this.timer.Start(); this.SaveConfiguration();
                 this.LoadConfiguration();
             }
@@ -253,75 +254,12 @@ namespace WebPortal.Services.SQLite
                     SensorLog sensorLog = new SensorLog(sens);
                     this.dbContext.SensorsLog.Add(sensorLog);
                 }
-                this.timer.Stop();
-                this.timer.Enabled = false;
                 this.dbContext.SaveChanges();
-                this.timer.Enabled = true;
-                this.timer.Start();
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-        }
-
-        /// <summary>
-        /// Create test sensors in database
-        /// </summary>
-        /// <param name="numOfSensors"> User define this(maximum is 20)</param>
-        public override void GenerateTestSensors(int numOfSensors)
-        {
-            if (numOfSensors > 20)
-            {
-                numOfSensors = 20;
-            }
-            if (numOfSensors < 0)
-            {
-                numOfSensors = 0;
-            }
-
-            try
-            {
-                for (int i = 0; i < numOfSensors; i++)
-                {
-                    MockupSensor mockupSensor = new MockupSensor();
-                    mockupSensor.Name = "TestSensor";
-                    this.dbContext.Sensors.Add(mockupSensor);
-                }
-                this.timer.Stop();
-                this.timer.Enabled = false;
-                this.dbContext.SaveChanges();
-                this.timer.Enabled = true;
-                this.timer.Start();
-                this.SaveConfiguration();
-                this.LoadConfiguration();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        /// <summary>
-        /// Delete all mockup sensors from db. It will not delete logs for them!
-        /// </summary>
-        public override void DeleteMockupSensors()
-        {
-            try
-            {
-                List<Sensor> sensors = this.dbContext.Sensors.Where(sens => sens.SensorType == SensorType.Mockup).ToList();
-                this.dbContext.RemoveRange(sensors);
-                this.timer.Stop();
-                this.timer.Enabled = false;
-                this.dbContext.SaveChanges();
-                this.timer.Enabled = true;
-                this.timer.Start();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
         }
     }
 }

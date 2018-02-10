@@ -51,16 +51,7 @@ namespace WebPortal.Services.Core.Sensors
         /// <param name="id"></param>
         void Delete(string id);
         /// <summary>
-        /// Create test sensors in database
-        /// </summary>
-        /// <param name="numOfSensors"> User define this(maximum is 20)</param>
-        void GenerateTestSensors(int numOfSensors);
-        /// <summary>
-        /// Delete all mockup sensors from db. It will not delete logs for them!
-        /// </summary>
-        void DeleteMockupSensors();
-        /// <summary>
-        /// App configuration
+        /// Get configuration
         /// </summary>
         ApplicationConfiguration Configuration { get; set; }
     }

@@ -62,14 +62,16 @@ namespace WebPortal.Services.Mongo
                 {
                     if (s.SensorType == SensorType.Mockup)
                     {
-                        MockupSensor mockupSensor = new MockupSensor();
-                        mockupSensor.DeviceType = s.DeviceType;
-                        mockupSensor.Id = s.Id;
-                        mockupSensor.Name = s.Name;
-                        mockupSensor.SensorType = s.SensorType;
-                        mockupSensor.RaspberryPin = s.RaspberryPin;
-                        mockupSensor.Timestamp = s.Timestamp;
-                        mockupSensor.Value = s.Value;
+                        MockupSensor mockupSensor = new MockupSensor
+                        {
+                            DeviceType = s.DeviceType,
+                            Id = s.Id,
+                            Name = s.Name,
+                            SensorType = s.SensorType,
+                            RaspberryPin = s.RaspberryPin,
+                            Timestamp = s.Timestamp,
+                            Value = s.Value
+                        };
                         result.Add(mockupSensor);
                     }
                     else
@@ -104,14 +106,16 @@ namespace WebPortal.Services.Mongo
                     if (s.SensorType == SensorType.Mockup)
                     {
 
-                        MockupSensor mockupSensor = new MockupSensor();
-                        mockupSensor.DeviceType = s.DeviceType;
-                        mockupSensor.Id = s.Id;
-                        mockupSensor.Name = s.Name;
-                        mockupSensor.SensorType = s.SensorType;
-                        mockupSensor.RaspberryPin = s.RaspberryPin;
-                        mockupSensor.Timestamp = s.Timestamp;
-                        mockupSensor.Value = s.Value;
+                        MockupSensor mockupSensor = new MockupSensor
+                        {
+                            DeviceType = s.DeviceType,
+                            Id = s.Id,
+                            Name = s.Name,
+                            SensorType = s.SensorType,
+                            RaspberryPin = s.RaspberryPin,
+                            Timestamp = s.Timestamp,
+                            Value = s.Value
+                        };
                         sensor = mockupSensor;
                     }
                 }
@@ -229,53 +233,6 @@ namespace WebPortal.Services.Mongo
                     SensorLog sensorLog = new SensorLog(sens);
                     this.dbContext.SensorsLog.InsertOne(sensorLog);
                 }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        /// <summary>
-        /// Create test sensors in database
-        /// </summary>
-        /// <param name="numOfSensors"> User define this(maximum is 20)</param>
-        public override void GenerateTestSensors(int numOfSensors)
-        {
-            if (numOfSensors > 20)
-            {
-                numOfSensors = 20;
-            }
-            if (numOfSensors < 0)
-            {
-                numOfSensors = 0;
-            }
-
-            try
-            {
-                for (int i = 0; i < numOfSensors; i++)
-                {
-                    MockupSensor mockupSensor = new MockupSensor();
-                    mockupSensor.Name = "TestSensor";
-                    this.dbContext.Sensors.InsertOne(mockupSensor);
-                }
-                this.SaveConfiguration();
-                this.LoadConfiguration();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        /// <summary>
-        /// Delete all mockup sensors from db. It will not delete logs for them!
-        /// </summary>
-        public override void DeleteMockupSensors()
-        {
-            try
-            {
-                this.dbContext.Sensors.DeleteMany(sens => sens.SensorType == SensorType.Mockup);
             }
             catch (Exception ex)
             {

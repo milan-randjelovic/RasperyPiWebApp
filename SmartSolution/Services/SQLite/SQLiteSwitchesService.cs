@@ -77,14 +77,16 @@ namespace WebPortal.Services.SQLite
                 {
                     if (s.SwitchType == SwitchType.Mockup)
                     {
-                        MockupSwitch mockupSwitch = new MockupSwitch();
-                        mockupSwitch.DeviceType = s.DeviceType;
-                        mockupSwitch.Id = s.Id;
-                        mockupSwitch.Name = s.Name;
-                        mockupSwitch.RaspberryPin = s.RaspberryPin;
-                        mockupSwitch.State = s.State;
-                        mockupSwitch.SwitchType = s.SwitchType;
-                        mockupSwitch.InverseLogic = s.InverseLogic;
+                        MockupSwitch mockupSwitch = new MockupSwitch
+                        {
+                            DeviceType = s.DeviceType,
+                            Id = s.Id,
+                            Name = s.Name,
+                            RaspberryPin = s.RaspberryPin,
+                            State = s.State,
+                            SwitchType = s.SwitchType,
+                            InverseLogic = s.InverseLogic
+                        };
                         result.Add(mockupSwitch);
                     }
                     else
@@ -118,13 +120,15 @@ namespace WebPortal.Services.SQLite
                 {
                     if (s.SwitchType == SwitchType.Mockup)
                     {
-                        MockupSwitch mockupSwitch = new MockupSwitch();
-                        mockupSwitch.DeviceType = s.DeviceType;
-                        mockupSwitch.Id = s.Id;
-                        mockupSwitch.Name = s.Name;
-                        mockupSwitch.RaspberryPin = s.RaspberryPin;
-                        mockupSwitch.State = s.State;
-                        mockupSwitch.SwitchType = s.SwitchType;
+                        MockupSwitch mockupSwitch = new MockupSwitch
+                        {
+                            DeviceType = s.DeviceType,
+                            Id = s.Id,
+                            Name = s.Name,
+                            RaspberryPin = s.RaspberryPin,
+                            State = s.State,
+                            SwitchType = s.SwitchType
+                        };
                         switchObj = mockupSwitch;
                     }
                 }
@@ -178,11 +182,8 @@ namespace WebPortal.Services.SQLite
             try
             {
                 this.dbContext.Switches.Add(switchObject);
-                this.timer.Stop();
-                this.timer.Enabled = false;
                 this.dbContext.SaveChanges();
-                this.timer.Enabled = true;
-                this.timer.Start(); this.SaveConfiguration();
+                this.SaveConfiguration();
                 this.LoadConfiguration();
             }
             catch (Exception ex)
@@ -224,11 +225,7 @@ namespace WebPortal.Services.SQLite
             {
                 Switch switchObj = this.dbContext.Switches.Where(s => s.Id == id).SingleOrDefault();
                 this.dbContext.Switches.Remove(switchObj);
-                this.timer.Stop();
-                this.timer.Enabled = false;
                 this.dbContext.SaveChanges();
-                this.timer.Enabled = true;
-                this.timer.Start();
                 this.SaveConfiguration();
                 this.LoadConfiguration();
             }
@@ -266,7 +263,7 @@ namespace WebPortal.Services.SQLite
             }
         }
 
-        public override void LoggSwitchesData(object sender, ElapsedEventArgs e)
+        public override void LogSwitchesData(object sender, ElapsedEventArgs e)
         {
             try
             {
@@ -275,70 +272,12 @@ namespace WebPortal.Services.SQLite
                     SwitchLog switchLog = new SwitchLog(sw);
                     this.dbContext.SwitchesLog.Add(switchLog);
                 }
-                this.timer.Stop();
-                this.timer.Enabled = false;
                 this.dbContext.SaveChanges();
-                this.timer.Enabled = true;
-                this.timer.Start();
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-        }
-
-        public override void GenerateTestSwitches(int numOfSwitches)
-        {
-            if (numOfSwitches > 20)
-            {
-                numOfSwitches = 20;
-            }
-            if (numOfSwitches < 0)
-            {
-                numOfSwitches = 0;
-            }
-
-            try
-            {
-                for (int i = 0; i < numOfSwitches; i++)
-                {
-                    MockupSwitch mockupSwitch = new MockupSwitch();
-                    mockupSwitch.Name = "TestSensor";
-                    this.dbContext.Switches.Add(mockupSwitch);
-                }
-                this.timer.Stop();
-                this.timer.Enabled = false;
-                this.dbContext.SaveChanges();
-                this.timer.Enabled = true;
-                this.timer.Start(); this.SaveConfiguration();
-                this.LoadConfiguration();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        /// <summary>
-        /// Delete all mockup switches from db. It will not delete logs for them!
-        /// </summary>
-        public override void DeleteMockupSwitches()
-        {
-            try
-            {
-                List<Switch> switches = this.dbContext.Switches.Where(s => s.SwitchType == SwitchType.Mockup).ToList();
-                this.dbContext.RemoveRange(switches);
-                this.timer.Stop();
-                this.timer.Enabled = false;
-                this.dbContext.SaveChanges();
-                this.timer.Enabled = true;
-                this.timer.Start();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
         }
     }
 }

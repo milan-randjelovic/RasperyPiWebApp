@@ -10,7 +10,7 @@ namespace WebPortal.Models.Switches
         public DateTime Timestamp { get; set; }
 
         /// <summary>
-        /// Initialize logSwitch manualy, it is null
+        /// Create new instance of SwitchLog
         /// </summary>
         public SwitchLog()
         {
@@ -20,6 +20,10 @@ namespace WebPortal.Models.Switches
             this.Timestamp = DateTime.Now;
         }
 
+        /// <summary>
+        /// Create new instance of SwitchLog based on switchd
+        /// </summary>
+        /// <param name="switchObj"></param>
         public SwitchLog(Switch switchObj)
         {
             this.Id = Guid.NewGuid().ToString();
