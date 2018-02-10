@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Threading;
 using WebPortal.Models.Sensors;
 using WebPortal.Models.Switches;
 using WebPortal.Services.Core;
@@ -7,6 +9,7 @@ namespace WebPortal.Services.SQLite
 {
     public class SQLiteDbContext : DbContext, ISQLiteDbContext
     {
+        public static bool DbContextInUse;
         public DbSet<Switch> Switches { get; set; }
         public DbSet<SwitchLog> SwitchesLog { get; set; }
         public DbSet<Sensor> Sensors { get; set; }
@@ -17,6 +20,7 @@ namespace WebPortal.Services.SQLite
 
         public SQLiteDbContext(ApplicationConfiguration configurtion)
         {
+            DbContextInUse = false;
             this.DatabaseConnectionString = configurtion.DatabaseConnection;
             this.DatabaseName = configurtion.DatabaseName;
         }
@@ -36,7 +40,17 @@ namespace WebPortal.Services.SQLite
 
         public override int SaveChanges()
         {
-            return base.SaveChanges();
+            int result = 0;
+            try
+            {
+                result = base.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return result;
         }
     }
 }
