@@ -8,17 +8,28 @@ namespace WebPortal.Models
 {
     public class User
     {
+        
         [DataType(DataType.Text)]
+        [Required(AllowEmptyStrings = false)]
         public string Id { get; set; }
+
         [DataType(DataType.Text)]
         public string Name { get; set; }
+
         [DataType(DataType.Text)]
         public string Lastname { get; set; }
+
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
+        
+        
         [DataType(DataType.Text)]
+        [Required(AllowEmptyStrings = false)]
         public string Username { get; set; }
+
+       
         [DataType(DataType.Password)]
+        [Required(AllowEmptyStrings = false)]
         public string Password { get; set; }
         public UserStatus Status { get; set; }
 
