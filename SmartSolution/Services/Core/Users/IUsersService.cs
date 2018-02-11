@@ -8,13 +8,13 @@ namespace WebPortal.Services.Core.Users
         /// Add new user to database
         /// </summary>
         /// <param name="user"></param>
-        bool SignIn(User user);
+        bool SignUp(User user);
         /// <summary>
         /// Compare user info with db's info
         /// </summary>
         /// <param name="username"></param>
         /// <param name="password"></param>
-        void LogIn(string username, string password);
+        void SignIn(string username, string password);
         /// <summary>
         /// Configuration for database
         /// </summary>

@@ -1,26 +1,15 @@
 ﻿@model WebPortal.Models.User
 
-<h4>User</h4>
-<hr />
+@{
+    ViewData["Title"] = "Sign in";
+}
+
+<div class="col-md-offset-4">
+<h2>Sign in</h2>
 <div class="row">
     <div class="col-md-4">
         <form asp-action="SignIn">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Lastname" class="control-label"></label>
-                <input asp-for="Lastname" class="form-control" />
-                <span asp-validation-for="Lastname" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
             <div class="form-group">
                 <label asp-for="Username" class="control-label"></label>
                 <input asp-for="Username" class="form-control" />
@@ -37,8 +26,10 @@
         </form>
     </div>
 </div>
-
+<br />
+<br />
 <div>
-    <a asp-action="Index">Back</a>
+    <p style="color:blue"> Don't have account? Please sign in.</p>
+    @Html.ActionLink("Sign up", "SignUp", "Home", null, new { @class = "btn btn-primary btn-sm" })
 </div>
-
+   </div>

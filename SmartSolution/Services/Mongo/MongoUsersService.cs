@@ -22,7 +22,7 @@ namespace WebPortal.Services.Mongo
             }
         }
 
-        public override bool SignIn(User user)
+        public override bool SignUp(User user)
         {
             try
             {
@@ -44,7 +44,7 @@ namespace WebPortal.Services.Mongo
             }
         }
 
-        public override void LogIn(string username, string password)
+        public override void SignIn(string username, string password)
         {
             try
             {

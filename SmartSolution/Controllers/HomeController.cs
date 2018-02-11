@@ -11,7 +11,7 @@ using WebPortal.Services.Core.Switches;
 
 namespace Test.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class HomeController : Controller
     {
         protected static ISwitchesService SwitchesService { get; private set; }
@@ -66,7 +66,7 @@ namespace Test.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult SignIn()
+        public IActionResult SignUp()
         {
             return View();
         }
@@ -77,7 +77,7 @@ namespace Test.Controllers
         /// <param name="user"></param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult SignIn(User user)
+        public IActionResult SignUp(User user)
         {
             return View();
         }
@@ -88,7 +88,7 @@ namespace Test.Controllers
         /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Login()
+        public IActionResult SignIn()
         {
             return View();
         }
@@ -98,7 +98,7 @@ namespace Test.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult Login(User user)
+        public IActionResult SignIn(User user)
         {
             return View();
         }

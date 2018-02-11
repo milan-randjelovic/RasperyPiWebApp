@@ -41,8 +41,8 @@ namespace WebPortal
             })
             .AddCookie(options =>
             {
-                options.LoginPath = new PathString("/Home/Login");
-                options.LogoutPath = new PathString("/Home/Login");
+                options.LoginPath = new PathString("/Home/SignIn");
+                options.LogoutPath = new PathString("/Home/SignIn");
             });
 
             //configure mvc
