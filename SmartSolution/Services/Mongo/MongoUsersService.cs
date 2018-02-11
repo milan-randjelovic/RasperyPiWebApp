@@ -34,7 +34,8 @@ namespace WebPortal.Services.Mongo
                     this.dbContext.Users.InsertOne(user);
                     return true;
                 }
-                else {
+                else
+                {
                     return false;
                 }
             }
@@ -44,11 +45,19 @@ namespace WebPortal.Services.Mongo
             }
         }
 
-        public override void SignIn(string username, string password)
+        public override bool SignIn(string username, string password)
         {
             try
             {
-
+                UserAccount userAccount = this.dbContext.Users.Find(u => u.Username == username && u.Password == password).FirstOrDefault(); 
+                if (userAccount == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
             }
             catch (Exception ex)
             {

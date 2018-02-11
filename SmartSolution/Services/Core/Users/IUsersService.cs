@@ -14,7 +14,7 @@ namespace WebPortal.Services.Core.Users
         /// </summary>
         /// <param name="username"></param>
         /// <param name="password"></param>
-        void SignIn(string username, string password);
+        bool SignIn(string username, string password);
         /// <summary>
         /// Configuration for database
         /// </summary>

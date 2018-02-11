@@ -10,6 +10,7 @@ using WebPortal.Services.Core.Users;
 
 namespace WebPortal.Controllers
 {
+    
     public class UsersController : Controller
     {
         protected static IUsersService UsersService { get; private set; }
@@ -53,7 +54,7 @@ namespace WebPortal.Controllers
                 if (response.StatusCode == System.Net.HttpStatusCode.Created)
                 {
                     //User is created
-                    return RedirectToAction("SignIn", "Home", null);
+                    return RedirectToAction("SignIn", "Users", null);
                 }
                 else
                 {
@@ -82,9 +83,29 @@ namespace WebPortal.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult SignIn(UserAccount user)
+        public IActionResult SignIn(UserAccount userAccount)
         {
-            return View();
+            if (!ModelState.IsValid) {
+                return View();
+            }
+            try
+            {
+                IRestResponse restResponse = SmartSolutionAPI.Post(UsersService.configuration.APIBaseAddress, UsersService.configuration.Users+"/Verify","", userAccount);
+                if (restResponse.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    //Here we need to authorize user based on his "role"                    
+                    return RedirectToAction("Index", "Home", null);
+                }
+                else
+                {
+                    return View();
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = ex.Message;
+                return RedirectToAction("Error");
+            }           
         }
     }
 }

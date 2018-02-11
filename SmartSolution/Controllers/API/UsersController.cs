@@ -38,5 +38,25 @@ namespace WebPortal.Controllers.API
                 return BadRequest(ex);
             }
         }
+
+        [HttpPost("Verify")]
+        public IActionResult Verify([FromBody]UserAccount userAccount) {
+            try
+            {
+                bool verification = UsersService.SignIn(userAccount.Username, userAccount.Password);
+                if (verification == true)
+                {
+                    return StatusCode(200);
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
     }
 }
