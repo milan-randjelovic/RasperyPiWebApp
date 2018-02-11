@@ -21,7 +21,7 @@ namespace WebPortal.Controllers.API
         }
 
         [HttpPost("{id}")]
-        public IActionResult Post(string id, [FromBody]User user)
+        public IActionResult Post(string id, [FromBody]UserAccount user)
         {
             try
             {

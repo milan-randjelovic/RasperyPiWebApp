@@ -30,7 +30,7 @@ namespace WebPortal.Services.Mongo
             this.dbContext.SaveChanges();
         }
 
-        public override bool SignUp(User user)
+        public override bool SignUp(UserAccount user)
         {
             try
             {

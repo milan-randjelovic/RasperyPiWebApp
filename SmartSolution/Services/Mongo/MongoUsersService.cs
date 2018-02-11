@@ -22,12 +22,12 @@ namespace WebPortal.Services.Mongo
             }
         }
 
-        public override bool SignUp(User user)
+        public override bool SignUp(UserAccount user)
         {
             try
             {
                 //Check if its valid (already exist) in users and usersAppending
-                User userExist  = this.dbContext.Users.Find(u => u.Username == user.Username || u.Email == user.Email).SingleOrDefault();
+                UserAccount userExist  = this.dbContext.Users.Find(u => u.Username == user.Username || u.Email == user.Email).SingleOrDefault();
                 if (userExist == null)
                 {
                     user.Status = UserStatus.UserAppending;

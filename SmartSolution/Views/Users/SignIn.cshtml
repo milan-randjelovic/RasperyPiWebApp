@@ -1,4 +1,4 @@
-﻿@model WebPortal.Models.User
+﻿@model WebPortal.Models.UserAccount
 
 @{
     ViewData["Title"] = "Sign in";
@@ -30,6 +30,6 @@
 <br />
 <div>
     <p style="color:blue"> Don't have account? Please sign in.</p>
-    @Html.ActionLink("Sign up", "SignUp", "Home", null, new { @class = "btn btn-primary btn-sm" })
+    @Html.ActionLink("Sign up", "SignUp", "Users", null, new { @class = "btn btn-primary btn-sm" })
 </div>
    </div>

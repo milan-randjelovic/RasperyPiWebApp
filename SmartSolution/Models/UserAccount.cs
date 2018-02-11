@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WebPortal.Models
 {
-    public class User
+    public class UserAccount
     {
         
         [DataType(DataType.Text)]
@@ -33,7 +33,7 @@ namespace WebPortal.Models
         public string Password { get; set; }
         public UserStatus Status { get; set; }
 
-        public User()
+        public UserAccount()
         {
             this.Id = Guid.NewGuid().ToString();
             this.Name = "";
