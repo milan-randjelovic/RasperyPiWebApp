@@ -113,7 +113,6 @@ namespace WebPortal.Services.SQLite
         public override ISensor GetSensorFromDatabase(string id)
         {
             ISensor sensor;
-
             try
             {
                 using (SQLiteDbContext dbContext = new SQLiteDbContext(this.Configuration))
