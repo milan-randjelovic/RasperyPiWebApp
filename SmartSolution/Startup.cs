@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using WebPortal.Services.Core;
@@ -23,16 +25,30 @@ namespace WebPortal
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
-
-            ApplicationConfiguration configuration = new ApplicationConfiguration();
-            configuration.Load();
-
             IDbContext dbContext;
             ISensorsService SensorsService;
             ISwitchesService SwitchesService;
             IUsersService UsersService;
+            ApplicationConfiguration configuration = new ApplicationConfiguration();
+            configuration.Load();
 
+            //configure autentication
+            services.AddAuthentication(options =>
+            {
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
+            .AddCookie(options =>
+            {
+                options.LoginPath = new PathString("/Home/Login");
+                options.LogoutPath = new PathString("/Home/Login");
+            });
+
+            //configure mvc
+            services.AddMvc();
+
+            //configure database context
             switch (configuration.DataBase)
             {
                 case DataBase.MongoDB:
@@ -58,7 +74,6 @@ namespace WebPortal
             services.AddSingleton(SensorsService);
             services.AddSingleton(SwitchesService);
             services.AddSingleton(UsersService);
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,11 +88,10 @@ namespace WebPortal
             {
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
-               // app.UseExceptionHandler("/Home/Error");
             }
 
             app.UseStaticFiles();
-
+            app.UseAuthentication();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RaspberryLib;
 using Test.Models;
@@ -10,6 +11,7 @@ using WebPortal.Services.Core.Switches;
 
 namespace Test.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         protected static ISwitchesService SwitchesService { get; private set; }
@@ -23,9 +25,7 @@ namespace Test.Controllers
 
         public IActionResult Index()
         {
-            //Check if user is logged
-            //if it is not-redirect to Login page whitch contains signIn button
-            return RedirectToAction("Login");
+            return View();
         }
 
         /// <summary>
@@ -87,6 +87,7 @@ namespace Test.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Login()
         {
             return View();
