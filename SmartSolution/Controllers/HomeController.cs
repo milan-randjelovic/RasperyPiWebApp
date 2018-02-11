@@ -1,13 +1,17 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RaspberryLib;
+using RestSharp;
+using SmartSolutionAPILib;
 using Test.Models;
 using WebPortal.Models;
 using WebPortal.Models.Sensors;
 using WebPortal.Models.Switches;
 using WebPortal.Services.Core.Sensors;
 using WebPortal.Services.Core.Switches;
+using WebPortal.Services.Core.Users;
 
 namespace Test.Controllers
 {
@@ -16,11 +20,13 @@ namespace Test.Controllers
     {
         protected static ISwitchesService SwitchesService { get; private set; }
         protected static ISensorsService SensorsService { get; private set; }
+        protected static IUsersService UsersService { get; private set; }
 
-        public HomeController(ISwitchesService switchesService, ISensorsService sensorsService)
+        public HomeController(ISwitchesService switchesService, ISensorsService sensorsService, IUsersService usersService)
         {
             SwitchesService = switchesService;
             SensorsService = sensorsService;
+            UsersService = usersService;
         }
 
         public IActionResult Index()
@@ -79,9 +85,27 @@ namespace Test.Controllers
         [HttpPost]
         public IActionResult SignUp(User user)
         {
-            return View();
+            if (!ModelState.IsValid) {
+                return View();
+            }
+            try
+            {
+                IRestResponse response = SmartSolutionAPI.Post(UsersService.configuration.APIBaseAddress, UsersService.configuration.Users, user.Id, user);
+                if (response.StatusCode == System.Net.HttpStatusCode.Created)
+                {
+                    //User is created
+                    return RedirectToAction("SignIn","Home",null);
+                }
+                else {
+                    //Bad request
+                    return View();
+                }
+            }
+            catch(Exception ex) {
+                TempData["Error"] = ex.Message;
+                return RedirectToAction("Error", "Home", null);
+            }         
         }
-
         /// <summary>
         /// Show login page
         /// </summary>

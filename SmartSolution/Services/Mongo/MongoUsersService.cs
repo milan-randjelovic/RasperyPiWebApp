@@ -27,8 +27,8 @@ namespace WebPortal.Services.Mongo
             try
             {
                 //Check if its valid (already exist) in users and usersAppending
-                User user1  = this.dbContext.Users.Find(u => u.Username == user.Username || u.Email == user.Email).SingleOrDefault();
-                if (user1 == null)
+                User userExist  = this.dbContext.Users.Find(u => u.Username == user.Username || u.Email == user.Email).SingleOrDefault();
+                if (userExist == null)
                 {
                     user.Status = UserStatus.UserAppending;
                     this.dbContext.Users.InsertOne(user);
