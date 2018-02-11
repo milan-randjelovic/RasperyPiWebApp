@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebPortal.Models.Switches;
 using WebPortal.Services.Core.Switches;
@@ -9,6 +10,7 @@ namespace WebPortal.Controllers.API
 {
     [Produces("application/json")]
     [Route("api/Switches")]
+    [Authorize]
     public class SwitchesController : Controller
     {
         protected static ISwitchesService SwitchesService { get; private set; }

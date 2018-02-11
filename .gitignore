@@ -263,3 +263,4 @@ __pycache__/
 /SmartSolution/ApplicationConfiguration.xml
 /SmartSolution/SmartSolution.db-wal
 /SmartSolution/SmartSolution.db-shm
+/SmartSolution/SmartSolution.db-journal

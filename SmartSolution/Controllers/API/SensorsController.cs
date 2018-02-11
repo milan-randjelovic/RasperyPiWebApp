@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebPortal.Models.Sensors;
 using WebPortal.Services.Core.Sensors;
@@ -8,6 +9,7 @@ namespace WebPortal.Controllers.API
 {
     [Produces("application/json")]
     [Route("api/Sensors")]
+    [Authorize]
     public class SensorsController : Controller
     {
         protected static ISensorsService SensorsService { get; private set; }

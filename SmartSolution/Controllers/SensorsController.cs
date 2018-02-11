@@ -6,9 +6,11 @@ using System.Collections.Generic;
 using WebPortal.Models.Sensors;
 using RestSharp;
 using WebPortal.Services.Core.Sensors;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebPortal.Controllers
 {
+    [Authorize]
     public class SensorsController : Controller
     {
         protected string APIBaseAddress { get; set; }
