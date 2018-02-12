@@ -81,8 +81,8 @@ namespace WebPortal.Controllers.API
         /// Create switch
         /// </summary>
         /// <param name="switchObject">Switch data</param>
-        [HttpPost("{id}")]
-        public IActionResult Post(string id, [FromBody]Switch switchObject)
+        [HttpPost]
+        public IActionResult Post([FromBody]Switch switchObject)
         {
             try
             {
@@ -100,8 +100,8 @@ namespace WebPortal.Controllers.API
         /// </summary>
         /// <param name="id">Switch Id</param>
         /// <param name="value">Switch data</param>
-        [HttpPut("{id}")]
-        public IActionResult Put(string id, [FromBody]Switch switchObject)
+        [HttpPut]
+        public IActionResult Put([FromBody]Switch switchObject)
         {
             try
             {
@@ -118,12 +118,12 @@ namespace WebPortal.Controllers.API
         /// Detele switch
         /// </summary>
         /// <param name="id">Switch Id</param>
-        [HttpDelete("{id}")]
-        public IActionResult Delete(string id, [FromBody]Switch switchObject)
+        [HttpDelete]
+        public IActionResult Delete([FromBody]Switch switchObject)
         {
             try
             {
-                SwitchesService.Delete(id);
+                SwitchesService.Delete(switchObject.Id);
                 return Ok(switchObject);
             }
             catch (Exception ex)

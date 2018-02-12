@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using WebPortal.Models;
 using WebPortal.Services.Core.Users;
@@ -13,40 +13,55 @@ namespace WebPortal.Controllers.API
     [Route("api/Users")]
     public class UsersController : Controller
     {
-        protected static IUsersService UsersService{get; private set;}
+        protected static IUsersService UsersService { get; private set; }
 
         public UsersController(IUsersService usersService)
         {
             UsersService = usersService;
         }
 
-        [HttpPost("{id}")]
-        public IActionResult Post(string id, [FromBody]UserAccount user)
+        [HttpPost("SignUp")]
+        public IActionResult SignUpUser([FromBody]UserAccount userAccount)
         {
             try
             {
-                bool result = UsersService.SignUp(user);
-                if (result == true)
+                UserAccount user = UsersService.SignUp(userAccount);
+                if (user != null)
                 {
-                    return Created(Request.Path + user.Id, user);
+                    return Created(Request.Path + userAccount.Id, userAccount);
                 }
-                else {
+                else
+                {
                     return BadRequest();
                 }
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 return BadRequest(ex);
             }
         }
 
-        [HttpPost("Verify")]
-        public IActionResult Verify([FromBody]UserAccount userAccount) {
+        [HttpPost("SignIn")]
+        public IActionResult SignIn([FromBody]UserAccount userAccount)
+        {
             try
             {
-                bool verification = UsersService.SignIn(userAccount.Username, userAccount.Password);
-                if (verification == true)
+                UserAccount user = UsersService.SignIn(userAccount.Username, userAccount.Password);
+                if (user != null)
                 {
-                    return StatusCode(200);
+                    List<Claim> claims = new List<Claim>()
+                    {
+                        new Claim(ClaimTypes.Name, user.FullName),
+                        new Claim(ClaimTypes.Email, user.Email)
+                    };
+
+                    ClaimsIdentity identity = new ClaimsIdentity(claims);
+
+                    ClaimsPrincipal userPrincipal = new ClaimsPrincipal(identity);
+
+                    HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, userPrincipal);
+
+                    return Ok();
                 }
                 else
                 {

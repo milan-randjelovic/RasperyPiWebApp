@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RestSharp;
 using SmartSolutionAPILib;
@@ -10,38 +11,41 @@ using WebPortal.Services.Core.Users;
 
 namespace WebPortal.Controllers
 {
-    
-    public class UsersController : Controller
+    [Authorize]
+    public class AccountController : Controller
     {
         protected static IUsersService UsersService { get; private set; }
 
-        public UsersController(IUsersService usersService)
+        public AccountController(IUsersService usersService)
         {
             UsersService = usersService;
         }
 
-
+        [HttpGet]
+        [AllowAnonymous]
         public IActionResult Index()
         {
             return RedirectToAction("SignIn");
         }
 
         /// <summary>
-        /// Show sing in page
+        /// Sing up page
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult SignUp()
         {
             return View();
         }
 
         /// <summary>
-        /// 
+        /// Sign up
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
         [HttpPost]
+        [AllowAnonymous]
         public IActionResult SignUp(UserAccount user)
         {
             if (!ModelState.IsValid)
@@ -50,11 +54,11 @@ namespace WebPortal.Controllers
             }
             try
             {
-                IRestResponse response = SmartSolutionAPI.Post(UsersService.configuration.APIBaseAddress, UsersService.configuration.Users, user.Id, user);
+                IRestResponse response = SmartSolutionAPI.Post(UsersService.Configuration.APIBaseAddress, UsersService.Configuration.Users + "/SignUp", "", user);
                 if (response.StatusCode == System.Net.HttpStatusCode.Created)
                 {
                     //User is created
-                    return RedirectToAction("SignIn", "Users", null);
+                    return RedirectToAction("SignIn", "Account", null);
                 }
                 else
                 {
@@ -68,32 +72,31 @@ namespace WebPortal.Controllers
                 return RedirectToAction("Error", "Home", null);
             }
         }
+
         /// <summary>
-        /// Show login page
+        /// Sign in page
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult SignIn()
         {
             return View();
         }
 
         /// <summary>
-        /// Login user
+        /// Sign in user
         /// </summary>
         /// <returns></returns>
         [HttpPost]
+        [AllowAnonymous]
         public IActionResult SignIn(UserAccount userAccount)
         {
-            if (!ModelState.IsValid) {
-                return View();
-            }
             try
             {
-                IRestResponse restResponse = SmartSolutionAPI.Post(UsersService.configuration.APIBaseAddress, UsersService.configuration.Users+"/Verify","", userAccount);
+                IRestResponse restResponse = SmartSolutionAPI.Post(UsersService.Configuration.APIBaseAddress, UsersService.Configuration.Users + "/SignIn", "", userAccount);
                 if (restResponse.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    //Here we need to authorize user based on his "role"                    
                     return RedirectToAction("Index", "Home", null);
                 }
                 else
@@ -105,8 +108,8 @@ namespace WebPortal.Controllers
             {
                 TempData["Error"] = ex.Message;
                 return RedirectToAction("Error");
-            }           
+            }
         }
     }
 }
-    
+

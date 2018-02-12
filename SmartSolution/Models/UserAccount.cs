@@ -8,41 +8,54 @@ namespace WebPortal.Models
 {
     public class UserAccount
     {
-        
+
         [DataType(DataType.Text)]
         [Required(AllowEmptyStrings = false)]
         public string Id { get; set; }
 
         [DataType(DataType.Text)]
-        public string Name { get; set; }
+        public string FirstName { get; set; }
 
         [DataType(DataType.Text)]
-        public string Lastname { get; set; }
+        public string LastName { get; set; }
 
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
-        
-        
+
         [DataType(DataType.Text)]
         [Required(AllowEmptyStrings = false)]
         public string Username { get; set; }
 
-       
         [DataType(DataType.Password)]
         [Required(AllowEmptyStrings = false)]
         public string Password { get; set; }
+
         public UserStatus Status { get; set; }
+
+        public string FullName
+        {
+            get
+            {
+                return this.FirstName + " " + this.LastName;
+            }
+        }
 
         public UserAccount()
         {
             this.Id = Guid.NewGuid().ToString();
-            this.Name = "";
-            this.Lastname = "";
+            this.FirstName = "";
+            this.LastName = "";
             this.Email = "";
             this.Username = "";
             this.Password = "";
-            this.Status = UserStatus.User;
+            this.Status = UserStatus.Anonymous;
         }
     }
-    public enum UserStatus { Admin, User, UserAppending}
+    public enum UserStatus
+    {
+        Anonymous,
+        PengingRegistration,
+        RegisteredUser,
+        Administrator
+    }
 }

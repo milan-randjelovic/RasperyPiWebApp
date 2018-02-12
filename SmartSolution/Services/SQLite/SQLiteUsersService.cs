@@ -9,13 +9,12 @@ namespace WebPortal.Services.Mongo
 {
     public class SQLiteUsersService : UsersService
     {
-       
 
         public SQLiteUsersService(ISQLiteDbContext dbContext, ApplicationConfiguration configuration) : base(configuration)
         {
             try
             {
-                using (SQLiteDbContext context = new SQLiteDbContext(this.configuration))
+                using (SQLiteDbContext context = new SQLiteDbContext(this.Configuration))
                 {
                     context.Database.EnsureCreated();
                 }                
@@ -26,22 +25,36 @@ namespace WebPortal.Services.Mongo
             }
         }
 
-        public override bool SignUp(UserAccount user)
+        /// <summary>
+        /// Sign up user
+        /// </summary>
+        /// <param name="userAccount"></param>
+        /// <returns></returns>
+        public override UserAccount SignUp(UserAccount userAccount)
         {
             try
             {
-                using (SQLiteDbContext dbcontext = new SQLiteDbContext(this.configuration))
+                using (SQLiteDbContext dbcontext = new SQLiteDbContext(this.Configuration))
                 {
-                    UserAccount userAccount = dbcontext.Users.Where(u => u.Username == user.Username && u.Password == user.Password).FirstOrDefault();
-                    if (userAccount == null)
+                    UserAccount user = dbcontext
+                        .Users
+                        .Where
+                        (
+                            u => u.Username == userAccount.Username &&
+                            u.Password == userAccount.Password
+                        )
+                        .FirstOrDefault();
+
+                    if (user == null)
                     {
-                        dbcontext.Add(user);
+                        userAccount.Status = UserStatus.PengingRegistration;
+                        dbcontext.Add(userAccount);
                         dbcontext.SaveChanges();
-                        return true;
+                        return userAccount;
                     }
                     else
                     {
-                        return false;
+                        return null;
                     }
                 }
             }
@@ -51,21 +64,28 @@ namespace WebPortal.Services.Mongo
             }
         }
 
-        public override bool SignIn(string username, string password)
+        /// <summary>
+        /// Sign in user
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public override UserAccount SignIn(string username, string password)
         {
             try
             {
-                using (SQLiteDbContext dbcontext = new SQLiteDbContext(this.configuration))
+                using (SQLiteDbContext dbcontext = new SQLiteDbContext(this.Configuration))
                 {
-                    UserAccount userAccount = dbcontext.Users.Where(u => u.Username == username && u.Password == password).FirstOrDefault();
-                    if (userAccount == null)
-                    {
-                        return false;
-                    }
-                    else
-                    {
-                        return true;
-                    }
+                    UserAccount userAccount = dbcontext
+                        .Users
+                        .Where
+                        (
+                            u => u.Username == username &&
+                            u.Password == password
+                        )
+                        .FirstOrDefault();
+
+                    return userAccount;
                 }
             }
             catch (Exception ex)

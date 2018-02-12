@@ -8,16 +8,16 @@ namespace WebPortal.Services.Core.Users
         /// Add new user to database
         /// </summary>
         /// <param name="user"></param>
-        bool SignUp(UserAccount user);
+        UserAccount SignUp(UserAccount user);
         /// <summary>
         /// Compare user info with db's info
         /// </summary>
         /// <param name="username"></param>
         /// <param name="password"></param>
-        bool SignIn(string username, string password);
+        UserAccount SignIn(string username, string password);
         /// <summary>
         /// Configuration for database
         /// </summary>
-        ApplicationConfiguration configuration { get; set; }
+        ApplicationConfiguration Configuration { get; set; }
     }
 }

@@ -21,12 +21,10 @@ namespace Test.Controllers
         protected static ISwitchesService SwitchesService { get; private set; }
         protected static ISensorsService SensorsService { get; private set; }
         
-
         public HomeController(ISwitchesService switchesService, ISensorsService sensorsService)
         {
             SwitchesService = switchesService;
-            SensorsService = sensorsService;
-            
+            SensorsService = sensorsService;       
         }
 
         public IActionResult Index()
@@ -66,6 +64,5 @@ namespace Test.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
     }
 }

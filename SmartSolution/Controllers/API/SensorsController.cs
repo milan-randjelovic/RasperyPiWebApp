@@ -80,8 +80,8 @@ namespace WebPortal.Controllers.API
         /// Create sensor
         /// </summary>
         /// <param name="switchObject">Sensor data</param>
-        [HttpPost("{id}")]
-        public IActionResult Post(string id, [FromBody]Sensor sensorObject)
+        [HttpPost]
+        public IActionResult Post([FromBody]Sensor sensorObject)
         {
             try
             {
@@ -99,8 +99,8 @@ namespace WebPortal.Controllers.API
         /// </summary>
         /// <param name="id">Sensor Id</param>
         /// <param name="value">Sensor data</param>
-        [HttpPut("{id}")]
-        public IActionResult Put(string id, [FromBody]Sensor sensorObject)
+        [HttpPut]
+        public IActionResult Put([FromBody]Sensor sensorObject)
         {
             try
             {
@@ -117,12 +117,12 @@ namespace WebPortal.Controllers.API
         /// Detele sensor
         /// </summary>
         /// <param name="id">Sensor Id</param>
-        [HttpDelete("{id}")]
-        public IActionResult Delete(string id, [FromBody]Sensor sensorObject)
+        [HttpDelete]
+        public IActionResult Delete([FromBody]Sensor sensorObject)
         {
             try
             {
-                SensorsService.Delete(id);
+                SensorsService.Delete(sensorObject.Id);
                 return Ok(sensorObject);
             }
             catch (Exception ex)
