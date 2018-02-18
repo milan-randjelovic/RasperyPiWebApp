@@ -50,27 +50,6 @@ namespace WebPortal.Controllers.API
                 UserAccount user = UsersService.SignIn(userAccount.Username, userAccount.Password);
                 if (user != null)
                 {
-                    List<Claim> claims = new List<Claim>()
-                    {
-                        new Claim(ClaimTypes.Name, user.FullName),
-                        new Claim(ClaimTypes.Email, user.Email),
-                        new Claim(ClaimTypes.Authentication, CookieAuthenticationDefaults.AuthenticationScheme),
-                    };
-
-                    ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                    ClaimsPrincipal principal = new ClaimsPrincipal(new ClaimsIdentity(claims));
-
-                    await AuthenticationHttpContextExtensions.SignInAsync
-                        (HttpContext,
-                        CookieAuthenticationDefaults.AuthenticationScheme,
-                        principal
-                        , new AuthenticationProperties()
-                        {
-                            ExpiresUtc = DateTime.UtcNow.AddMinutes(30),
-                            IsPersistent = false,
-                            AllowRefresh = true
-                        });
-
                     return Ok();
                 }
                 else

@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using RestSharp;
 using SmartSolutionAPILib;
@@ -8,7 +9,7 @@ using WebPortal.Services.Core.Users;
 
 namespace WebPortal.Controllers
 {
-    [Authorize]
+
     public class AccountController : Controller
     {
         protected static IUsersService UsersService { get; private set; }

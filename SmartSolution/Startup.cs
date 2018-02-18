@@ -32,19 +32,6 @@ namespace WebPortal
             ApplicationConfiguration configuration = new ApplicationConfiguration();
             configuration.Load();
 
-            //configure autentication
-            services.AddAuthentication(options =>
-            {
-                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            })
-            .AddCookie(options =>
-            {
-                options.LoginPath = new PathString("/Account/SignIn");
-                options.LogoutPath = new PathString("/Account/SignIn");
-            });
-
             //configure mvc
             services.AddMvc();
 
@@ -91,7 +78,6 @@ namespace WebPortal
             }
 
             app.UseStaticFiles();
-            app.UseAuthentication();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

@@ -10,7 +10,6 @@ namespace WebPortal.Controllers.API
 {
     [Produces("application/json")]
     [Route("api/Switches")]
-    [Authorize]
     public class SwitchesController : Controller
     {
         protected static ISwitchesService SwitchesService { get; private set; }

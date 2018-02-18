@@ -10,7 +10,6 @@ using WebPortal.Services.Core.Switches;
 
 namespace Test.Controllers
 {
-    [Authorize]
     public class HomeController : Controller
     {
         protected static ISwitchesService SwitchesService { get; private set; }

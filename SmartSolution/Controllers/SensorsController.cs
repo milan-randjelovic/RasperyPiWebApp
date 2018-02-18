@@ -10,7 +10,6 @@ using WebPortal.Services.Core.Sensors;
 
 namespace WebPortal.Controllers
 {
-    [Authorize]
     public class SensorsController : Controller
     {
         protected string APIBaseAddress { get; set; }

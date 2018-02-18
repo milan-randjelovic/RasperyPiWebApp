@@ -9,7 +9,6 @@ namespace WebPortal.Controllers.API
 {
     [Produces("application/json")]
     [Route("api/Sensors")]
-    [Authorize]
     public class SensorsController : Controller
     {
         protected static ISensorsService SensorsService { get; private set; }
