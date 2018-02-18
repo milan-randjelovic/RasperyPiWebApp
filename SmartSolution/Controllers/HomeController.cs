@@ -1,17 +1,12 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RaspberryLib;
-using RestSharp;
-using SmartSolutionAPILib;
 using Test.Models;
-using WebPortal.Models;
 using WebPortal.Models.Sensors;
 using WebPortal.Models.Switches;
 using WebPortal.Services.Core.Sensors;
 using WebPortal.Services.Core.Switches;
-using WebPortal.Services.Core.Users;
 
 namespace Test.Controllers
 {

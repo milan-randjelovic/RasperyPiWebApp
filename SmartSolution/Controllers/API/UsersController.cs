@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
@@ -42,7 +43,7 @@ namespace WebPortal.Controllers.API
         }
 
         [HttpPost("SignIn")]
-        public IActionResult SignIn([FromBody]UserAccount userAccount)
+        public async Task<IActionResult> SignIn([FromBody]UserAccount userAccount)
         {
             try
             {
@@ -52,14 +53,23 @@ namespace WebPortal.Controllers.API
                     List<Claim> claims = new List<Claim>()
                     {
                         new Claim(ClaimTypes.Name, user.FullName),
-                        new Claim(ClaimTypes.Email, user.Email)
+                        new Claim(ClaimTypes.Email, user.Email),
+                        new Claim(ClaimTypes.Authentication, CookieAuthenticationDefaults.AuthenticationScheme),
                     };
 
-                    ClaimsIdentity identity = new ClaimsIdentity(claims);
+                    ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    ClaimsPrincipal principal = new ClaimsPrincipal(new ClaimsIdentity(claims));
 
-                    ClaimsPrincipal userPrincipal = new ClaimsPrincipal(identity);
-
-                    HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, userPrincipal);
+                    await AuthenticationHttpContextExtensions.SignInAsync
+                        (HttpContext,
+                        CookieAuthenticationDefaults.AuthenticationScheme,
+                        principal
+                        , new AuthenticationProperties()
+                        {
+                            ExpiresUtc = DateTime.UtcNow.AddMinutes(30),
+                            IsPersistent = false,
+                            AllowRefresh = true
+                        });
 
                     return Ok();
                 }

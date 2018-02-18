@@ -6,7 +6,6 @@ using WebPortal.Models.Switches;
 using RaspberryLib;
 using System.Timers;
 using WebPortal.Services.Core.Switches;
-using WebPortal.Services.Core;
 
 namespace WebPortal.Services.Mongo
 {

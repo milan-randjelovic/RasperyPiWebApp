@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
 using WebPortal.Models.Sensors;
-using WebPortal.Services.Core;
 using WebPortal.Services.Core.Sensors;
 
 namespace WebPortal.Services.SQLite

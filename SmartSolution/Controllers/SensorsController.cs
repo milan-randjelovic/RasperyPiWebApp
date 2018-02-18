@@ -1,12 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using SmartSolutionAPILib;
-using System;
-using System.Collections.Generic;
-using WebPortal.Models.Sensors;
-using RestSharp;
+﻿using WebPortal.Models.Sensors;
 using WebPortal.Services.Core.Sensors;
-using Microsoft.AspNetCore.Authorization;
 
 namespace WebPortal.Controllers
 {
